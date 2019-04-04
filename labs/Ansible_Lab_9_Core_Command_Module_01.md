@@ -115,13 +115,15 @@ Take a second to think about this object.  Remember the data type of `stdout`?
 
 ##### Step 9
 
-Create a directory where we can store the command outputs.  
+Add a task to create a directory using the *file* module where we can store the command outputs.  
 
 We'll use `command-outputs`.
 
-```
-ntc@ntc:ansible$ mkdir command-outputs
-ntc@ntc:ansible$
+```yaml
+ - name: GENERATE DIRECTORIES
+   file:
+     path: ./command-outputs/{{ ansible_network_os }}/
+     state: directory
 ```
 
 ##### Step 10
@@ -129,10 +131,10 @@ ntc@ntc:ansible$
 Add the required task using `template` to the playbook.
 
 ```yaml
-      - name: SAVE SH VERSION TO FILE
-        template:
-          src: basic-copy.j2
-          dest: ./command-outputs/show_version.txt
+- name: SAVE SH VERSION TO FILE
+  template:
+    src: basic-copy.j2
+    dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
 ```
 
 ##### Step 11
@@ -150,7 +152,7 @@ Make the required changes to save command output for all 3 CSR devices.
 
 ```yaml
 
-dest: ./command-outputs/{{ inventory_hostname}}-show_version.txt
+dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
 ```
 
 ##### Check
@@ -206,7 +208,7 @@ Lets try the same thing but with JUNOS. Add another play below the first one.
 
 ```
 
-##### Step 2
+##### Step 14
 
 Add a task to issue the `show version` command.
 
@@ -226,19 +228,19 @@ Add a task to issue the `show version` command.
 
 ```
 
-##### Step 3
+##### Step 15
 
 Execute the playbook.
 
 Did you see the output anywhere?
 
-##### Step 4
+##### Step 16
 
 Execute the playbook using the `-v` verbose flag.
 
 Did you see the output anywhere?
 
-##### Step 5
+##### Step 17
 
 In order to clean up the output, use `register` task attribute and debug the new variable to the terminal.
 
@@ -248,11 +250,12 @@ In order to clean up the output, use `register` task attribute and debug the new
           commands: show version
         register: config_data
 
-      - debug:
+      - name: VIEW DATA STORED IN CONFIG_DATA
+        debug:
           var: config_data
 ```
 
-##### Step 6
+##### Step 18
 
 Execute the playbook.  Do not use the `-v` flag.
 
@@ -260,20 +263,19 @@ The output seen is much cleaner and easier to read than using the `-v` flag.
 
 > Note that when you use `register`, it's creating a new variable and storing the JSON return data from the module into the variable name defined.  In this case, it's `config_data`.
 
-##### Step 7
+##### Step 19
 
 Take note of the data being debugged:
 
 ```
-
-TASK [debug] ************************************************************************
-ok: [csr1] => {
+TASK [VIEW DATA STORED IN CONFIG_DATA] ********************************************************
+ok: [vmx1] => {
     "config_data": {
         "changed": false,
         "failed": false,
         "stdout": [
-            "Cisco IOS XE Software, Version 16.06.02\nCisco IOS Software [Everest], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.6.2, RELEASE SOFTWARE (fc2)\nTechnical Support:
-            ...
+            "Hostname: vmx1\nModel: vmx\nJunos: 18.2R1.9\nJUNOS OS Kernel 64-bit  [20180614.6c3f819_builder_stable_11]\nJUNOS OS libs [20180614.6c3f819_builder_stable_11]\nJUNOS OS runtime [20180614.6c3f819_builder_stable_11]\nJUNOS OS time zone information
+        .....
 ```
 
 `config_data` is a JSON object (think dictionary) that has several key value pairs, e.g. `changed`, `failed`, `stdout`, and `stdout_lines` (not shown).
@@ -282,7 +284,7 @@ You can also see that `stdout` is a list given it has square brackets next to it
 
 `stdout` is **ALWAYS** a list when you're using the "command" modules.  It is a list of show command responses.  It's a list that has a length equal to the number of commands sent to the device.  In this case, we sent 1 command, so it's a length of 1, thus we'd access the "show version" response as element 0.
 
-##### Step 8
+##### Step 20
 
 Our goal is to save the show command output to a file.  We are going to do this using the `template` module.
 
@@ -296,44 +298,46 @@ It should look like this:
 
 Take a second to think about this object.  Remember the data type of `stdout`?
 
-##### Step 9
+##### Step 21
 
-Create a directory where we can store the command outputs.  
+Add a task to create a directory using the *file* module where we can store the command outputs.  
 
 We'll use `command-outputs`.
 
-```
-ntc@ntc:ansible$ mkdir command-outputs
-ntc@ntc:ansible$
+```yaml
+ - name: GENERATE DIRECTORIES
+   file:
+     path: ./command-outputs/{{ ansible_network_os }}/
+     state: directory
 ```
 
-##### Step 10
+##### Step 22
 
 Add the required task using `template` to the playbook.
 
 ```yaml
-      - name: SAVE SH VERSION TO FILE
-        template:
-          src: basic-copy.j2
-          dest: ./command-outputs/show_version.txt
+  - name: SAVE SH VERSION TO FILE
+    template:
+      src: basic-copy.j2
+      dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
 ```
 
-##### Step 11
+##### Step 23
 
 Execute the playbook.
 
-##### Step 12
+##### Step 24
 
-Make the required changes to save command output for all 3 CSR devices.
+Make the required changes to save command output for all 3 VMX devices.
 
-(1) Change `hosts: csr1` to `hosts: iosxe`
+(1) Change `hosts: vmx1` to `hosts: vmx`
 
 
 (2) Add a variable to the `dest` filename in the `template` module task:
 
 ```yaml
 
-dest: ./command-outputs/{{ inventory_hostname}}-show_version.txt
+dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
 ```
 
 ##### Check
