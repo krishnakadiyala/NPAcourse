@@ -27,6 +27,7 @@ Remove the second play (Junos), so you're left with the following in your playbo
 If you do use Junos, make sure to change to connection: netconf
 
 ```yaml
+
 ---
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
@@ -60,6 +61,7 @@ ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml
 Add a new SNMP command to the `commands` parameter so that you have the following 4 commands in the list:
 
 ```yaml
+
 commands:
   - snmp-server community ntc-course RO
   - snmp-server community supersecret RW
@@ -140,6 +142,7 @@ Change the SNMP command for location to be "NYC_HQ_COLO"
 So that the complete playbook looks like this:
 
 ```yaml
+
 ---
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
