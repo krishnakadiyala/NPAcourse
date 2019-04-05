@@ -12,7 +12,7 @@ ntc@ntc:ansible$ ansible-doc file
 
 ```
 
-```bash
+```commandline
 
 = path
         Path to the file being managed.
@@ -98,13 +98,13 @@ Save and execute the playbook.
 You should see the following output. 
 
 
-```bash
+```commandline
 
 ntc@jump-host:ansible$ ansible-playbook -i inventory auto-create.yml
 
-PLAY [Auto Generate Files and Directories] ****************************************************************************
+PLAY [Auto Generate Files and Directories] ***************************************
 
-TASK [CREATE DIRECTORIES BASED ON OS] *********************************************************************************
+TASK [CREATE DIRECTORIES BASED ON OS] ********************************************
 ok: [vmx3]
 ok: [vmx2]
 changed: [nxos-spine1]
@@ -118,7 +118,7 @@ ok: [eos-leaf2]
 ok: [eos-spine1]
 ok: [eos-spine2]
 
-PLAY RECAP ************************************************************************************************************
+PLAY RECAP ***********************************************************************
 csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=0    unreachable=0    failed=0
 csr3                       : ok=1    changed=0    unreachable=0    failed=0
@@ -191,9 +191,9 @@ You should see the following output.
 
 ntc@jump-host:ansible$ ansible-playbook -i inventory auto-create.yml
 
-PLAY [Auto Generate Files and Directories] *************************************************************************************************************************************************************************************************************************************
+PLAY [Auto Generate Files and Directories] *******************************
 
-TASK [CREATE DIRECTORIES BASED ON OS] ******************************************************************************************************************************************************************************************************************************************
+TASK [CREATE DIRECTORIES BASED ON OS] *************************************
 ok: [nxos-spine1]
 ok: [eos-leaf2]
 ok: [csr1]
@@ -206,8 +206,7 @@ ok: [vmx2]
 ok: [vmx3]
 ok: [eos-spine1]
 ok: [eos-spine2]
-
-TASK [CREATE SNMP.CONF FILE] ***************************************************************************************************************************************************************************************************************************************************
+TASK [CREATE SNMP.CONF FILE] ***********************************************
 changed: [eos-leaf1]
 changed: [eos-leaf2]
 changed: [nxos-spine1]
@@ -221,7 +220,7 @@ changed: [vmx3]
 changed: [eos-spine1]
 changed: [eos-spine2]
 
-PLAY RECAP *********************************************************************************************************************************************************************************************************************************************************************
+PLAY RECAP ******************************************************************
 csr1                       : ok=2    changed=1    unreachable=0    failed=0
 csr2                       : ok=2    changed=1    unreachable=0    failed=0
 csr3                       : ok=2    changed=1    unreachable=0    failed=0
