@@ -20,6 +20,7 @@ ntc@ntc:ansible$
 Open this file with a text editor and input the play definition as follows:
 
 ``` yaml
+
 ---
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
@@ -34,6 +35,7 @@ Open this file with a text editor and input the play definition as follows:
 Add a `vars_prompt` directive that allows you to collect user input data.
 
 ``` yaml
+
 ---
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
@@ -89,6 +91,7 @@ For sensitive information, such as the password, we do not want the user input t
 Update the playbook as follows:
 
 ``` yaml
+
 ---
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1
@@ -144,6 +147,7 @@ Finally, the `var_prompt` directive can also be set up to take a default value t
 
 
 ``` yaml
+
 ---
 - name: COLLECT USERNAME AND PASSWORD
   hosts: csr1

@@ -91,6 +91,7 @@ ntc@ntc:ansible$
 Full and final playbook will look like this:
 
 ```yaml
+
 ---
 
   - name: IOS COMPLIANCE

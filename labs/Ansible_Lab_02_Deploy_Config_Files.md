@@ -65,6 +65,7 @@ This time, however, we will use the source file to deploy the configuration inst
 
 
 ```yaml
+
 ---
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
