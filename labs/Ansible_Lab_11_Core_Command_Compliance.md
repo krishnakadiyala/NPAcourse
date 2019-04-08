@@ -402,7 +402,7 @@ vmx3                       : ok=6    changed=0    unreachable=0    failed=0
 ```
 Looks like everything passed and is in a good state, but what if the file system reaches a level above the specified amount?
 
-##### Step 10
+##### Step 9
 
 Lets make a change on the `set_fact` module and change the variable `percent` to `60` and comment out the original variable.
 
@@ -458,7 +458,7 @@ vmx3                       : ok=4    changed=0    unreachable=0    failed=1
 
 Another thing to point out is that it stopped at the first task and did not run the second task because the module returned with an error. To prevent that from happening you can add the argument `ignore_error: true` and it will ignore any errors and move on to the next task. 
 
-##### Step 11
+##### Step 10
 
 Add the `ignore_errors: true` argument to the end of the task. 
 
@@ -484,7 +484,7 @@ Add the `ignore_errors: true` argument to the end of the task.
 
 ```
 
-##### Step 10
+##### Step 11
 
 Execute the playbook and view results.
 
