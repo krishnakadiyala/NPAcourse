@@ -14,7 +14,7 @@ Navigate to the Ansible directory.
 
 ```
 ntc@ntc:~$ cd ansible
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 ##### Step 2

@@ -9,8 +9,8 @@ This lab builds on the first lab you did with sending SNMP configurations to net
 Copy your original playbook called `snmp-config-01.yml` to `snmp-config-03.yml`
 
 ```
-ntc@ntc:ansible$ cp snmp-config-01.yml snmp-config-03.yml
-ntc@ntc:ansible$
+ntc@jump-host:ansible$ cp snmp-config-01.yml snmp-config-03.yml
+ntc@jump-host:ansible$
 ```
 
 > Note: the `cp` command copies a file in Linux.
@@ -51,7 +51,7 @@ If you do use Junos, make sure to change to connection: netconf
 Verify the playbook is still functional (syntax, spacing) by executing the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml
 
 # output omitted
 ```
@@ -83,7 +83,7 @@ The core `<os>_config` modules will return the commands being sent to the device
 Let's take a look:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -98,7 +98,7 @@ csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 
 ```
 
@@ -109,7 +109,7 @@ This is telling us that Ansible is only sending ONE command to the device -- Ans
 Re-run the playbook once more verifying idempotency, e.g. no changes should be made.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -168,7 +168,7 @@ So that the complete playbook looks like this:
 Execute the playbook just with the "check mode" flag set:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml --check
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml --check
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
 
@@ -182,7 +182,7 @@ csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 Notice that this says "changed" for each device, but no change actually took place!!
@@ -216,7 +216,7 @@ Let's try it.
 Run the playbook with check mode and verbose mode.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml --check -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml --check -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -231,7 +231,7 @@ csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 You now know which commands are going to get sent to the device.  This is super-handy when troubleshooting syntax issues, typos, and bad commands.
@@ -241,7 +241,7 @@ You now know which commands are going to get sent to the device.  This is super-
 Now that you, as a network engineer, "approved" the commands that will get sent to the device, you can remove check mode (feel free to keep verbose mode).
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -256,7 +256,7 @@ csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 ##### Step 7
@@ -264,7 +264,7 @@ ntc@ntc:ansible$
 Finally, run the playbook one more time for verifying idempotency.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -279,7 +279,7 @@ csr1                       : ok=1    changed=0    unreachable=0    failed=0
 csr2                       : ok=1    changed=0    unreachable=0    failed=0
 csr3                       : ok=1    changed=0    unreachable=0    failed=0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 Nice work.

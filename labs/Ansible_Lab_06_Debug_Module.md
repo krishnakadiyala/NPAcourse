@@ -12,7 +12,7 @@ Navigate to the `ansible` directory.
 
 ```
 ntc@ntc:~$ cd ansible/
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 ##### Step 2
@@ -20,8 +20,8 @@ ntc@ntc:ansible$
 Create a playbook file called `debug.yml`.
 
 ```
-ntc@ntc:ansible$ touch debug.yml
-ntc@ntc:ansible$
+ntc@jump-host:ansible$ touch debug.yml
+ntc@jump-host:ansible$
 ```
 
 Open the file in your text editor.
@@ -57,7 +57,7 @@ Save and execute the playbook.
 You should see the following output.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
 
 PLAY [USING THE DEBUG MODULE] ***************************************************
 
@@ -77,7 +77,7 @@ csr1                       : ok=1    changed=0    unreachable=0    failed=0
 csr2                       : ok=1    changed=0    unreachable=0    failed=0
 csr3                       : ok=1    changed=0    unreachable=0    failed=0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 Note, this just printed the variable to the terminal.
@@ -98,7 +98,7 @@ Save and execute the playbook.
 You should see the following output.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
 
 
 PLAY [USING THE DEBUG MODULE] ***************************************************
@@ -155,7 +155,7 @@ vmx1                       : ok=1    changed=0    unreachable=0    failed=0
 vmx2                       : ok=1    changed=0    unreachable=0    failed=0
 vmx3                       : ok=1    changed=0    unreachable=0    failed=0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 See how we can quickly view the same variable for all devices quite easily?
@@ -204,7 +204,7 @@ Add a task to the playbook to debug the `device_type` variable so the playbook r
 Save and execute the following:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
 
 ```
 
@@ -280,7 +280,7 @@ ntc_device_type=n7kv
 Save and execute the following:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory debug.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
 
 ```
 

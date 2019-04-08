@@ -8,7 +8,7 @@ Type in the command `ansible-doc file`, this will open up a description of the m
 
 ```
 
-ntc@ntc:ansible$ ansible-doc file
+ntc@jump-host:ansible$ ansible-doc file
 
 ```
 

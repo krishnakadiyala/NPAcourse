@@ -7,8 +7,8 @@ In the last lab, you deployed configurations while hard-coding commands in a pla
 Create a sub-directory called `configs` **inside** the `ansible` directory.  After creating it, navigate inside it:
 
 ```
-ntc@ntc:ansible$ mkdir configs
-ntc@ntc:ansible$ cd configs
+ntc@jump-host:ansible$ mkdir configs
+ntc@jump-host:ansible$ cd configs
 ntc@ntc:configs$
 
 ```
@@ -54,8 +54,8 @@ Save this file.
 Navigate back to the `ansible` directory and create a new playbook file.
 
 ```
-ntc@ntc:ansible$ touch snmp-config-02.yml
-ntc@ntc:ansible$
+ntc@jump-host:ansible$ touch snmp-config-02.yml
+ntc@jump-host:ansible$
 ```
 
 ##### Step 6
@@ -99,7 +99,7 @@ Run the playbook.
 
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory snmp-config-02.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-02.yml
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
 
 TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] *******************************************
@@ -122,7 +122,7 @@ vmx1                       : ok=1    changed=0    unreachable=0    failed=0
 vmx2                       : ok=1    changed=0    unreachable=0    failed=0   
 vmx3                       : ok=1    changed=0    unreachable=0    failed=0   
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 You should see zero changes as these configs are the same configs that were deployed in the first lab.  Feel free to make a change to the config files and re-run the playbook.

@@ -10,8 +10,8 @@ In Ansible, you have the ability to prompt for user input while running a playbo
 Create a new playbook in the `ansible` directory called `user_input.yml`:
 
 ```
-ntc@ntc:ansible$ touch user_input.yml
-ntc@ntc:ansible$
+ntc@jump-host:ansible$ touch user_input.yml
+ntc@jump-host:ansible$
 
 ```
 
@@ -64,7 +64,7 @@ Add a `vars_prompt` directive that allows you to collect user input data.
 Now run the playbook as follows:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory user_input.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory user_input.yml
 Please enter the username: ntc
 Please enter the password: ntc123
 
@@ -121,7 +121,7 @@ Update the playbook as follows:
 Run the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory user_input.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory user_input.yml
 Please enter the username: ntc
 Please enter the password:
 
@@ -178,7 +178,7 @@ Finally, the `var_prompt` directive can also be set up to take a default value t
 Run the playbook again.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory user_input.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory user_input.yml
 Please enter the username [ntc]:
 Please enter the password:
 
