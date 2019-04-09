@@ -15,63 +15,37 @@ ntc@jump-host:ansible$
 
 > Note: the `cp` command copies a file in Linux.
 
+
 ##### Step 2
 
-Open the new playbook in your text editor.
-
-##### Step 3
-
-Remove the second play (Junos), so you're left with the following in your playbook:
-
-> Note: if you prefer using Junos, you can following allow making the appropriate changes with Junos CLI commands instead of IOS.
-If you do use Junos, make sure to change to connection: netconf
+Add a new SNMP command to the `ios_config` `commands`  and `junos_config` `lines` parameter so that you have the following 4 commands in each list:
 
 ```yaml
-
----
-
-  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
-    hosts: iosxe
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
 
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES
         ios_config:
           commands:
             - snmp-server community ntc-course RO
+            - snmp-server community supersecret RW
             - snmp-server location NYC_HQ
             - snmp-server contact JOHN_SMITH
-
-```
-
-##### Step 4
-
-Verify the playbook is still functional (syntax, spacing) by executing the playbook.
-
-```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml
-
-# output omitted
-```
-
-##### Step 5
-
-Add a new SNMP command to the `commands` parameter so that you have the following 4 commands in the list:
-
-```yaml
-
-commands:
-  - snmp-server community ntc-course RO
-  - snmp-server community supersecret RW
-  - snmp-server location NYC_HQ
-  - snmp-server contact JOHN_SMITH
+  
+  
+      - name: TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES
+        junos_config:
+          lines:
+            - set snmp community public authorization read-only
+            - set snmp community supersecret authorization read-write
+            - set snmp location NYC_HQ
+            - set snmp contact JOHN_SMITH
+  
+  
+  
 ```
 
 Save the playbook.
 
-##### Step 6
+##### Step 3
 
 Execute the playbook, but this time use the `-v` flag.  This will run the playbook in verbose mode showing JSON data that is returned by every module.
 
@@ -86,17 +60,27 @@ Let's take a look:
 ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
-PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
+PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] ******************************************************************************************************************
 
-TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] *******************************************
-changed: [csr1] => {"banners": {}, "changed": true, "commands": ["snmp-server community supersecret RW"], "failed": false, "updates": ["snmp-server community supersecret RW"]}
-changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server community supersecret RW"], "failed": false, "updates": ["snmp-server community supersecret RW"]}
-changed: [csr3] => {"banners": {}, "changed": true, "commands": ["snmp-server community supersecret RW"], "failed": false, "updates": ["snmp-server community supersecret RW"]}
+TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] ***************************************************************************************************
+changed: [csr1] => {"banners": {}, "changed": true, "commands": ["snmp-server community supersecret RW"], "updates": ["snmp-server community supersecret RW"]}
+changed: [csr3] => {"banners": {}, "changed": true, "commands": ["snmp-server community supersecret RW"], "updates": ["snmp-server community supersecret RW"]}
+changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server community supersecret RW"], "updates": ["snmp-server community supersecret RW"]}
 
-PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0
-csr2                       : ok=1    changed=1    unreachable=0    failed=0
-csr3                       : ok=1    changed=1    unreachable=0    failed=0
+PLAY [PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS] ****************************************************************************************************************
+
+TASK [TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES] *************************************************************************************************
+changed: [vmx2] => {"changed": true}
+changed: [vmx1] => {"changed": true}
+changed: [vmx3] => {"changed": true}
+
+PLAY RECAP ************************************************************************************************************************************************************
+csr1                       : ok=1    changed=1    unreachable=0    failed=0   
+csr2                       : ok=1    changed=1    unreachable=0    failed=0   
+csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx1                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx2                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx3                       : ok=1    changed=1    unreachable=0    failed=0 
 
 ntc@jump-host:ansible$
 

@@ -76,6 +76,7 @@ Once it's created, open the file in your text editor.
 Add the following to your playbook.
 
 ```yaml
+
 ---
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
@@ -214,6 +215,7 @@ Add a _second_ play to the same playbook using the `junos_config` module to conf
 After adding this new play, the full playbook will look like this:
 
 ```yaml
+
 ---
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
@@ -383,6 +385,7 @@ ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml
 The updated playbook should look like this:
 
 ```yaml
+
 ---
 
   - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS

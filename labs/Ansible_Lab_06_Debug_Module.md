@@ -559,122 +559,383 @@ Re-run the playbook ensuring there are no indentation issues.
 
 ### Task - 6 Exploring built-in variables
 
-
-```
-
----
-
-  - name: EXPLORING BUILT-IN VARIABLES
-    hosts: all
-    connection: local
-    gather_facts: no
+This task will introduce built-in variables or another way to call them are __magic__ variables. These variables are built-in to Ansible to reflect internal state. 
 
 
-    tasks:
+##### Step 1
 
-      - name: DEBUG AND PRINT THE INVENTORY 
-        debug: 
-          msg: "Devices targeted in hosts key are: {{ inventory_hostname }}"
+In the __inventory__ file add `ansible_host=10.1.1.1` as a host variable to `csr2`. The `ansible_host` variable is helpful if inventory hostname is not in DNS or /etc/hosts. Set to IP address of host and use instead of `inventory_hostname` to access IP/FQDN
 
-        
+```text
+[iosxe]
+csr1    ntc_device_type=csr1000v-ng
+csr2    ansible_host=10.1.1.1
+csr3
 ```
 
 
+##### Step 2
+
+Add a new task to the existing playbook to see the difference between `inventory_hostname` and `ansible_host`.
+
+```yaml
+
+  - name: DEBUG AND PRINT INVENTORY_HOSTNAME VS ANSIBLE_HOST
+    debug: 
+      msg: "Devices defined in inventory_hostname: {{ inventory_hostname }} and ansible_host: {{ ansible_host }}
 ```
 
-TASK [DEBUG AND PRINT THE INVENTORY] *****************************************************
-ok: [eos-leaf1] => {
-    "msg": "Devices targeted in hosts key are: eos-leaf1"
-}
-ok: [eos-leaf2] => {
-    "msg": "Devices targeted in hosts key are: eos-leaf2"
-}
-ok: [vmx1] => {
-    "msg": "Devices targeted in hosts key are: vmx1"
-}
-ok: [vmx2] => {
-    "msg": "Devices targeted in hosts key are: vmx2"
-}
-ok: [vmx3] => {
-    "msg": "Devices targeted in hosts key are: vmx3"
-}
-ok: [csr1] => {
-    "msg": "Devices targeted in hosts key are: csr1"
-}
-ok: [csr2] => {
-    "msg": "Devices targeted in hosts key are: csr2"
-}
-ok: [csr3] => {
-    "msg": "Devices targeted in hosts key are: csr3"
-}
-ok: [nxos-spine1] => {
-    "msg": "Devices targeted in hosts key are: nxos-spine1"
-}
-ok: [nxos-spine2] => {
-    "msg": "Devices targeted in hosts key are: nxos-spine2"
-}
+##### Step 3
+
+Save and execute the playbook.
+
+You'll see the relevant output for the 4th task in the playbook:
+
+
+```commandline
+
+TASK [DEBUG AND PRINT INVENTORY_HOSTNAME VS ANSIBLE_HOST] *******************************************************
 ok: [eos-spine1] => {
-    "msg": "Devices targeted in hosts key are: eos-spine1"
+    "msg": "Devices defined in inventory_hostname: eos-spine1 and ansible_host: eos-spine1"
 }
 ok: [eos-spine2] => {
-    "msg": "Devices targeted in hosts key are: eos-spine2"
+    "msg": "Devices defined in inventory_hostname: eos-spine2 and ansible_host: eos-spine2"
+}
+ok: [csr1] => {
+    "msg": "Devices defined in inventory_hostname: csr1 and ansible_host: csr1"
+}
+ok: [csr2] => {
+    "msg": "Devices defined in inventory_hostname: csr2 and ansible_host: 10.1.1.1"
+}
+ok: [csr3] => {
+    "msg": "Devices defined in inventory_hostname: csr3 and ansible_host: csr3"
+}
+ok: [vmx1] => {
+    "msg": "Devices defined in inventory_hostname: vmx1 and ansible_host: vmx1"
+}
+ok: [vmx2] => {
+    "msg": "Devices defined in inventory_hostname: vmx2 and ansible_host: vmx2"
+}
+ok: [vmx3] => {
+    "msg": "Devices defined in inventory_hostname: vmx3 and ansible_host: vmx3"
+}
+ok: [nxos-spine1] => {
+    "msg": "Devices defined in inventory_hostname: nxos-spine1 and ansible_host: nxos-spine1"
+}
+ok: [nxos-spine2] => {
+    "msg": "Devices defined in inventory_hostname: nxos-spine2 and ansible_host: nxos-spine2"
+}
+ok: [eos-leaf1] => {
+    "msg": "Devices defined in inventory_hostname: eos-leaf1 and ansible_host: eos-leaf1"
+}
+ok: [eos-leaf2] => {
+    "msg": "Devices defined in inventory_hostname: eos-leaf2 and ansible_host: eos-leaf2"
 }
 
 
 ```
 
 
+##### Step 4
+
+
+Add a new task to the playbook to debug the `play_hosts` variable it will return a list of inventory hostnames that are in scope for the current play
+
+```yaml
+      - name: DEBUG AND PRINT LIST OF PLAY_HOSTS
+        debug: 
+          var: play_hosts
+```
+
+##### Step 5
+
+Save and execute the playbook.
+You'll see the relevant output for the 5th task in the playbook:
+
+```commandline
+TASK [DEBUG AND PRINT LIST OF PLAY_HOSTS] *****************************************************************
+ok: [eos-spine1] => {
+    "play_hosts": [
+        "eos-spine1",
+        "eos-spine2",
+        "nxos-spine1",
+        "nxos-spine2",
+        "csr1",
+        "csr2",
+        "csr3",
+        "vmx1",
+        "vmx2",
+        "vmx3",
+        "eos-leaf1",
+        "eos-leaf2"
+    ]
+}
+ok: [eos-spine2] => {
+    "play_hosts": [
+        "eos-spine1",
+        "eos-spine2",
+        "nxos-spine1",
+        "nxos-spine2",
+        "csr1",
+        "csr2",
+        "csr3",
+        "vmx1",
+        "vmx2",
+        "vmx3",
+        "eos-leaf1",
+        "eos-leaf2"
+    ]
+}
+ok: [nxos-spine1] => {
+    "play_hosts": [
+        "eos-spine1",
+        "eos-spine2",
+        "nxos-spine1",
+        "nxos-spine2",
+        "csr1",
+        "csr2",
+        "csr3",
+        "vmx1",
+        "vmx2",
+        "vmx3",
+        "eos-leaf1",
+        "eos-leaf2"
+    ]
+}
+ok: [nxos-spine2] => {
+    "play_hosts": [
+        "eos-spine1",
+        "eos-spine2",
+        "nxos-spine1",
+        "nxos-spine2",
+        "csr1",
+        "csr2",
+        "csr3",
+        "vmx1",
+        "vmx2",
+        "vmx3",
+        "eos-leaf1",
+        "eos-leaf2"
+    ]
+}
+
+..... output ommited
 
 ```
+
+##### Step 6
+
+Add a new task to the existing playbook. To debug `group_names` which will return a list of all groups that the current host is a member of.
+
+```yaml
+      - name: DEBUG AND PRINT GROUP_NAMES
+        debug: 
+          var: group_names
+```
+
+##### Step 7
+
+Save and execute the playbook.
+You'll see the relevant output for the 6th task in the playbook:
+
+```commandline
+
+TASK [DEBUG AND PRINT GROUP_NAMES] ****************************************************
+
+ok: [eos-spine1] => {
+    "group_names": [
+        "eos",
+        "eos-spines"
+    ]
+}
+ok: [eos-spine2] => {
+    "group_names": [
+        "eos",
+        "eos-spines"
+    ]
+}
+ok: [csr1] => {
+    "group_names": [
+        "AMER",
+        "iosxe"
+    ]
+}
+ok: [csr2] => {
+    "group_names": [
+        "AMER",
+        "iosxe"
+    ]
+}
+ok: [csr3] => {
+    "group_names": [
+        "AMER",
+        "iosxe"
+    ]
+}
+ok: [vmx1] => {
+    "group_names": [
+        "EMEA",
+        "vmx"
+    ]
+}
+ok: [vmx2] => {
+    "group_names": [
+        "EMEA",
+        "vmx"
+    ]
+}
+ok: [vmx3] => {
+    "group_names": [
+        "EMEA",
+        "vmx"
+    ]
+}
+ok: [nxos-spine1] => {
+    "group_names": [
+        "nxos",
+        "nxos-spines"
+    ]
+}
+ok: [nxos-spine2] => {
+    "group_names": [
+        "nxos",
+        "nxos-spines"
+    ]
+}
+ok: [eos-leaf1] => {
+    "group_names": [
+        "eos",
+        "eos-leaves"
+    ]
+}
+ok: [eos-leaf2] => {
+    "group_names": [
+        "eos",
+        "eos-leaves"
+    ]
+}
+
+..... output ommited
+```
+
+##### Step 8
+
+In the play definition change the `hosts: all` to `hosts: csr1` so we only target one device. 
+
+```yaml
 
 ---
 
   - name: USING THE DEBUG MODULE
-    hosts: all
+    hosts: csr1
     connection: local
     gather_facts: no
 
+``` 
 
-    tasks:
-      - name: DEBUG AND PRINT TO TERMINAL
-        debug: var=ntc_vendor
 
-      - name: DEBUG AND PRINT DEVICE TYPE TO TERMINAL
-        debug: var=ntc_device_type
+##### Step 9
 
-      - name: DEBUG AND PRINT THE OS
-        debug: msg="The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
+Add a new task to the existing playbook. To debug `groups` which will return dictionary- keys that are all group names defined in the inventory file and values are list of host names that are members of the group.
 
-      - name: DEBUG AND PRINT ANSIBLE_HOST
-        debug: var=ansible_host
-
+```yaml
+  - name: DEBUG AND PRINT GROUPS
+    debug: 
+      var: groups
 ```
 
+##### Step 10
 
-```
+Save and execute the playbook.
+You'll see the relevant output for the 7th task in the playbook:
 
-PLAY [USING THE DEBUG MODULE] ******************************************
+```commandline
 
-TASK [DEBUG AND PRINT LIST OF PLAY_HOSTS] ***********************************
+TASK [DEBUG AND PRINT GROUPS] ******************************************************************************************************************************************************************************
 ok: [csr1] => {
-    "play_hosts": [
-        "csr1",
-        "csr2",
-        "csr3",
-        "eos-leaf1",
-        "eos-leaf2",
-        "nxos-spine1",
-        "nxos-spine2",
-        "vmx1",
-        "vmx2",
-        "vmx3",
-        "eos-spine1",
-        "eos-spine2"
-    ]
+    "groups": {
+        "AMER": [
+            "csr1",
+            "csr2",
+            "csr3"
+        ],
+        "EMEA": [
+            "vmx1",
+            "vmx2",
+            "vmx3"
+        ],
+        "all": [
+            "eos-spine1",
+            "eos-spine2",
+            "csr1",
+            "csr2",
+            "csr3",
+            "vmx1",
+            "vmx2",
+            "vmx3",
+            "nxos-spine1",
+            "nxos-spine2",
+            "eos-leaf1",
+            "eos-leaf2"
+        ],
+        "eos": [
+            "eos-spine1",
+            "eos-spine2",
+            "eos-leaf1",
+            "eos-leaf2"
+        ],
+        "eos-leaves": [
+            "eos-leaf1",
+            "eos-leaf2"
+        ],
+        "eos-spines": [
+            "eos-spine1",
+            "eos-spine2"
+        ],
+        "iosxe": [
+            "csr1",
+            "csr2",
+            "csr3"
+        ],
+        "nxos": [
+            "nxos-spine1",
+            "nxos-spine2"
+        ],
+        "nxos-spines": [
+            "nxos-spine1",
+            "nxos-spine2"
+        ],
+        "ungrouped": [],
+        "vmx": [
+            "vmx1",
+            "vmx2",
+            "vmx3"
+        ]
+    }
 }
 
-# output omitted
-
 ```
 
+##### Step 11
 
+Add a new task to the existing playbook. To debug `ansible_version` which will return a dictionary representing Ansible major, minor, revision of the release.
+
+```yaml
+
+  - name: DEBUG AND PRINT ANSIBLE_VERSION
+    debug: 
+       msg: "Ansible Version: '{{ ansible_version }}'"
+```
+
+##### Step 12
+
+Save and execute the playbook.
+You'll see the relevant output for the 8th task in the playbook:
+
+
+```commandline
+TASK [DEBUG AND PRINT ANSIBLE_VERSION] *********************************************************************
+ok: [csr1] => {
+    "msg": "Ansible Version: '{'major': 2, 'full': '2.7.9', 'string': '2.7.9', 'minor': 7, 'revision': 9}'"
+}
+```
