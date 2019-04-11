@@ -9,9 +9,9 @@ This lab provides an introduction to using Ansible creating your first playbook 
 While in your home directory, create a new directory called `ansible` and then navigate into this new directory.
 
 ```
-ntc@ntc:~$ mkdir ansible
+ntc@jump-host:~$ mkdir ansible
 
-ntc@ntc:~$ cd ansible/
+ntc@jump-host:~$ cd ansible/
 ntc@jump-host:ansible$
 ```
 

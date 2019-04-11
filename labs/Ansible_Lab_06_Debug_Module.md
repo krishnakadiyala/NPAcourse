@@ -11,7 +11,7 @@ Let's review a few ways the `debug` module helps with troubleshooting.
 Navigate to the `ansible` directory.
 
 ```
-ntc@ntc:~$ cd ansible/
+ntc@jump-host:~$ cd ansible/
 ntc@jump-host:ansible$
 ```
 

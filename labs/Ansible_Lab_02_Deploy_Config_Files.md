@@ -9,7 +9,7 @@ Create a sub-directory called `configs` **inside** the `ansible` directory.  Aft
 ```
 ntc@jump-host:ansible$ mkdir configs
 ntc@jump-host:ansible$ cd configs
-ntc@ntc:configs$
+ntc@jump-host:configs$
 
 ```
 
@@ -18,9 +18,9 @@ ntc@ntc:configs$
 Create two files that will contain the SNMP configuration - one for Cisco and one for Juniper respectively.
 
 ```
-ntc@ntc:configs$ touch junos-snmp.cfg
-ntc@ntc:configs$ touch ios-snmp.cfg
-ntc@ntc:configs$
+ntc@jump-host:configs$ touch junos-snmp.cfg
+ntc@jump-host:configs$ touch ios-snmp.cfg
+ntc@jump-host:configs$
 ```
 
 ##### Step 3

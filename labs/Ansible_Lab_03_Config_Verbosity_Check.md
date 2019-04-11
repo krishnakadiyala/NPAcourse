@@ -87,6 +87,8 @@ ntc@jump-host:ansible$
 ```
 
 This is telling us that Ansible is only sending ONE command to the device -- Ansible is NOT sending every command in the playbook because, by default, the _config modules are comparing the commands against a "show run" on the device.
+>Note: Notice the __junos_config__  module does not return the one command that is being changed on the device. Not all modules are built the same, that's is not necessarily a bad thing but it's always good to be aware of it and make sure to test all available modules for specific features based on a particular use case.  
+
 
 ##### Step 7
 
@@ -103,10 +105,20 @@ ok: [csr1] => {"changed": false, "failed": false}
 ok: [csr3] => {"changed": false, "failed": false}
 ok: [csr2] => {"changed": false, "failed": false}
 
+PLAY [PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS] ********************************************************
+
+TASK [TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES] *****************************************
+ok: [vmx2] => {"changed": false}
+ok: [vmx1] => {"changed": false}
+ok: [vmx3] => {"changed": false}
+
 PLAY RECAP ****************************************************************************************************
 csr1                       : ok=1    changed=0    unreachable=0    failed=0
 csr2                       : ok=1    changed=0    unreachable=0    failed=0
 csr3                       : ok=1    changed=0    unreachable=0    failed=0
+vmx1                       : ok=1    changed=0    unreachable=0    failed=0
+vmx2                       : ok=1    changed=0    unreachable=0    failed=0
+vmx3                       : ok=1    changed=0    unreachable=0    failed=0
 ```
 
 As you can see no commands were sent to the devices.
@@ -119,8 +131,15 @@ You've now seen how to see what commands Ansible is sending to the devices.  Wha
 
 Change the SNMP command for location to be "NYC_HQ_COLO"
 
+On the IOS:
 ```yaml
 - snmp-server location NYC_HQ_COLO
+```
+
+On the Junos:
+
+```yaml
+- set snmp location NYC_HQ_COLO
 ```
 
 So that the complete playbook looks like this:
@@ -143,7 +162,22 @@ So that the complete playbook looks like this:
             - snmp-server community supersecret RW
             - snmp-server location NYC_HQ_COLO
             - snmp-server contact JOHN_SMITH
+            
+  - name: PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS
+    hosts: vmx
+    connection: netconf
+    gather_facts: no
 
+    tasks:
+
+      - name: TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES
+        junos_config:
+          lines:
+            - set snmp community public authorization read-only
+            - set snmp community supersecret authorization read-write
+            - set snmp location NYC_HQ_COLO
+            - set snmp contact JOHN_SMITH
+            
 ```
 
 
@@ -161,10 +195,21 @@ changed: [csr3]
 changed: [csr1]
 changed: [csr2]
 
+PLAY [PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS] *********************************************************
+
+TASK [TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES] ******************************************
+changed: [vmx1]
+changed: [vmx2]
+changed: [vmx3]
+
 PLAY RECAP ****************************************************************************************************
 csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0
+vmx1                       : ok=1    changed=1    unreachable=0    failed=0
+vmx2                       : ok=1    changed=1    unreachable=0    failed=0
+vmx3                       : ok=1    changed=1    unreachable=0    failed=0
+
 
 ntc@jump-host:ansible$
 ```
@@ -173,9 +218,9 @@ Notice that this says "changed" for each device, but no change actually took pla
 
 ##### Step 3
 
-Verify the "old" configuration is still there by SSH'ing into CSR1:
+Verify the "old" configuration is still there by SSH'ing into CSR1 and VMX1:
 
-```
+```commandline
 csr1#
 csr1#show run | inc snmp-server
 snmp-server community ntc-course RO
@@ -185,6 +230,14 @@ snmp-server contact JOHN_SMITH
 csr1#
 ```
 
+```commandline
+vmx1>
+vmx1> show configuration | match location | display set
+set snmp location NYC_HQ
+vmx1>
+```
+
+
 ##### Step 4
 
 **READ-ONLY STEP**
@@ -192,6 +245,8 @@ csr1#
 When you see "changed" when you run a playbook in check mode, it's telling you a change _will_ occur when you don't run it in check mode.  Check mode is often used at the beginning of change windows seeing if a change would occur.
 
 Note that you saw verbose mode returns what commands are sent to the device and check mode returns if a change will be made. If you combine using check mode **and** verbose mode when you execute a playbook, you will see the commands that will get sent!
+
+>Note: Viewing what commads are being sent to the device will only be displayed on the IOS devices in this test. 
 
 Let's try it.
 
@@ -210,10 +265,20 @@ changed: [csr3] => {"banners": {}, "changed": true, "commands": ["snmp-server lo
 changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
 changed: [csr1] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
 
-PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0
-csr2                       : ok=1    changed=1    unreachable=0    failed=0
-csr3                       : ok=1    changed=1    unreachable=0    failed=0
+PLAY [PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS] ****************************************************************************************************************
+
+TASK [TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES] *************************************************************************************************
+changed: [vmx2] => {"changed": true}
+changed: [vmx1] => {"changed": true}
+changed: [vmx3] => {"changed": true}
+
+PLAY RECAP ************************************************************************************************************************************************************
+csr1                       : ok=1    changed=1    unreachable=0    failed=0   
+csr2                       : ok=1    changed=1    unreachable=0    failed=0   
+csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx1                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx2                       : ok=1    changed=1    unreachable=0    failed=0   
+vmx3                       : ok=1    changed=1    unreachable=0    failed=0 
 
 ntc@jump-host:ansible$
 ```
@@ -235,10 +300,20 @@ changed: [csr1] => {"banners": {}, "changed": true, "commands": ["snmp-server lo
 changed: [csr3] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
 changed: [csr2] => {"banners": {}, "changed": true, "commands": ["snmp-server location NYC_HQ_COLO"], "failed": false, "updates": ["snmp-server location NYC_HQ_COLO"]}
 
+PLAY [PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS] ******************************************************
+
+TASK [TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES] ****************************************
+changed: [vmx1] => {"changed": true}
+changed: [vmx2] => {"changed": true}
+changed: [vmx3] => {"changed": true}
+
 PLAY RECAP ****************************************************************************************************
 csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0
+vmx1                       : ok=1    changed=1    unreachable=0    failed=0
+vmx2                       : ok=1    changed=1    unreachable=0    failed=0
+vmx3                       : ok=1    changed=1    unreachable=0    failed=0
 
 ntc@jump-host:ansible$
 ```
@@ -258,10 +333,20 @@ ok: [csr3] => {"changed": false, "failed": false}
 ok: [csr1] => {"changed": false, "failed": false}
 ok: [csr2] => {"changed": false, "failed": false}
 
+PLAY [PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS] ******************************************************
+
+TASK [TASK 1 in PLAY 2 - ENSURE SNMP COMMANDS EXIST ON JUNOS DEVICES] ****************************************
+ok: [vmx3] => {"changed": false}
+ok: [vmx2] => {"changed": false}
+ok: [vmx1] => {"changed": false}
+
 PLAY RECAP ****************************************************************************************************
 csr1                       : ok=1    changed=0    unreachable=0    failed=0
 csr2                       : ok=1    changed=0    unreachable=0    failed=0
 csr3                       : ok=1    changed=0    unreachable=0    failed=0
+vmx1                       : ok=1    changed=0    unreachable=0    failed=0
+vmx2                       : ok=1    changed=0    unreachable=0    failed=0
+vmx3                       : ok=1    changed=0    unreachable=0    failed=0
 
 ntc@jump-host:ansible$
 ```
