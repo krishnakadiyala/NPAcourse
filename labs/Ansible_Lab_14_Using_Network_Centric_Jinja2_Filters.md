@@ -171,7 +171,9 @@ ntc@jump-host:ansible$
 
 ##### Step 7
 
-Add a new variable under `vars` called `interfaces_config` and a new `debug` task to use the `selectattr` and `list` filters chained together. The `selectattr` filter reads through a sequence of objects by applying a test to the specified attribute of each object, and only selecting the objects with the test succeeding. If no test is specified, the attribute’s value will be evaluated as a boolean.
+Add a new variable under `vars` called `interfaces_config` and a new `debug` task to use the `selectattr` and `list` filters chained together. 
+
+The `selectattr` filter reads through a sequence of objects by applying a test to the specified attribute of each object, and only selecting the objects with the test succeeding. If no test is specified, the attribute’s value will be evaluated as a boolean.
 
 
 ```yaml
@@ -222,55 +224,290 @@ Add a new variable under `vars` called `interfaces_config` and a new `debug` tas
         debug:
           msg: "There are {{ vlans | length }} VLANs on the switch."
           
-          
       - name: GET ELEMENTS THAT HAVE A TRUE VALUE FOR STATUS AS A LIST
         debug:
           var: interfaces_config | selectattr("status") | list
 
 ```
 
+##### Step 8
 
+Save and execute the playbook.
+
+You should see the following output.
+
+```commandline
+
+ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+
+PLAY [TEST JINJA FILTERS] ***************************************************************************************
+
+TASK [UPPERCASE HOSTNAME] ***************************************************************************************
+ok: [localhost] => {
+    "hostname | upper": "NYCR1"
+}
+
+TASK [UPPERCASE HOSTNAME IN A MESSAGE] **************************************************************************
+ok: [localhost] => {
+    "msg": "The hostname is NYCR1"
+}
+
+TASK [VERIFY LENGTH OF LIST] **************************************************************************************
+ok: [localhost] => {
+    "msg": "There are 3 VLANs on the switch."
+}
+
+TASK [GET ELEMENTS THAT HAVE A TRUE VALUE FOR STATUS AS A LIST] ***************************************************
+ok: [localhost] => {
+    "interfaces_config | selectattr(\"status\") | list": [
+        {
+            "duplex": "full",
+            "name": "Eth1",
+            "speed": 1000,
+            "status": true
+        },
+        {
+            "duplex": "full",
+            "name": "Eth3",
+            "speed": 1000,
+            "status": true
+        }
+    ]
+}
+
+PLAY RECAP ******************************************************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0
+
+ntc@jump-host:ansible$
 ```
 
-      interface_name: Ethernet1
-      
-      interface_state: false
+##### Step 9
 
-      interfaces:
-        - Eth1
-        - Eth2
-        - Eth3
-      
+Add two more `debug` tasks to the playbook using the `map` filter that is applied on a sequence of objects or looks up an attribute. This filter can be useful when dealing with lists of objects but you are only really interested in a certain value of it.
 
-    tasks:
+The basic usage is mapping on an attribute. Imagine you have a list of  `interfaces` or `vlans` but you are only interested in a list of __names__ of the interfaces or vlans.
 
 
-        # without | list, selectattr returns an actual generator object
-      - name: GET ELEMENTS THAT HAVE A TRUE VALUE FOR STATUS AS A LIST
-        debug:
-          var: interfaces_config | selectattr("status") | list
-        tags: d3
+
+```yaml
 
       - name: RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES
         debug:
           var: interfaces_config | map(attribute="name") | list
-        tags: d4
 
       - name: RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES
         debug:
           var: vlans | map(attribute="name") | list
-        tags: d5
+
+```
+
+##### Step 10
+
+Save and execute the playbook.
+
+You should see the following output.
+
+```commandline
+
+ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+....output omitted
+
+TASK [RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES] *******************************************************
+ok: [localhost] => {
+    "interfaces_config | map(attribute=\"name\") | list": [
+        "Eth1",
+        "Eth3",
+        "Eth3"
+    ]
+}
+
+TASK [RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES] ********************************************************ok: [localhost] => {
+    "vlans | map(attribute=\"name\") | list": [
+        "web_vlan",
+        "app_vlan",
+        "db_vlan"
+    ]
+}
+PLAY RECAP ******************************************************************************************************
+localhost                  : ok=6    changed=0    unreachable=0    failed=0
+
+ntc@jump-host:ansible$
+
+```
+
+##### Step 11
+
+
+Add another task to the playbook but this time we are going to chain together `selectattr`, `map` and `list` filters. This is going to allow us to just return a list of interface names that are up.
+
+Chaining these filters together will allow `selectattr` to just target the status of the interfaces that are `true` and using the `map` filter will target the names of the interfaces then `list` filter will return a list.  
+
+
+```yaml
 
       - name: RETURN JUST LIST OF INTERFACE NAMES THAT ARE UP (TRUE)
         debug:
           var: interfaces_config | selectattr("status") | map(attribute="name") | list
-        tags: d6
+
+```
+
+##### Step 12
+
+Save and execute the playbook.
+
+You should see the following output.
+
+```commandline
+
+ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+....output omitted
+
+TASK [RETURN JUST LIST OF INTERFACE NAMES THAT ARE UP (TRUE)] ***************************************************
+ok: [localhost] => {
+    "interfaces_config | selectattr(\"status\") | map(attribute=\"name\") | list": [
+        "Eth1",
+        "Eth3"
+    ]
+}
+
+PLAY RECAP ************************************************************************************************************
+localhost                  : ok=7    changed=0    unreachable=0    failed=0
+
+```
+
+##### Step 13
+
+Lets try out one more test. Add another variable and call it `interface_state` and one more `debug` task using the `ternary` filter. 
+
+This filter allows us to apply logic to a variable without having to use `python` syntax. Both tasks will return the same output based on the variable value but are written differently.
+
+```yaml
+
+
+vars:
+
+  interface_state: false
+  
+  #....omitted
+  
+tasks:
+  
+  #....omitted
 
       - name: CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING
         debug:
           var: interface_state | ternary("up", "down")
-        tags: d7
+
+      - name: CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING
+        debug:
+          msg: "{{ 'up' if interface_state else 'down' }}"
+
+```
+
+##### Step 14
+
+Save and execute the playbook.
+
+You should see the following output.
+
+```commandline
+
+ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+....output omitted
+
+TASK [CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING] *******************************************************************
+ok: [localhost] => {
+    "interface_state | ternary(\"up\", \"down\")": "down"
+}
+
+TASK [CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING] ****************************************************
+ok: [localhost] => {
+    "msg": "down"
+}
+
+PLAY RECAP ***************************************************************************************
+localhost                  : ok=9    changed=0    unreachable=0    failed=0
+
+ntc@jump-host:ansible$
+
+```
+
+Give it another try, except this time change `interface_state` to **true**
 
 
+Check the final playbook
 
+```yaml
+
+---
+
+  - name: TEST JINJA FILTERS
+    hosts: localhost
+    connection: local
+    gather_facts: no
+
+    vars:
+      interface_state: false
+
+      hostname: nycr1
+
+      vlans:
+        - id: 10
+          name: web_vlan
+        - id: 20
+          name: app_vlan
+        - id: 30
+          name: db_vlan
+          
+      interfaces_config:
+        - name: Eth1
+          speed: 1000
+          duplex: full
+          status: true
+        - name: Eth3
+          speed: 1000
+          duplex: full
+          status: true
+        - name: Eth3
+          speed: 1000
+          duplex: full
+          status: false
+          
+    tasks:
+    
+      - name: UPPERCASE HOSTNAME
+        debug:
+          var: hostname | upper
+          
+      - name: UPPERCASE HOSTNAME IN A MESSAGE
+        debug:
+          msg: "The hostname is {{ hostname | upper }}"
+
+      - name: VERIFY LENGTH OF LIST
+        debug:
+          msg: "There are {{ vlans | length }} VLANs on the switch."
+        
+      - name: GET ELEMENTS THAT HAVE A TRUE VALUE FOR STATUS AS A LIST
+        debug:
+          var: interfaces_config | selectattr("status") | list
+
+      - name: RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES
+        debug:
+          var: interfaces_config | map(attribute="name") | list
+
+      - name: RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES
+        debug:
+          var: vlans | map(attribute="name") | list
+
+      - name: RETURN JUST LIST OF INTERFACE NAMES THAT ARE UP (TRUE)
+        debug:
+          var: interfaces_config | selectattr("status") | map(attribute="name") | list
+
+      - name: CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING
+        debug:
+          var: interface_state | ternary("up", "down")
+
+      - name: CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING
+        debug:
+          msg: "{{ 'up' if interface_state else 'down' }}"
 ```
