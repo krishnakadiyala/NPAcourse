@@ -22,6 +22,7 @@ This is a REQUIRED file within a file.  This is where tasks begin to execute wit
 In the `main.yml`, add the following statement:
 
 ```yaml
+
 ---
 
 - include_tasks: "{{ ansible_network_os }}_deploy.yml"
@@ -54,6 +55,7 @@ Open the `nxos_deploy.yml` file.
 Use the Ansible `nxos_config` module to configure SNMP community strings.
 
 ```yaml
+
 ---
 
 - name: ENSURE SNMP COMMUNITIES EXIST IN NXOS
@@ -71,6 +73,7 @@ Use the Ansible `nxos_config` module to configure SNMP community strings.
 Just like in the last task, open the `ios_deploy.yml` file and use Ansible `ios_config` module to configure SNMP community strings.
 
 ```yaml
+
 ---
 
 - name: ENSURE SNMP COMMUNITIES EXIST IN IOS
@@ -91,6 +94,7 @@ This playbook won't have any direct tasks per se, rather it will call the "snmp"
 Notice you can also select two groups from the inventory file using the following line: `hosts: iosxe,nxos`.
 
 ```yaml
+
 ---
 
   - name: MULTI-PLATFORM SNMP

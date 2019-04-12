@@ -1,4 +1,4 @@
-## Lab 16 - Performing a Conditional Traceroute Based on Ping Failures
+## Lab 17 Challenge - Performing a Conditional Traceroute Based on Ping Failures
 
 In the previous lab, you learned how to use TextFSM templates and custom Ansible RegEx spec files to parse data.
 
@@ -27,9 +27,9 @@ Create a new playbook called `test-reachability.yml`.  Use the following to get 
     tasks:
 
     - name: ISSUE PING
-      ios_command:
-        commands: "ping {{ dest }} repeat 2"
-      register: output
+      module:
+        parameter: "ping {{ dest }} repeat 2"
+      save_variable: output
 ```
 
 
@@ -56,19 +56,20 @@ Add two new tasks:
     tasks:
 
     - name: ISSUE PING
-      ios_command:
-        commands: "ping {{ dest }} repeat 2"
-      register: output
+      module:
+        parameter: "ping {{ dest }} repeat 2"
+      save_variable: output
 
     - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
-      set_fact:
-        ping_pct: "{{ output.stdout.0 | regex_search('Success rate is (\\d+)\\s+percent') | regex_search('(\\d+)') }}"
+      module:
+        one_fact: "{{ output.stdout.0 | regex_search('Success rate is (\\d+)\\s+percent') | regex_search('(\\d+)') }}"
 
-    - debug:
-        var: ping_pct
+    - name: DEBUG RESPONSE FROM PING_PCT
+      module:
+         parameter: ping_pct
 ```
 
-This example is _chaining_ `regex_search()` calls together because the first one returns "Success rate is 80 percent" and when passing it to the seconf filter, it then only returns "80".
+This example is _chaining_ `regex_search()` calls together because the first one returns "Success rate is 80 percent" and when passing it to the second filter, it then only returns "80".
 
 > Note: keep in mind the extra `\` for RegEx when writing RegEx in Ansible as compared to Python where it wasn't used.
 
@@ -85,12 +86,12 @@ This step is optional or read-only as it shows another way to parse the ping res
 ```yaml
 
     - name: ALTERNATE OPTION FOR PARSING WITH REGEX
-      set_fact:
-        ping_data2: "{{ output.stdout.0 | regex_findall('Success rate is (\\d+)\\s+percent') | first }}"
+      module:
+        one_fact: "{{ output.stdout.0 | regex_findall('Success rate is (\\d+)\\s+percent') | first }}"
 
     - name: ALTERNATE DEBUG
-      debug:
-        var: ping_data2
+      module:
+        parameter: ping_data2
 
 
 ```
@@ -103,18 +104,21 @@ Let's now add a task to traceroute to the same target IP address.  We're also us
 
 ```yaml
     - name: ISSUE TRACEROUTE
-      ios_command:
-        commands: "traceroute {{ dest }} timeout 1 ttl 1 5"
-      register: traceroute
+      module:
+        parameter: "traceroute {{ dest }} timeout 1 ttl 1 5"
+      save_variable: traceroute
 
     - name: DEBUG TRACEROUTE
-      debug:
-        var: traceroute  
+      module:
+        parameter: traceroute  
 ```
+
 
 ##### Step 5
 
 Save and execute the playbook.
+
+>Note: If the playbook fails because of a timeout error. Add the `timeout` parameter with a value of `30` on the ISSUE TRACEROUT task. The default `timeout` for this module to keep a presistent ssh connection is 10 seconds. 
 
 ##### Step 6
 
@@ -124,14 +128,14 @@ In this task, we're also using a Jinja2 filter called `int` to convert `ping_pct
 
 ```yaml
     - name: ISSUE TRACEROUTE
-      ios_command:
-        commands: "traceroute {{ dest }} timeout 1 ttl 1 5"
-      register: traceroute
-      when: ping_pct|int < 81
+      module:
+        parameter: "traceroute {{ dest }} timeout 1 ttl 1 5"
+      save_module: traceroute
+      logic: ping_pct|int < 81
 
     - name: DEBUG TRACEROUTE
-      debug:
-        var: traceroute  
+      module:
+        parameter: traceroute  
 ```
 
 ##### Step 7
@@ -157,6 +161,9 @@ Feel free to change `hosts: csr1` to all devices or also make that a variable an
 
 
 ```yaml
+
+---
+
   - name: PING TEST AND TRACEROUTE
     hosts: csr1
     connection: network_cli
@@ -176,7 +183,8 @@ Feel free to change `hosts: csr1` to all devices or also make that a variable an
       set_fact:
         ping_pct: "{{ output.stdout.0 | regex_search('Success rate is (\\d+)\\s+percent') | regex_search('(\\d+)') }}"
 
-    - debug:
+    - name: DEBUG RESPONSE FROM PING_PCT
+      debug:
         var: ping_pct
 
     - name: ALTERNATE OPTION FOR PARSING WITH REGEX
@@ -186,10 +194,11 @@ Feel free to change `hosts: csr1` to all devices or also make that a variable an
     - name: ISSUE TRACEROUTE
       ios_command:
         commands: "traceroute {{ dest }} timeout 1 ttl 1 5"
+        timeout: 30
       register: traceroute
       when: ping_pct|int < 81
 
     - name: DEBUG TRACEROUTE
       debug:
-        var: traceroute  
+        var: traceroute   
 ```

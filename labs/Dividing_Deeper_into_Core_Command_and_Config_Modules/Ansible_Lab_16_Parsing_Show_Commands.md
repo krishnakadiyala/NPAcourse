@@ -1,4 +1,4 @@
-## Lab 15 - Parsing Show Commands with Ansible
+## Lab 16 - Parsing Show Commands with Ansible
 
 In the next few labs, we'll introduce a few different methodologies for parsing show commands with Ansible looking at several different built-in Jinja2 filters.  They are `regex_search`, `regex_findall`, `parse_cli`, and `parse_cli_textfsm`.
 
@@ -15,9 +15,10 @@ Create a new playbook called `parse-ios.yml` in the `ansible` directory.
 Use the following playbook to gather `show version` for the IOS devices.
 
 ```yaml
+
 ---
 
-  - name: PING TEST
+  - name: PARSING SHOW COMMANDS
     hosts: csr1
     connection: network_cli
     gather_facts: no
@@ -99,7 +100,17 @@ Add "assert" statements to validate the OS version and configuration register.
         assert:
           that:
            - show_version[0]['VERSION'] == '16.8.01a'
+          fail_msg: "'Version check failed, current version is: show_version[0]['VERSION']"
+          success_msg: "'Version check passed, current version is: show_version[0]['VERSION']"
+        ignore_errors: true
+           
+      - name: CHECK OS AND CONFIG REGISTER
+        assert:
+          that:
            - show_version[0]['CONFIG_REGISTER'] == '0x2102'
+          fail_msg: "'Config register check failed, current it has: show_version[0]['CONFIG_REGISTER']"
+          success_msg: "'Config register passed, current it has: show_version[0]['CONFIG_REGISTER']"
+        ignore_errors: true
 ```
 
 ##### Step 5

@@ -1,4 +1,4 @@
-## Lab 18 - Making REST API Calls from Ansible
+## Lab 20 - Making REST API Calls from Ansible
 
 This lab shows how you can make HTTP-based API calls from Ansible.  We'll look at making API calls to IOS-XE and NX-OS based systems using RESTCONF and NX-API, respectively, on those systems.
 
