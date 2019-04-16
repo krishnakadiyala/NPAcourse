@@ -38,6 +38,11 @@ Add a task to that will create a directory for each device inside a `ping-respon
 ```yaml
 
     tasks:
+    
+      - name: WHAT IS THIS TASK DOING?
+        module:
+          parameter: ./directory-path/{{ built_in_variable }}/
+          parameter: what type of file?
 
 ```
 
@@ -47,7 +52,7 @@ Add a task to that will create a directory for each device inside a `ping-respon
 Execute the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory ping.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory ping.yml
 
 PLAY [TEST REACHABILITY] ***************************************************************************
 
@@ -67,14 +72,14 @@ csr3                       : ok=1    changed=1    unreachable=0    failed=0
 Verify the directories are created.
 
 ```
-ntc@ntc:ansible$ tree ping-responses/
+ntc@jump-host:ansible$ tree ping-responses/
 ping-responses/
 ├── csr1
 ├── csr2
 └── csr3
 
 3 directories, 0 files
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 ##### Step 5
@@ -85,7 +90,7 @@ Add a task that'll loop over `target_ips` and send them to each device.
 >Hint: Remember, this task plus `target_ips` is equivalent to the following:
 
 ```yaml
-      - name: SEND PING COMMANDS TO DEVICES
+      - name: WHAT IS THIS TASK DOING?
         module:
           parameter: "string {{ item }} string"
         loop:
@@ -104,7 +109,7 @@ You'll see the following output, but without seeing the ping responses.
 Remember, there are two ways to see the response.  One is to use `-v` and the other is to combine the `register` task attribute and the `debug` module.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory ping.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory ping.yml
 
 PLAY [TEST REACHABILITY] ***************************************************************************
 
@@ -129,7 +134,7 @@ csr1                       : ok=2    changed=0    unreachable=0    failed=0
 csr2                       : ok=2    changed=0    unreachable=0    failed=0   
 csr3                       : ok=2    changed=0    unreachable=0    failed=0   
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 
@@ -144,7 +149,7 @@ Execute the playbook.
 You'll see the following output.  Note: this is a sub-set of the output.
 
 ```
-tc@ntc:ansible$ ansible-playbook -i inventory ping.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory ping.yml
 
 PLAY [TEST REACHABILITY] ***************************************************************************
 
@@ -220,7 +225,7 @@ Pay attention to the following two keys within `results`:
 Add a debug task to loop over `ping_responses.results` proving how it's possible to access the data.
 
 ```yaml
-      - name: TEST LOOPING OVER REGISTERED VARIABLE
+      - name: WHAT IS THIS TASK DOING?
         module:
           parameter: "{{ item }}"    
         loop: "{{ variable.key }}"  
@@ -233,7 +238,7 @@ Add a debug task to loop over `ping_responses.results` proving how it's possible
 Save and execute the playbook.  It's recommended to use `--limit csr1` to limit the output so it's easier to read.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory ping.yml --limit csr1
+ntc@jump-host:ansible$ ansible-playbook -i inventory ping.yml --limit csr1
 ```
 
 ##### Step 11
@@ -245,7 +250,7 @@ Remember the datatype of `ping_responses.results` is a list of dictionaries and 
 Use the `template` module to create the files.
 
 ```yaml
-      - name: SAVE OUTPUTS TO INDIVIDUAL FILES
+      - name: WHAT IS THIS TASK DOING?
         module:
           parameter: basic-copy-2.j2
           parameter: TBD
@@ -272,7 +277,7 @@ Update the `dest` parameter within the `template` module.
 This is creating filenames such as `to_1.1.1.1.txt`:
 
 ```yaml
-      - name: SAVE OUTPUTS TO INDIVIDUAL FILES
+      - name: WHAT IS THIS TASK DOING?
         module:
           parameter: basic-copy-2.j2
           parameter: ./ping-responses/{{ inventory_hostname }}/to_{{ item.item }}.txt
@@ -286,7 +291,7 @@ Save and execute the playbook.
 You should now see all of the files created.  Open a few of them to validate the pings passed or failed.
 
 ```
-ntc@ntc:ansible$ tree ping-responses/
+ntc@jump-host:ansible$ tree ping-responses/
 ping-responses/
 ├── csr1
 │   ├── to_198.6.1.4.txt
@@ -302,8 +307,224 @@ ping-responses/
     └── to_8.8.8.8.txt
 
 3 directories, 9 files
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
+
+
+##### Step 15
+
+Now that we have created individual files per IP and per device we can use another module called `assemble` to collect all the individual files and place them in a single file. 
+
+Lets add another task to the playbook using the `assemble` module and also change our first task that we created to build our directories, this will allow us to create an additional directory to keep our single files.   
+
+The playbook should look like this after the updates:
+
+```yaml
+
+---
+
+  - name: TEST REACHABILITY
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    vars:
+      target_ips:
+        - "8.8.8.8"
+        - "4.4.4.4"
+        - "198.6.1.4"
+
+    tasks:
+
+      - name: ENSURE DIRECTORY FOR EACH DEVICE AND SINGLE FILE EXISTS
+        file:
+          path: "{{ item }}"
+          state: directory
+        loop: 
+          - ./ping-responses/{{ inventory_hostname }}/
+          - ./ping-responses/{{ inventory_hostname }}/single_file/
+
+      - name: SEND PING COMMANDS TO DEVICES
+        ios_command:
+          commands: "ping {{ item }} repeat 2"
+        register: ping_responses
+        loop: "{{ target_ips }}"
+
+      - name: VERIFY REGISTERED VARIABLE
+        debug:
+          var: ping_responses
+
+      - name: TEST LOOPING OVER REGISTERED VARIABLE
+        debug:
+          var: "{{ item }}"
+        loop: "{{ ping_responses.results }}"
+
+      - name: SAVE OUTPUTS TO INDIVIDUAL FILES
+        template:
+          src: basic-copy-2.j2
+          dest: ./ping-responses/{{ inventory_hostname }}/to_{{ item.item }}.txt
+        loop: "{{ ping_responses.results }}"
+        
+      - name: SAVE OUTPUTS TO A SINGLE FILE
+        assemble:
+          src: ./ping-responses/{{ inventory_hostname }}/
+          dest: ./ping-responses/{{ inventory_hostname }}/single_file/target_ips_results.txt
+          delimiter: '\n\n\n\n---------------------------PING-RESULTS---------------------------\n\n\n\n'
+```
+
+
+##### Step 16
+
+
+Save and execute the playbook.
+
+
+```commandline
+
+ntc@jump-host:ansible$ ansible-playbook -i inventory ping.yml
+
+TASK [ENSURE DIRECTORY FOR EACH DEVICE AND SINGLE FILE EXISTS] ************************************************************
+ok: [csr2] => (item=./ping-responses/csr2/)
+ok: [csr1] => (item=./ping-responses/csr1/)
+ok: [csr3] => (item=./ping-responses/csr3/)
+changed: [csr2] => (item=./ping-responses/csr2/single_file/)
+changed: [csr1] => (item=./ping-responses/csr1/single_file/)
+changed: [csr3] => (item=./ping-responses/csr3/single_file/)
+
+.......output omitted
+
+TASK [SAVE OUTPUTS TO A SINGLE FILE] *************************************************************************************
+changed: [csr1]
+changed: [csr2]
+changed: [csr3]
+
+PLAY RECAP ****************************************************************************************************************
+csr1                       : ok=6    changed=2    unreachable=0    failed=0
+csr2                       : ok=6    changed=2    unreachable=0    failed=0
+csr3                       : ok=6    changed=2    unreachable=0    failed=0
+
+ntc@jump-host:ansible$
+```
+
+Make sure to view the results of the new files inside `single_file` directory
+
+```commandline
+ntc@jump-host:ansible$ tree ping-responses/
+ping-responses
+├── csr1
+│   ├── single_file
+│   │   └── target_ips_results.txt
+│   ├── to_198.6.1.4.txt
+│   ├── to_4.4.4.4.txt
+│   └── to_8.8.8.8.txt
+├── csr2
+│   ├── single_file
+│   │   └── target_ips_results.txt
+│   ├── to_198.6.1.4.txt
+│   ├── to_4.4.4.4.txt
+│   └── to_8.8.8.8.txt
+└── csr3
+    ├── single_file
+    │   └── target_ips_results.txt
+    ├── to_198.6.1.4.txt
+    ├── to_4.4.4.4.txt
+    └── to_8.8.8.8.txt
+
+6 directories, 12 files
+
+ntc@jump-host:ansible$
+```
+
+##### Step 17
+
+Since the `assemble` module will have to rely on existing files to create a single file. We can also as an option just use the `template` module to generate a single file. We will just need to add a bit more logic to our `jinja2` template.
+
+
+Create another `jinja2` template inside`templates` directory and call it **single_file.j2**.
+Inside the template add this jinja2 code:
+
+```
+{% for item in ping_responses.results %}
+------------------------------------------------------------------------------------------------------------
+PING TARGET: {{ item.item }} /
+PING RESULTS:  {{ item.stdout[0]}} 
+------------------------------------------------------------------------------------------------------------
+
+{% endfor %}
+
+```
+
+>Note: This is not as simple as the first template, but this will allow us to loop through our results and generate a single file without having to depend on existing single files. 
+
+##### Step 18
+
+Lets add another task to our playbook using the `template` module and as a `src` parameter give it the value of the new `jinja2` file created and as a destination give it the path to the `single_file` directory with an output file name `single_file_results.txt `
+
+
+```yaml
+
+
+      - name: WHAT IS THIS TASK DOING?
+        module:
+          parameter: template_file.j2
+          parameter: path_to_outputfile.txt
+```
+##### Step 19
+
+Save and execute the playbook.
+
+```commandline
+
+ntc@jump-host:ansible$ ansible-playbook -i inventory ping.yml
+
+.....output omitted
+
+TASK [SAVE OUTPUTS TO SINGLE FILE] ******************************************************************
+changed: [csr1]
+changed: [csr2]
+changed: [csr3]
+
+PLAY RECAP *******************************************************************************************
+csr1                       : ok=7    changed=1    unreachable=0    failed=0
+csr2                       : ok=7    changed=1    unreachable=0    failed=0
+csr3                       : ok=7    changed=1    unreachable=0    failed=0
+
+```
+
+Make sure to view the results of the new files inside `single_file` directory and open the newly created files.
+
+```commandline
+
+ntc@jump-host:ansible$ tree ping-responses/
+ping-responses
+├── csr1
+│   ├── single_file
+│   │   ├── single_file_results.txt
+│   │   └── target_ips_results.txt
+│   ├── to_198.6.1.4.txt
+│   ├── to_4.4.4.4.txt
+│   └── to_8.8.8.8.txt
+├── csr2
+│   ├── single_file
+│   │   ├── single_file_results.txt
+│   │   └── target_ips_results.txt
+│   ├── to_198.6.1.4.txt
+│   ├── to_4.4.4.4.txt
+│   └── to_8.8.8.8.txt
+└── csr3
+    ├── single_file
+    │   ├── single_file_results.txt
+    │   └── target_ips_results.txt
+    ├── to_198.6.1.4.txt
+    ├── to_4.4.4.4.txt
+    └── to_8.8.8.8.txt
+
+6 directories, 15 files
+
+ntc@jump-host:ansible$
+
+```
+
 
 ##### Check
 
@@ -326,10 +547,13 @@ Full and final playbook will look like this:
 
     tasks:
 
-      - name: ENSURE DIRECTORY FOR EACH DEVICE EXISTS
+      - name: ENSURE DIRECTORY FOR EACH DEVICE AND SINGLE FILE EXISTS
         file:
-          path: ./ping-responses/{{ inventory_hostname }}/
+          path: "{{ item }}"
           state: directory
+        loop: 
+          - ./ping-responses/{{ inventory_hostname }}/
+          - ./ping-responses/{{ inventory_hostname }}/single_file/
 
       - name: SEND PING COMMANDS TO DEVICES
         ios_command:
@@ -351,4 +575,16 @@ Full and final playbook will look like this:
           src: basic-copy-2.j2
           dest: ./ping-responses/{{ inventory_hostname }}/to_{{ item.item }}.txt
         loop: "{{ ping_responses.results }}"
+
+      - name: SAVE OUTPUTS TO A SINGLE FILE
+        assemble:
+          src: ./ping-responses/{{ inventory_hostname }}/
+          dest: ./ping-responses/{{ inventory_hostname }}/single_file/target_ips_results.txt
+          delimiter: '\n\n\n\n---------------------------PING-RESULTS---------------------------\n\n\n\n'
+          
+      - name: SAVE OUTPUTS TO SINGLE FILE
+        template:
+          src: single_file.j2
+          dest: ./ping-responses/{{ inventory_hostname }}/single_file/to_single_file.txt
+
 ```

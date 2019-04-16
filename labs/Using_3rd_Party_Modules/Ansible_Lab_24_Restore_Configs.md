@@ -53,7 +53,7 @@ Using `napalm_install_config`, push back these configurations. Since we didn't c
 Execute this new play:
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory restore.yml
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory restore.yml
 
 PLAY [DEPLOY & RESTORE CONFIGS] **********************************************************
 
@@ -128,7 +128,7 @@ dev_os: "{{ ansible_network_os }}"
 Execute the playbook again:
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory restore.yml
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory restore.yml
 
 PLAY [BACKUP] ******************************************************************
 
@@ -203,8 +203,8 @@ Update the task for the following:
 First, create a new directory called `diffs` in the `ansible` directory.
 
 ```
-ntc@ntc:~/ansible$ mkdir diffs
-ntc@ntc:~/ansible$
+ntc@jump-host:~/ansible$ mkdir diffs
+ntc@jump-host:~/ansible$
 ```
 
 This directory will store all diffs that will eventually get applied to the devices.
@@ -238,7 +238,7 @@ This updated task should look like this:
 Save and re-run the playbook using the `limit`  flag.
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory restore.yml --limit iosxe
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory restore.yml --limit iosxe
 ```
 
 Notice we added a new flag to the command being used called `--limit`.  Since we added `eos` in the previous step and only made changes to the CSR routers, we can use `limit` to limit the scope of this job to just the Cisco IOS CSR devices.
@@ -274,7 +274,7 @@ Simply update `commit_changes` to be **true**.
 Save and Run the playbook.
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory restore.yml --limit iosxe
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory restore.yml --limit iosxe
 ```
 
 SSH to the devices and ensure the configs are applied.
@@ -309,7 +309,7 @@ This will require you to pass in a variable called `device` when the playbook ru
 Re-run the playbook passing in the `device` variable.  You have two options using either the `--extra-vars` (or the `-e` flag).  Here we show an example using `--extra-vars`:
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory restore.yml --extra-vars="device=csr1"
+ntc@jump-host:ansible$ ansible-playbook -i inventory restore.yml --extra-vars="device=csr1"
 
 ```
 

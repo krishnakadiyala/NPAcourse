@@ -13,15 +13,15 @@ In this task, you will save and backup the current running configuration of all 
 Within the `ansible` directory, create a new directory called `backups`.
 
 ```
-ntc@ntc:~/ansible$ mkdir backups
-ntc@ntc:~/ansible$
+ntc@jump-host:~/ansible$ mkdir backups
+ntc@jump-host:~/ansible$
 ```
 
 Additionally, in the same `ansible` directory, create a playbook called `backup.yml`
 
 ```
-ntc@ntc:~/ansible$ touch backup.yml
-ntc@ntc:~/ansible$
+ntc@jump-host:~/ansible$ touch backup.yml
+ntc@jump-host:~/ansible$
 ```
 
 ##### Step 2
@@ -31,6 +31,7 @@ Open the newly created playbook in your text editor.
 Create a play that'll be executed against **all** hosts defined in the inventory file.
 
 ```yaml
+
 ---
 
   - name: BACKUP CONFIGURATIONS
@@ -46,6 +47,7 @@ Create a play that'll be executed against **all** hosts defined in the inventory
 Add a variable in your playbook called `backup_command`.  It should be a dictionary that contains 4 key-value pairs.  The keys should map to an OS and the value should be the command required to gather the existing running configuration.
 
 ```yaml
+
 ---
 
   - name: BACKUP CONFIGURATIONS
@@ -72,7 +74,8 @@ Since, we're using a 3rd party module, credentials and connection properties are
 Add a variable to handle the login to the devices. Often referred to as a provider variable, this is a dictionary that can be passed to the `provider` parameter of the `ntc` and `napalm` modules.
 
 
-``` yaml
+```yaml
+
 ---
 
   - name: BACKUP CONFIGURATIONS
@@ -104,6 +107,7 @@ All backup files should be saved locally inside the `backups` directory.
 
 
 ```yaml
+
 ---
 
   - name: BACKUP CONFIGURATIONS
@@ -140,13 +144,13 @@ Supported platforms for this module actually matches anything Netmiko supports, 
 Save and Execute the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory backup.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory backup.yml
 ```
 
 You will see the following output during execution (this output doesn't include Nexus):
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory backup.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory backup.yml
 
 PLAY [BACKUP] *************************************************************************************************
 
@@ -178,7 +182,7 @@ vmx1                       : ok=1    changed=0    unreachable=0    failed=0
 vmx2                       : ok=1    changed=0    unreachable=0    failed=0   
 vmx3                       : ok=1    changed=0    unreachable=0    failed=0   
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 
 ```
 
@@ -226,14 +230,14 @@ Notice how there are now tags embedded for each of these tasks.  This allows us 
 Save the playbook and run it again with the following command.
 
 ```
-ntc@ntc:~/ansible$ $ ansible-playbook -i inventory backup.yml --tags=clean
+ntc@jump-host:~/ansible$ $ ansible-playbook -i inventory backup.yml --tags=clean
 
 ```
 
 Full output:
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory backup.yml --tags=clean
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory backup.yml --tags=clean
 ```
 
 Relevant output:
@@ -276,6 +280,7 @@ Re-locate both of these variables to `group_vars/all.yml`.
 The final updated playbook should look like this:
 
 ```yaml
+
 ---
 
   - name: BACKUP CONFIGURATIONS
@@ -312,6 +317,7 @@ The final updated playbook should look like this:
 And `group_vars/all.yml` should now have both variables:
 
 ```yaml
+
 ---
 
 backup_command:

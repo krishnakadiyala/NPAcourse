@@ -11,4 +11,5 @@
 - [Lab 6 - Passing in Interactive User Input ](labs/Ansible_Lab_06_User_Input.md)
 - [Lab 7 - Getting Started with Jinja2 Templates](labs/Ansible_Lab_07_Jinja2_Config_Templates_01.md)
 - [Lab 8 - Using the File Module](labs/Ansible_Lab_08_Auto_Create_Directories.md)
+- [Lab 9 - ]
 

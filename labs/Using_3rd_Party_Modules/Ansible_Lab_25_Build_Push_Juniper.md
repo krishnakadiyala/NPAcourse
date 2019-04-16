@@ -222,9 +222,9 @@ Create a `host_vars` directory (if you don't already have one), and create three
 The names of these files are significant.  They match the names as they are defined in the inventory file.
 
 ```
-ntc@ntc:~/ansible$ mkdir host_vars
+ntc@jump-host:~/ansible$ mkdir host_vars
 
-ntc@ntc:~/ansible$ cd host_vars/
+ntc@jump-host:~/ansible$ cd host_vars/
 ```
 
 Open the newly created files and ensure they have the vars as defined below in them.
@@ -232,6 +232,7 @@ Open the newly created files and ensure they have the vars as defined below in t
 `host_vars/vmx2.yml`
 
 ```yaml
+
 ---
 
 interfaces:
@@ -261,6 +262,7 @@ Notice how we are using a different syntax for the next two host vars file to cr
 `host_vars/vmx3.yml`
 
 ```yaml
+
 ---
 
 interfaces:
@@ -289,6 +291,7 @@ interfaces:
 `host_vars/vmx1.yml`
 
 ```yaml
+
 ---
 
 interfaces:
@@ -351,6 +354,7 @@ Since the SNMP configuration is the same across all devices in the group, you ca
 `group_vars/vmx.yml`
 
 ```yaml
+
 ---
 
 snmp:
@@ -440,6 +444,7 @@ ospf:
 `group_vars/vmx.yml`:
 
 ```yaml
+
 ---
 
 snmp:
@@ -571,6 +576,7 @@ For now, just include one task that will create the required directories per hos
 This play should be limited to the `vmx` group in the inventory file, so use the `hosts: vmx` in the play definition.
 
 ```yaml
+
 ---
 
   - name: BUILD PUSH JUNIPER
@@ -593,7 +599,7 @@ Save the playbook.
 Run the playbook.
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper-build.yml
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
@@ -611,7 +617,7 @@ vmx1                       : ok=1    changed=1    unreachable=0    failed=0
 Issue the `tree` command see what happened:
 
 ```
-ntc@ntc:~/ansible$ tree
+ntc@jump-host:~/ansible$ tree
 .
 ├── configs
 │   ├── vmx2
@@ -648,7 +654,7 @@ Add new tasks to the playbook that will build the partial configs for the top/ba
 After these tasks are added, re-run the playbook.
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper-build.yml
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
@@ -729,7 +735,7 @@ Save the playbook.
 Run the playbook.
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper-build.yml
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
@@ -761,7 +767,7 @@ vmx1                       : ok=2    changed=1    unreachable=0    failed=0
 Now view the files that were created.
 
 ```
-ntc@ntc:~/ansible$ tree
+ntc@jump-host:~/ansible$ tree
 .
 ├── configs
 │   ├── vmx2
@@ -802,6 +808,7 @@ Add one more task to the playbook which will use the **assemble** module.
 The updated playbook should look like this:
 
 ```yaml
+
 ---
 
   - name: BUILD PUSH JUNIPER
@@ -838,7 +845,7 @@ Save the playbook.
 Run the playbook.
 
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper-build.yml
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
@@ -909,6 +916,7 @@ First create a directory called `diffs` in your working directory using the `mkd
 Inside the `all.yml` file add the following data:
 
 ```yaml
+
 ---
 connection_details:
   username: "{{ ansible_user }}"
@@ -920,6 +928,7 @@ Then add the following task to the `juniper-build.yml` playbook:
 
 
 ```yaml
+
 ---
 
   - name: BUILD PUSH JUNIPER
@@ -969,7 +978,7 @@ Execute ONLY the new task by using tags.
 
 Use this command:
 ```
-ntc@ntc:~/ansible$ ansible-playbook -i inventory juniper-build.yml --tags=push
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml --tags=push
 ```
 
 Congratulations!  You just pushed a new running configuration to three devices.

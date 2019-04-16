@@ -1,8 +1,8 @@
 ## Lab 10 - Using the Core Command Module
 
-### Task 1 - Using the *_command module
+### Task 1 - Using the cli_command module
 
-In this task, you will use the _command module to issue show commands against network devices and save the command outputs to a file.
+In this task, you will use the cli_command module to issue show commands against network devices and save the command outputs to a file.
 
 ##### Step 1
 

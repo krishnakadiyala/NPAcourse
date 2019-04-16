@@ -79,7 +79,7 @@ Save and Execute the playbook.
 
 ##### Step 4 (Optional)
 
-This step is optional or read-only as it shows another way to parse the ping response coming back from the device.  This time withthe `regex_findall` filter.  Because it's a `find_all` filter, it always returns a list.  Since we know this match would only ever occur once, we're combinging this with the `first` filter to return the first element in the list.
+This step is optional or read-only as it shows another way to parse the ping response coming back from the device.  This time with the `regex_findall` filter.  Because it's a `find_all` filter, it always returns a list.  Since we know this match would only ever occur once, we're combinging this with the `first` filter to return the first element in the list.
 
 >Note: the `regex_findall` only returns the data in the RegEx capture group.
 
