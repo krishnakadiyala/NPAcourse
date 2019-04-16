@@ -1,4 +1,4 @@
-## Lab 22 - Dynamic Inventory
+## Lab 27 - Dynamic Inventory
 
 ### Using a Dynamic Inventory Script
 

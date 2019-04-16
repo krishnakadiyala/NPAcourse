@@ -36,6 +36,7 @@ Add a task to issue the `show version` command.
     gather_facts: no
 
     tasks:
+    
       - name: GET SHOW COMMANDS
         cli_command:
           command: show version
@@ -72,7 +73,7 @@ In order to clean up the output, use `register` task attribute and debug the new
 
 ##### Step 6
 
-Execute the playbook.  Do not use the `-v` flag.
+Execute the playbook.  Do **not** use the `-v` flag.
 
 The output seen is much cleaner and easier to read than using the `-v` flag.
 
@@ -90,7 +91,8 @@ ok: [csr1] => {
         "changed": false,
         "failed": false,
         "stdout": "Cisco IOS XE Software, Version 16.08.01a\nCisco IOS Software [Fuji], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.8.1a, RELEASE SOFTWARE (fc1)\nTechnical Support:
-         ...
+         
+         output ommited ...
          
          
 ok: [vmx1] => {
@@ -98,14 +100,16 @@ ok: [vmx1] => {
         "changed": false,
         "failed": false,
         "stdout": "Hostname: vmx1\nModel: vmx\nJunos: 18.2R1.9\nJUNOS OS Kernel 64-bit  [20180614.6c3f819_builder_stable_11]\nJUNOS OS libs [20180614.6c3f819_builder_stable_11]\nJUNOS OS runtime [20180614.6c3f819_builder_stable_11]\nJUNOS
-        ....
+        
+        output ommited ...
+
 ```
 
 `config_data` is a JSON object (think dictionary) that has several key value pairs, e.g. `changed`, `failed`, `stdout`, and `stdout_lines` (not shown).
 
 You can also see that `stdout` is a dictionary key given it has a value after the key.  
 
-`stdout` is **ALWAYS** a dictionary when you're using the "cli_command" modules.  It is a list of show command responses.
+`stdout` is **ALWAYS** a dictionary when you're using the "cli_command" modules.  Notice the difference from the previous lab using the `core_command` module which returns a list.
 
 ##### Step 8
 
@@ -198,32 +202,26 @@ Full and final playbook will look like this:
           
 ```
 
+##### Step 13
 
-##### Step 14 **MAYBE ADD AN EXAMPLE THAT WE COULD RUN THROUGH A LIST OF COMMANDS, BUT THAT WOULD INTRODUCE LOOPS EARLY IN THE CLASS**
+Save and execute the playbook and check the new files created in the `command-outputs` directory. 
 
-```yaml
 
----
+```commandline
 
-  - name: BACKUP SHOW VERSION ON IOS
-    hosts: csr1,vmx1
-    connection: network_cli
-    gather_facts: no
+ntc@jump-host:ansible$ tree command-outputs
+command-outputs
+├── ios
+│   ├── csr1-show_version.txt
+│   ├── csr2-show_version.txt
+│   └── csr3-show_version.txt
+└── junos
+    ├── vmx1-show_version.txt
+    ├── vmx2-show_version.txt
+    └── vmx3-show_version.txt
 
-    tasks:
-      - name: GET SHOW COMMANDS
-        cli_command:
-          command: "{{ item }}"
-        loop:
-            - show version
-            - show arp
-        register: config_data
+2 directories, 6 files
 
-      - name: VIEW DATA STORED IN CONFIG_DATA
-        debug:
-          var: "{{ item }}"
-        loop:
-            - config_data['results'][0]['stdout']
-            - config_data['results'][1]['stdout']
-
+ntc@jump-host:ansible$
 ```
+
