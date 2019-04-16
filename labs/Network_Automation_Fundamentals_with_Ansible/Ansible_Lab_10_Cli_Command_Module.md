@@ -1,4 +1,4 @@
-## Lab 10 - Using the Core Command Module
+## Lab 10 - Getting started with the cli_command Module
 
 ### Task 1 - Using the cli_command module
 

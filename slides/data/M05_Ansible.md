@@ -1761,9 +1761,438 @@ ntc@ntc:ansible$
 # Lab Time
 
 - Lab 3 - Using Check Mode and Verbosity
-- Lab 4 - Building the course inventory file
-- Lab 5 - Using the debug module
-- Lab 6 - Prompting the User for Input
+- Lab 4 - Deploying Configs From a File Using cli_config
+- Lab 5 - Building the course inventory file
+- Lab 6 - Using the debug module
+- Lab 7 - Prompting the User for Input
+
+
+
+---
+class: middle, segue
+#Diving Deeper into Core Command and Config Modules
+
+
+---
+
+class: middle, segue
+
+# Issuing Show (Exec) Commands on Network Devices
+### Ansible for Network Automation
+
+---
+
+# Core Modules
+
+We cover three types of core modules:
+
+- *_command - Run arbitrary commands on devices
+- *_config - Manage configuration sections on devices
+- *_facts - Gather facts on devices
+
+The modules are vendor specific and usually support SSH plus a vendor API:
+- iosxr_*
+- ios_*
+- eos_*
+- junos_*
+- nxos_*
+- actively growing
+
+---
+
+# *_command
+
+.left-column[
+
+The _command modules are used to send enable and exec mode commands to the device, e.g. execute show commands and gather data from devices.
+
+- `commands` parameter can accept a single command or a list of commands
+- Refer to `ansible-doc` for full list of parameters
+]
+
+.right-column[
+.med-code[
+```yaml
+---
+
+  - name: EXECUTE SHOW COMMANDS IOS DEVICES
+    hosts: ios
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+    - name: EXECUTE A SINGLE COMAND
+      ios_command:
+        commands: "show version"
+
+    - name: EXECUTE LIST OF COMMANDS
+      ios_command:
+        commands:
+          - "show version"
+          - "show ip int brief"
+
+
+
+```
+]
+]
+
+---
+
+# Demo
+
+* Review `ansible-doc` for `ios_command` and see available parameters
+* Take note of the examples at the bottom of the output
+
+
+---
+
+# *_command (cont'd)
+
+* There are a number of options available to change the format of data returned (for select OS types).  
+
+.left-column[
+.med-code[
+```yaml
+    - name: SINGLE COMMAND
+      nxos_command:
+        commands: show version
+
+    - name: LIST OF COMMAND STRINGS
+      nxos_command:
+        commands:
+          - show version
+          - show hostname
+
+    - name: LIST OF DICTIONARIES
+      nxos_command:
+        commands:
+          - command: show version
+            output: json
+          - command: show version
+            output: text
+
+
+```
+]
+]
+
+.right-column[
+.med-code[
+```yaml
+  - hosts: junos
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: EXECUTE JUNOS COMMANDS
+        junos_command:
+          commands:
+            - show version
+            - show interfaces
+
+      - name: EXECUTE JUNOS COMMANDS - TEXT
+        junos_command:
+          format: text
+          commands:
+            - show version
+            - show interfaces
+```
+]
+]
+
+---
+
+# Playbook Execution
+
+Sample playbook execution:
+
+.med-code[
+```bash
+$ ansible-playbook -i inventory gather.yml
+
+PLAY [RUN COMMANDS] *********************************************************************
+
+TASK [SINGLE COMMAND] *********************************************************************
+ok: [csr1]
+ok: [csr2]
+ok: [csr3]
+
+PLAY RECAP *********************************************************************
+csr1            : ok=1    changed=0    unreachable=0    failed=0
+csr2            : ok=1    changed=0    unreachable=0    failed=0
+csr3            : ok=1    changed=0    unreachable=0    failed=0
+
+```
+]
+
+---
+
+
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# How do you see the data being gathered?
+
+
+---
+
+# Viewing Response Data
+
+There are two ways to view data returned from a module.
+
+**Remember, every module returns JSON data.**
+<br>
+<br>
+There are two ways to see it:
+
+.left-column[
+
+1. Execute playbooks in verbose mode,e.g. `-v`
+2. Use the register task attribute with the debug module
+
+]
+
+.right-column[
+.med-code[
+```yaml
+    - name: EXECUTE COMMANDS
+      nxos_command:
+        commands:
+          - show version
+      register: output
+
+    - debug:
+        var: output
+
+```
+]
+]
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+Using **register** saves the JSON return data as a dictionary that can be consumed as a variable within a playbook or template.
+
+---
+
+# Demo
+
+* Demo playbook using `ios_command`
+* Show sending both 1 and 2 commands and see the difference in response data
+* Check length of `stdout`
+
+
+
+
+---
+
+# *_command
+
+* Run arbitrary commands on devices.
+* Show command data stored in `stdout` (always a list)
+* The `stdout` list has a length equal to the number of commands sent to the device
+
+.left-column[
+```yaml
+
+  - name: SEND SHOW VERSION TO DEVICE
+    ios_command:
+      commands:
+        - 'show version'
+    register: output
+
+  - name: TEST REGISTERED OUTPUT --> SEE TO RIGHT
+    debug:
+      var: output
+
+
+  - name: SEE ALL KEYS OF REGISTERED DICTIONARY
+    debug:
+      var: output.keys()
+
+  - name: TEST GETTING SHOW DATA
+    debug:
+      var: output['stdout'][0]
+
+
+```
+]
+
+.right-column[
+.s2-code[
+```yaml
+
+TASK [TEST REGISTERED OUTPUT] ********************************************
+ok: [csr1] => {
+    "output": {
+        "changed": false,
+        "stdout": ["Cisco IOS XE Software, Version 16.06.02\nCisco
+            IOS Software [Everest], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M),
+            Version 16.6.2, RELEASE SOFTWARE (fc2)\nTechnical Support:
+            http://www.cisco.com/techsupport\nCopyright (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Wed 01-Nov-17 07:24 by mcpre\n\n\nCisco IOS-XE software, Copyright (c) 2005-2017
+            by cisco Systems, Inc.\nAll rights reserved.  Certain
+            components of Cisco IOS-XE software are\nlicensed under the GNU General Public License (\"GPL\") Version 2.0. The\nsoftware code licensed under GPL Version 2.0 is free software that comes\nwith ABSOLUTELY NO WARRANTY.  You can redistribute and/or modify such\nGPL code under the terms of GPL Version 2.0.  For more details, see the\ndocumentation or \"License Notice\" file accompanying the IOS-XE software,\nor the applicable URL provided on the flyer accompanying the IOS-XE\nsoftware.\n\n\nROM: IOS-XE ROMMON\n\n
+            csr1 uptime is 30 - output omitted"],
+        "stdout_lines": [], # list closed for slide formatting
+        "warnings": []
+    }
+}
+
+```
+]
+]
+
+---
+
+# Saving show command data to a file
+
+
+* Using templates to save data to a file (use any logic as necessary)
+* Use `copy` module to just _dump_ show response to a file
+
+.left-column[
+```yaml
+---
+
+  - name: BACKUP SHOW VERSION
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+      - name: GET SHOW COMMANDS
+        ios_command:
+          commands:
+            - show version
+        register: output
+
+      - name: OPTION 1 - SAVE SH COMMAND TO FILE
+        template:
+          src: basic-copy.j2
+          dest: ./commands/{{ inventory_hostname}}-ver.txt
+
+
+      - name: OPTION 2 - SAVE SH COMMAND TO FILE
+        copy:
+          content: "{{ output['stdout'][0] }}"
+          dest: ./commands/{{ inventory_hostname}}-ver.txt
+```
+]
+
+.right-column[
+```yaml
+# basic-copy.j2
+
+{{ output['stdout'][0] }}
+
+```
+
+]
+
+
+
+
+---
+
+
+# Performing Compliance Checks
+
+- Using the `assert` module
+- Ensure certain conditions exist within the network
+- Leverage data that you previously _registered_
+- Validate routes exist, changes happen, and configuration is as desired
+
+.med-code[
+```yaml
+  - name: IOS show version
+    ios_command:
+      commands:
+        - show version
+    register: output
+
+  - name: Ensure OS version is correct
+    assert:
+      that:
+        - "'Version 16.6.2' in output['stdout'][0]"
+
+```
+
+]
+
+---
+
+# Performing Compliance Checks (cont'd)
+
+- Using the `assert` module
+- Ensure certain conditions exist within the network
+- Leverage data that you previously _registered_
+- Validate routes exist, changes happen, and configuration is as desired
+
+.med-code[
+```yaml
+  - name: IOS show version
+    ios_command:
+      commands:
+        - show version
+    register: output
+
+  - name: Ensure OS version is correct
+    assert:
+      that:
+        - "'Version 16.6.2' in output['stdout'][0]"
+        - "'0x2102' in output['stdout'][0]"
+
+```
+
+]
+
+---
+
+# Demo
+
+* What happens when an assertion fails?
+* When a task fails, the default is that no other task runs for that device in a playbook.
+* An assertion failure counts as a task failure
+* Introduce `ignore_errors`
+* Introduce `fail_msg` and `success_msg`
+
+---
+
+#TODO
+
+Add slide on `file` module which is for LAB 8
+- show ansible-doc on file module 
+- the difference between building files and directories manually vs automated
+
+---
+
+#TODO
+
+Add slide or few on `cli_command` which is for lab 10
+
+- show the difference on how we are able to use a single task for two different vendors rather than a module per vendor
+- It cuts down the number of lines in a playbook
+- show the difference in the output for `stdout`
+
+---
+
+# Lab Time
+
+- Lab 8 - Auto-Create Directories using the file module
+- Lab 9 - Getting Started with the Command Module
+- Lab 10 - Getting started with the cli_command Module
+- Lab 11 - Continuous Compliance with Ansible
+
+
+
+
 
 ---
 
@@ -2037,11 +2466,2116 @@ Within the network core config modules (like ios_config, junos_config etc). You 
 
 ---
 
+# Jinja Filters
+.left-column[
+- Filters transform data within a parameter or Jinja Expression
+- Are used with the operator `|` like `hostname | upper` will transform
+the hostname variable using the upper built-in filter to be uppercase
+- Custom filters are possible, and Ansible has built-in filters in addition to
+Jinja2 built-in filters
+- For a complete list of [Ansible filters](https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html)
+  - Network Filters
+  - List filters
+  - Dictionary filters
+  - RegEx
+- Easily create your own filter
+]
+.right-column[
+```yaml
+    vars:
+      hostname: nycr1
+      device_ip: 10.1.1.1
+      bad_ip: X.10.Y.2
+
+    tasks:
+      - name: COVNERT HOSTNAME TO UPPERCASE
+        debug:
+          var: hostname | upper
+
+      - name: CHECK TO SEE IF A IP ADDR IS VALID
+        debug:
+          var: device_ip | ipaddr
+
+      - name: CHECK TO SEE IF A IP ADDR IS VALID
+        debug:
+          var: bad_ip | ipaddr
+```
+
+Sample Output:
+
+```yaml
+"hostname | upper": "NYCR1"
+"device_ip | ipaddr": "10.1.1.1"
+"bad_ip | ipaddr": false
+```
+]
+
+---
+
+# Demo
+
+* Testing Jinja filters
+* You do not need to create a Jinja template to test Jinja2 filters
+* Just use the `debug` module!
+* Learn about a few other helpful filters
+
+---
+
 # Lab Time
 
-- Lab 7 - Getting Started with Jinja2 Templating in Ansible
-- Lab 8 - Using Improved Jinja2 Templates
+- Lab 12 - Getting Started with Jinja2 Templating in Ansible
+- Lab 13 - Using Improved Jinja2 Templates
+- Lab 14 - Using Network Centric Jija2 Filters
 
+
+
+---
+
+#TODO
+
+- Add intro slide on Diving Deeper into Core Command and Config Modules
+
+
+---
+
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# Loops and Register
+
+
+---
+
+
+# Embedding Loops within a task
+
+* Iterate over a list of strings using the `loop` task attribute
+* `item` is built-in variable equal to an element of the list as you're iterating
+* In this case, `item` is a string
+
+```yaml
+  - name: ITERATE OVER LIST OF STRINGS
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    vars:
+      commands:
+        - show ip int brief
+        - show version
+        - show ip route
+
+    tasks:
+      - name: SEND A SERIES OF SHOW COMMANDS
+        ios_command:
+          commands: "{{ item }}"
+        loop: "{{ commands }}"
+```
+
+---
+
+
+# loop (cont'd)
+
+* Iterate over a list of dictionaries
+* `item` is built-in variable equal to an element of the list as you're iterating
+* In this case, `item` is a dictionary
+
+```yaml
+---
+
+  - name: ITERATE OVER LIST OF DICTIONARIES
+    hosts: csr1
+    connection: local
+    gather_facts: no
+
+    vars:
+      vlans:
+        - id: 10
+          name: web_vlan
+        - id: 20
+          name: app_vlan
+        - id: 30
+          name: db_vlan
+
+    tasks:
+      - name: PRACTICE DEBUGGING WITH LOOPS
+        debug:
+          msg: "The VLAN name is {{ item.name }} and the ID is {{ item.id }}"
+        loop: "{{ vlans }}"
+```
+
+
+
+---
+
+# loop dict2items filter
+
+* Iterate over a dictionary
+* Root keys are `item.key`
+* Values are `item.value`
+
+```yaml
+---
+
+    vars:
+      locations:
+        amer: sjc-branch
+        apac: hk-dc
+
+    tasks:
+      - name: PRINT ALL LOCATIONS
+        debug:
+          msg: "Region is {{ item.key }} and Site is {{ item.value }}"
+        loop: "{{ locations|dict2items }}"
+```
+
+* Sample output:
+
+```yaml
+"msg": "Regions are apac and Sites is hk-dc"
+"msg": "Regions are amer and Sites is sjc-branch"
+```
+
+---
+
+# Register (with loop)
+
+* We saw earlier that `register` gives you access to the JSON data returned from a given module
+
+
+.left-column[
+```yaml
+
+  - name: SEND SHOW VERSION TO DEVICE
+    ios_command:
+      commands:
+        - 'show version'
+    register: output
+
+  - name: TEST REGISTERED OUTPUT --> SEE TO RIGHT
+    debug:
+      var: output
+
+  - name: TEST GETTING SHOW DATA
+    debug:
+      var: output['stdout'][0]
+
+
+```
+
+
+Remember, when _registering_ the response from a `_command` module, there are 4 keys and we primarily focused on `stdout`.
+
+
+]
+
+.right-column[
+.s2-code[
+```yaml
+
+TASK [TEST REGISTERED OUTPUT] ********************************************
+ok: [csr1] => {
+    "output": {
+        "changed": false,
+        "stdout": ["Cisco IOS XE Software, Version 16.06.02\nCisco
+            IOS Software [Everest], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M),
+            Version 16.6.2, RELEASE SOFTWARE (fc2)\nTechnical Support:
+            http://www.cisco.com/techsupport\nCopyright (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Wed 01-Nov-17 07:24 by mcpre\n\n\nCisco IOS-XE software, Copyright (c) 2005-2017
+            by cisco Systems, Inc.\nAll rights reserved.  Certain
+            components of Cisco IOS-XE software are\nlicensed under the GNU General Public License (\"GPL\") Version 2.0. The\nsoftware code licensed under GPL Version 2.0 is free software that comes\nwith ABSOLUTELY NO WARRANTY.  You can redistribute and/or modify such\nGPL code under the terms of GPL Version 2.0.  For more details, see the\ndocumentation or \"License Notice\" file accompanying the IOS-XE software,\nor the applicable URL provided on the flyer accompanying the IOS-XE\nsoftware.\n\n\nROM: IOS-XE ROMMON\n\n
+            csr1 uptime is 30 - output omitted"],
+        "stdout_lines": [], # list closed for slide formatting
+        "warnings": []
+    }
+}
+
+```
+]
+]
+
+
+---
+
+
+# Register (cont'd)
+
+* Using `register` with `loop`
+
+
+.left-column[
+```yaml
+
+  - name: SEND PING COMMANDS TO DEVICES
+    ios_command:
+      commands: "ping {{ item }} repeat 2"
+    register: ping_responses
+    loop:
+      - 8.8.8.8
+      - 4.4.4.4
+      - 198.6.1.4
+
+  - name: TEST REGISTERED OUTPUT
+    debug:
+      var: ping_responses
+
+
+```
+
+
+Now, there is a `results` key that is a list of dictionaries.  Each dictionary contains the "standard" JSON data along with an `item` key to access the _item_ that is being iterated over.
+
+
+]
+
+.right-column[
+.s2-code[
+```yaml
+
+TASK [TEST REGISTERED OUTPUT] ********************************************
+ok: [csr1] => {
+    "ping_responses": {
+        "changed": false,
+        "msg": "All items completed",
+        "results": [
+            {
+                "_ansible_ignore_errors": null,
+                "_ansible_item_result": true,
+                "_ansible_no_log": false,
+                "_ansible_parsed": true,
+                "changed": false,
+                "failed": false,
+                "invocation": {
+                    "module_args": {
+                        "auth_pass": null,
+                        "authorize": null,
+                        "commands": [
+                            "ping 8.8.8.8 repeat 2"
+                        ],
+                        # omitted for brevity
+
+                    }
+                },
+                "item": "8.8.8.8",
+                "stdout": [
+                    "Type escape sequence to abort.\nSending 2, 100-byte ICMP Echos to 8.8.8.8, timeout is 2 seconds:\n!!\nSuccess rate is 100 percent (2/2), round-trip min/avg/max = 2/2/2 ms"
+                ],
+                "stdout_lines": []
+              }
+              }]
+
+```
+]
+]
+
+
+---
+
+
+# Register (cont'd)
+
+* Since `items` is a key in the last slide and `item` is also a built-in variable when using loops, be cautious of `item.item`
+
+
+*  `item` is the _item_ in the list being iterated over
+
+```yaml
+
+      - name: TEST LOOPING OVER REGISTERED VARIABLE
+        debug:
+          var: "{{ item }}"    
+        loop: "{{ ping_responses.results }}"  
+```
+
+* The inside key `item` is the IP address for that iteration, e.g. 8.8.8.8
+
+```yaml
+
+      - name: TEST LOOPING OVER REGISTERED VARIABLE
+        debug:
+          var: "{{ item['item'] }}"    
+        loop: "{{ ping_responses.results }}"  
+
+
+```
+
+
+
+
+
+
+---
+
+# Lab Time
+
+
+- Lab 15 - Challenge Validating Reachability with the Command Module
+
+
+---
+
+#TODO
+
+ADD TITLE OR INTRO PAGE TO PARSING
+
+
+---
+
+
+
+# Parsing Response Data
+
+When running commands use the core command module it is often necessary to parse needed information from the command response data.
+
+The following methods can be used to parse the response data:
+
+- `parse_cli_textfsm`
+- `regex_search`
+- `regex_findall`
+
+You will notice that these methods are the same as methods used to parse data in Python.
+
+
+---
+
+
+# TextFSM Overview
+
+- Python module for parsing semi-formatted text.
+- Originally developed to allow programmatic access to information given by the output of CLI driven devices, such as network routers and switches
+  - It can however be used for any such textual output.
+
+---
+
+# Using TextFSM
+
+- The engine takes two inputs
+  - Template file
+  - Text input (such as command responses from the CLI of device)
+- Returns a list of records that contains the data parsed from the text.
+- Note: A template file is needed for each uniquely structured text input.
+
+---
+
+class: middle, segue
+
+# TextFSM
+### Network Examples
+
+---
+
+# Example 1: Text Input
+
+- show vlan (Arista EOS)
+- Filename: `arista_eos_show_vlan.raw `
+
+```bash
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Et1
+10    Test1                            active    Et1, Et2
+20    Test2                            suspended
+30    VLAN0030                         suspended
+```
+
+---
+
+# Example 1: Template File
+
+- show vlan (Arista EOS)
+- Order is important
+- Filename: `arista_eos_show_vlan.template`
+
+```bash
+Value VLAN_ID (\d+)
+Value NAME (\w+)
+Value STATUS (active|suspended)
+
+Start
+  ^${VLAN_ID}\s+${NAME}\s+${STATUS} -> Record
+```
+
+---
+
+# Example 1: Executing textfsm
+
+```bash
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Et1
+```
+
+.ubuntu[
+```
+ntc@ntc$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw
+FSM Template:
+Value VLAN_ID (\d+)
+Value NAME (\w+)
+Value STATUS (active|suspended)
+
+Start
+  ^${VLAN_ID}\s+${NAME}\s+${STATUS} -> Record
+
+
+FSM Table:
+['VLAN_ID', 'NAME', 'STATUS']
+['1', 'default', 'active']
+['10', 'Test1', 'active']
+['20', 'Test2', 'suspended']
+['30', 'VLAN0030', 'suspended']
+```
+]
+
+---
+
+
+# Parsing Data Using parse_cli_textfsm
+
+The `parse_cli_textfsm` Jinja2 filter can use the same `textfsm` templates that are used in Python to parse data in Ansible.
+
+```yaml
+---
+
+  - name: TEST PARSE USING PARSE_CLI_TEXTFSM
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+
+    vars:
+      template_path: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/"
+      show_version_path: "{{ template_path }}cisco_ios_show_version.template"
+
+    tasks:
+
+      - name: GET SHOW COMMANDS
+        ios_command:
+          commands: show version
+        register: config_data
+
+      - set_fact:
+          show_version: "{{ config_data.stdout.0 | parse_cli_textfsm(show_version_path) }}"
+
+      - debug:
+          var: show_version
+```
+
+
+---
+
+# Parsing Data Using parse_cli_textfsm
+
+You will see that `parse_cli_textfsm` will return structured data.  
+This is the output from the `debug` module on the previous slide:
+
+```bash
+TASK [debug] ***************************************************
+ok: [csr1] => {
+    "show_version": [
+        {
+            "CONFIG_REGISTER": "0x2102",
+            "HARDWARE": [
+                "CSR1000V"
+            ],
+            "HOSTNAME": "csr1",
+            "ROMMON": "IOS-XE",
+            "RUNNING_IMAGE": "packages.conf",
+            "SERIAL": [
+                "9KIBQAQ3OPE"
+            ],
+            "UPTIME": "6 hours, 18 minutes",
+            "VERSION": "16.6.2"
+        }
+    ]
+}
+```
+
+---
+
+# NTC Templates
+
+* Network to Code maintains the largest open source repository of TextFSM templates for network "show command" parsing
+* They are broken down based on vendor and OS:
+* https://github.com/networktocode/ntc-templates/tree/master/templates
+
+
+
+
+---
+
+# Parsing Data Using regex filters
+
+You can also use the `regex_search` and `regex_findall` Jinja2 filters to parse data.
+
+In this example we issued the ping command from an IOS device and want to parse out the success precentage.
+
+```yaml
+---
+
+  - name: PING TEST AND TRACEROUTE
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+
+    vars:
+      dest: "8.8.8.8"
+
+    tasks:
+
+    - name: ISSUE PING
+      ios_command:
+        commands: "ping {{ dest }} repeat 2"
+      register: output
+```
+
+We are registering the response from the ping command to the `output` variable.
+
+---
+
+# Parsing Data Using regex_search
+
+Using `regex_search` we can parse the `stdout` from the `output` variable to find the success percentage.
+
+```yaml
+    - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
+      set_fact:
+        ping_pct: "{{ output.stdout.0 | regex_search('Success rate is (\\d+)\\s+percent') }}"
+```
+
+`ping_pct` is equal to **Success rate is 100 percent**
+
+
+```yaml
+    - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
+      set_fact:
+        ping_pct: "{{ output.stdout.0 | regex_search('Success rate is (\\d+)\\s+percent') | regex_search('(\\d+)') }}"
+```
+
+`ping_pct` is equal to **"100"**
+
+
+* The solution chains together two `regex_search` filters due to how the `regex_search` filter works.
+* The first part returns everything matched within parentheses and the second captures the percentage within the first capture and saves that value in the `ping_pct` fact (variable).
+
+
+---
+
+# Parsing Data Using regex_findall
+
+Using `regex_findall` is another way to parse the `stdout` from the `output` variable to find the success percentage.
+
+```yaml
+    - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
+      set_fact:
+        ping_pct: "{{ output.stdout.0 | regex_findall('Success rate is (\\d+)\\s+percent') | first }}"
+```
+
+* The filter works as you'd expect (unlike `regex_search`).  It only returns what's inside parentheses (capture group), but it's always a list.
+* The `first` filter returns the first element in the list.  This result is assigned to the variable `ping_pct`.
+
+
+---
+
+# Lab Time
+
+- Lab 16 - Parsing Show Commands with TextFSM
+- Lab 17 - Performing a Conditional Traceroute with RegEx filters
+
+
+---
+
+#TODO
+
+ADD INTRO SLIDE TO *_config, --diff, lookup plugin, declarative configuration
+
+---
+
+# *_config
+
+.left-column[
+
+By default, it compares the lines against the running configuration
+
+You can pass commands into the module a few different ways:
+
+- Using the `lines` parameter
+- Using the `src` parameter and point to a pre-built config file
+- Using the `src` parameter and point to a Jinja2 template
+
+]
+
+.right-column[
+```yaml
+---
+
+  - name: DEPLOY SNMP COMMUNITY STRINGS ON IOS DEVICES
+    hosts: ios
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+    - name: USE COMMANDS IN THE PLAYBOOK
+      ios_config:
+        lines:
+          - "snmp-server community ntc123 ro"
+
+    - name: DEPLOY FROM CONFIG FILE
+      ios_config:
+        src: "configs/snmp.cfg"
+
+
+
+```
+]
+
+---
+
+# *_config
+
+```yaml
+# Ensure these lines are present in the configuration
+- nxos_config:
+    commands:
+      - snmp-server community public group network-operator
+      - snmp-server community networktocode group network-operator
+
+```
+
+```yaml
+# Ensure these lines are present in the configuration
+- junos_config:
+    src: snmp.conf
+
+```
+
+
+---
+
+# *_config (cont'd)
+
+.left-column[
+- Modules support many parameters
+- Use `ansible-doc` to view them all
+- `parents` - ordered list of commands that identify the section the commands should be checked against
+
+]
+
+.right-column[
+```yaml
+- name: ENSURE GIGE4 IS CONFIGURED PROPERLY
+  ios_config:
+    parents:
+      - interface GigabitEthernet4
+    lines:
+      - description Configured by Ansible
+      - ip address 10.100.100.1 255.255.255.0
+
+```
+]
+
+---
+
+# *_config (cont'd)
+
+.left-column[
+- Modules support many parameters
+- Use `ansible-doc` to view them all
+- `parents` - ordered list of commands that identify the section the commands should be checked against
+- `before` - ordered list of commands to be prepended to `lines` if a change needs to be made
+- `after` - ordered list of commands to be appended to `lines` if a change needs to be made
+- Note: these are just a sub-set of parameters supported
+
+]
+
+.right-column[
+```yaml
+# this would remove any other commands previously covered for
+# the other ASN
+    - name: ENSURE BGP CONFIG IS CORRECT
+      ios_config:
+        before: ['no router bgp 65512']
+        parents:
+          - router bgp 65512
+        lines:
+          - bgp router-id 10.10.10.10
+          - bgp log-neighbor-changes
+          - network 10.101.1.0 mask 255.255.255.0
+          - network 10.101.2.0 mask 255.255.255.0
+          - timers bgp 5 15
+          - neighbor 10.10.10.2 remote-as 102
+          - neighbor 10.10.10.2 description ISP_CARRIER_X
+          - neighbor 10.10.10.2 send-community
+          - neighbor 10.10.10.2 soft-reconfiguration inbound
+        after: ['copy run start']
+```
+]
+
+---
+# *_config (cont'd)
+.left-column[
+The `save_when` parameter is needed to commit running config to the NVRAM. (Deprecated command `save` no longer works with Ansible 2.4 and above)
+Available options for the  save_when parameter:
+
+- always
+- modified
+- never
+
+]
+
+.right-column[
+
+``` yaml
+
+    - name: ENSURE THAT LOOPBACK 222 IS CONFIGURED
+      ios_config:
+        commands:
+          - ip address 10.222.222.222 255.255.255.255
+        parents:
+          - interface loopback 222
+        save_when: modified
+```
+]
+
+
+---
+
+# The diff_against Parameter
+
+Introduced in Ansible 2.4. Test running configuration against:
+
+- The startup configuration
+    - Check if there are ephemeral configurations
+- A configuration intent
+    - Check whether running configuration deviates from compliance/golden configuration
+- Pending configuration lines
+    - Check exact configuration impact of config lines being pushed
+
+
+*Invoked with `--diff` flag*
+
+---
+
+# diff_against -  startup
+
+``` yaml
+    - name: COMPARE RUNNING CONFIG WITH STARTUP
+      ios_config:
+        diff_against: startup
+```
+
+```bash
+TASK [COMPARE RUNNING CONFIG WITH STARTUP] **************************************
+--- before
++++ after
+@@ -36,6 +63,8 @@
+ redundancy
+ lldp run
+ cdp run
++interface Loopback222
++ ip address 10.222.222.222 255.255.255.255
+ interface GigabitEthernet1
+  vrf forwarding MANAGEMENT
+  ip address 10.0.0.51 255.255.255.0
+
+```
+
+---
+
+# The lookup plugin
+
+.left-column[
+
+Powerful Ansible plugin that is used access data from outside sources
+  * Regular text file content
+  * CSV
+  * INI
+  * DNS Lookup
+  * MongoDB and many more
+
+Can be used to assign values to variables
+]
+
+.right-column[
+
+.s2-code[
+
+``` yaml
+vars:
+  config_file: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
+
+tasks:
+  - debug:
+      msg: "The file name is {{ config_file }}"
+```
+
+
+.ubuntu[
+
+```
+ntc@ntc:ansible$ ansible-playbook -i inventory file_lookup_demo.yml
+
+PLAY [DEMO FILE LOOKUPS] ****************************************************
+
+TASK [debug] ****************************************************************
+ok: [csr1] => {
+    "msg": "The file name is snmp-server community PUBLIC123 RO 5\nsnmp-server community PRIVATE123 RW 95\nsnmp-server location GLOBAL\nsnmp-server contact LOCAL_ADMIN\nsnmp-server host 1.1.1.1\n\nvlan 10\n name web_servers\nvlan 20\nvlan 30\n name db_servers"
+}
+
+PLAY RECAP ******************************************************************
+csr1                       : ok=1    changed=0    unreachable=0    failed=0
+
+
+```
+
+]
+]
+]
+
+
+---
+
+# diff_against - intended
+
+
+``` yaml
+  tasks:
+    - name: VALIDATE CONFIGURATION INTENT
+      ios_config:
+        diff_against: intended
+        intended_config: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
+
+```
+
+
+```bash
+TASK [VALIDATE CONFIGURATION INTENT] **************************************
+--- before
++++ after
+@@ -63,6 +63,8 @@
+ redundancy
+ lldp run
+ cdp run
++interface Loopback222
++ ip address 10.222.222.222 255.255.255.255
+ interface GigabitEthernet1
+  vrf forwarding MANAGEMENT
+  ip address 10.0.0.51 255.255.255.0
+
+```
+
+
+---
+
+# diff_against -  impending configuration lines
+
+
+``` yaml
+    - name: ENSURE THAT LOOPBACK222 IS CONFIGURED
+      ios_config:
+        commands:
+          - ip address 10.222.222.222 255.255.255.255
+        parents:
+          - interface loopback 222
+        diff_against: running
+```
+
+
+
+```bash
+TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED]
+**************************************
++++ after
+@@ -63,6 +63,8 @@
+ redundancy
+ lldp run
+ cdp run
++interface Loopback222
++ ip address 10.222.222.222 255.255.255.255
+ interface GigabitEthernet1
+  vrf forwarding MANAGEMENT
+  ip address 10.0.0.51 255.255.255.0
+
+```
+
+**Note: This task will actually make changes to the running config!**
+
+---
+
+# Declarative Configuration
+
+- Data model
+
+.med-code[
+```yaml
+snmp_communities:
+  - community: ntc-public
+    group: network-operator
+  - community: ntc-private
+    group: network-admin
+```
+
+- Template for Nexus
+
+```jinja
+{% for snmp in snmp_communities %}
+snmp-server community {{ snmp.community }} group {{ snmp.group }}
+{% endfor %}
+```
+]
+
+
+---
+
+# Declarative Configuration (cont'd)
+
+- Generate configuration
+
+```yaml
+---
+- name: Declarative Configuration
+  hosts: nxos
+  connection: network_cli
+  gather_facts: False
+
+  tasks:
+    - name: GENERATE CONFIGURATION
+      template:
+        src: "./templates/snmp.j2"
+        dest: "./snmp-config.cfg"
+```
+
+- snmp-config.cfg
+
+```bash
+snmp-server community ntc-public group network-operator
+snmp-server community ntc-private group network-admin
+```
+
+---
+
+# Declarative Configuration (cont'd)
+
+- Push configuration
+
+.med-code[
+```yaml
+    - name: PUSH SNMP COMMUNITIES
+      nxos_config:
+        src: "./snmp-config.cfg"
+```
+]
+
+
+---
+
+# Declarative Configuration (cont'd)
+
+- Get existing SNMP communities and set fact
+
+```yaml
+    - name: GET CONFIG FOR SNMP PARSING
+      nxos_command:
+        commands:
+          - show run section snmp
+      register: output
+
+    - name: GET EXISTING SNMP COMMUNITIES AND SET FACT
+      set_fact:
+        existing_snmp_communities: "{{ output.stdout[0] | regex_findall('snmp-server community (\\S+)') }}"
+
+    - debug:
+        var: existing_snmp_communities
+```
+
+.s2-code[
+```bash
+TASK [GET CONFIG FOR SNMP PARSING] *********************************************
+ok: [nxos]
+
+TASK [GET EXISTING SNMP COMMUNITIES AND SET FACT] ******************************
+ok: [nxos]
+
+TASK [debug] *******************************************************************
+ok: [nxos] => {
+    "existing_snmp_communities": [
+        "ntc-public",
+        "ntc-private",
+        "public",
+        "networktocode"
+    ]
+}
+
+```
+]
+
+---
+
+# Declarative Configuration (cont'd)
+
+- **public** and **networktocode** communities are not part of the data model. Therefore, they may be undesired and need to be removed
+- Calculate communities to remove
+
+.s2-code[
+```yaml
+    - name: SET FACT FOR PROPOSED (DESIRED) COMMUNITIES
+      set_fact:
+        proposed_snmp_communities: "{{ snmp_communities|map(attribute='community')|list }}"
+
+    - name: CALCULATE AND SET FACT FOR COMMUNITIES TO REMOVE
+      set_fact:
+        snmp_communities_to_remove: "{{ existing_snmp_communities|difference(proposed_snmp_communities) }}"
+
+    - debug:
+        var: snmp_communities_to_remove
+```
+
+```bash
+TASK [SET FACT FOR PROPOSED (DESIRED) COMMUNITIES] *****************************
+ok: [nxos]
+
+TASK [CALCULATE AND SET FACT FOR COMMUNITIES TO REMOVE] ************************
+ok: [nxos]
+
+TASK [debug] *******************************************************************
+ok: [nxos] => {
+    "snmp_communities_to_remove": [
+        "public",
+        "networktocode"
+    ]
+}
+```
+]
+
+---
+
+# Declarative Configuration (cont'd)
+
+- Remove undesired communities
+
+
+```yaml
+    - name: PURGE SNMP COMMUNITIES
+      nxos_config:
+        commands:
+          - "no snmp-server community {{ item }}"
+      with_items: "{{ snmp_communities_to_remove }}"
+```
+
+```bash
+TASK [PURGE SNMP COMMUNITIES] **************************************************
+changed: [nxos] => (item=public)
+changed: [nxos] => (item=networktocode)
+```
+
+---
+
+# Summary
+
+* Modules are under active development
+* Currently performing "offline" diffs
+* Great for achieving idempotency on config sections
+* You can use the base **template** module to build a config and still push with these modules (as we did with NAPALM)
+
+---
+
+# Lab Time
+
+- Lab 18 - Using the Config Module
+
+
+---
+
+---
+
+#TODO
+
+Section needs to be refactored to move all 3rd party modules to the correct section and replace with core module slides and examples
+
+---
+class: middle, segue
+
+# Data Collection & Reporting
+### Ansible for Network Automation
+
+---
+
+# Modules
+
+- Core Facts Modules
+  - nxos_facts
+  - eos_facts
+  - junos_facts
+  - ios_facts
+- 3rd Party Facts and Data Collection
+  - ntc_get_facts
+  - ntc_show_command
+  - napalm_get_facts
+  - snmp_facts
+  - snmp_device_version
+- Dynamics Groups & REST APIs
+
+---
+
+# Core Facts
+
+Core facts modules collect a number of useful pieces of information:
+
+  * All IP addresses
+  * Filesystems
+  * Hostname
+  * Image
+  * All interfaces with some Layer 2 and Layer 3 attributes
+  * Serial Number
+  * OS Version
+  * Neighbors broken down by interface
+
+---
+
+# Collecting Facts
+
+Sample playbook gathering IOS facts:
+
+.left-column[
+```yaml
+  - name: GATHER IOS FACTS
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+      - name: GET FACTS
+        ios_facts:
+```
+]
+--
+
+.right-column[
+
+* Default value for `gather_subset` is  **!config**
+
+```yaml
+  - name: GATHER ALL FACTS
+    ios_facts:
+      gather_subset: all
+
+  - name: GATHER A SHOW RUN AND DEFAULT SYSTEM FACTS
+    ios_facts:
+      gather_subset:
+        - config
+
+  - name: GATHER ALL FACTS EXCEPT HARDWARE FACTS
+   ios_facts:
+    gather_subset:
+      - "!hardware"
+```
+
+]
+
+
+---
+
+# Collecting Facts
+
+```yaml
+  - name: GATHER IOS FACTS
+    hosts: iosxe
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+      - name: GET FACTS
+        ios_facts:
+        register: ntc_ios_facts
+
+      - debug:
+          var: ntc_ios_facts
+```
+
+---
+
+
+
+# Sample Response (IOS)
+
+.left-column[
+```bash
+    "ntc_ios_facts": {
+        "ansible_facts": {
+            "ansible_net_all_ipv4_addresses": [
+                "10.0.0.53"
+            ],
+            "ansible_net_all_ipv6_addresses": [],
+            "ansible_net_filesystems": [
+                "bootflash:"
+            ],
+            "ansible_net_hostname": "csr3",
+            "ansible_net_image": "bootflash:packages.conf",
+            "ansible_net_interfaces": {
+                "GigabitEthernet1": {
+                    "bandwidth": 1000000,
+                    "description": null,
+                    "duplex": "Full",
+                    "ipv4": {
+                        "address": "10.0.0.53",
+                        "masklen": 24
+                    },
+                    "lineprotocol": "up ",
+                    "macaddress": "2cc2.604c.4e06",
+                    "mediatype": "RJ45",
+                    "mtu": 1500,
+                    "operstatus": "up",
+                    "type": "CSR vNIC"
+                }
+            }
+```
+]
+.right-column[
+```bash
+            "ansible_net_memfree_mb": 322777,
+            "ansible_net_memtotal_mb": 2047264,
+            "ansible_net_model": null,
+            "ansible_net_neighbors": {
+                "Gi1": [
+                    {
+                        "host": "eos-leaf1.ntc.com",
+                        "port": "Management1"
+                    },
+                    {
+                        "host": "eos-leaf2.ntc.com",
+                        "port": "Management1"
+                    }
+                ]
+            },
+            "ansible_net_serialnum": "9KXI0D7TVFI",
+            "ansible_net_version": "16.3.1"
+        }
+
+```
+]
+
+---
+
+
+# Viewing Facts For a Device
+
+
+.left-column[
+**OPTION 1**
+```yaml
+
+
+- name: GET FACTS
+  ios_facts:
+  register: ntc_ios_facts
+
+- debug:
+    var: ntc_ios_facts
+
+- debug:
+    var: ntc_ios_facts['ansible_facts']['ansible_net_hostname']
+```
+
+**OPTION 2**
+```yaml
+
+- name: GET FACTS
+  ios_facts:
+
+- name: Display variables/facts known for a given host
+  debug:
+    var: hostvars[inventory_hostname]
+
+- debug:
+    var: ansible_net_hostname
+```
+]
+
+
+.right-column[
+
+**Note:** any key inside `ansible_facts` can be accessed directly
+
+```json
+    "ntc_ios_facts": {
+        "ansible_facts": {
+            "ansible_net_all_ipv4_addresses": [
+                "10.0.0.53"
+            ],
+            "ansible_net_all_ipv6_addresses": [],
+            "ansible_net_filesystems": [
+                "bootflash:"
+            ],
+            "ansible_net_hostname": "csr3",
+```
+]
+
+
+---
+
+# ntc_get_facts
+
+- uptime - Uptime of the device
+- vendor - vendor of the device
+- model - Device model
+- hostname - Hostname of the device
+- fqdn - FQDN of the device
+- os_version - String with the OS version running on the device.
+- serial_number - Serial number of the device
+- interfaces - List of the interfaces of the device
+- vlans - List of the vlans configured on the device
+
+
+```yaml
+- ntc_get_facts:
+    provider: "{{ ntc_provider }}"
+    platform: "{{ ntc_vendor }}_{{ ansible_network_os }}_{{ ntc_api }}"
+```
+
+
+---
+
+# ntc_show_command
+
+- Multi-vendor Ansible module to streamline converting raw text into JSON key/value pairs
+- Leverages TextFSM
+- netmiko is used for transport to enable support for _all_ devices
+
+```yaml
+tasks:
+
+  - name: GET DATA
+    ntc_show_command:
+      connection: ssh
+      platform: cisco_nxos
+      command: 'show vlan'
+      provider: "{{ ntc_provider }}"
+      template_dir: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates"
+
+```
+
+---
+
+class: ubuntu
+
+# ntc_show_command
+
+- JSON data now available to re-use
+- Use as inputs to other modules or in templates (docs)
+
+```
+TASK: [GET DATA] **************************************************************
+ok: [n9k1] => {"changed": false, "response": [{"name": "default", "status": "active", "vlan_id": "1"}, {"name": "VLAN0002", "status": "active", "vlan_id": "2"}, {"name": "VLAN0003", "status": "active", "vlan_id": "3"}, {"name": "VLAN0004", "status": "active", "vlan_id": "4"}, {"name": "VLAN0005", "status": "active", "vlan_id": "5"}, {"name": "VLAN0006", "status": "active", "vlan_id": "6"}, {"name": "VLAN0007", "status": "active", "vlan_id": "7"}, {"name": "VLAN0008", "status": "active", "vlan_id": "8"}, {"name": "VLAN0009", "status": "active", "vlan_id": "9"}, {"name": "VLAN10_WEB", "status": "active", "vlan_id": "10"}, {"name": "VLAN0011", "status": "active", "vlan_id": "11"}, {"name": "VLAN0012", "status": "active", "vlan_id": "12"}, {"name": "VLAN0013", "status": "active", "vlan_id": "13"}, {"name": "VLAN0014", "status": "active", "vlan_id": "14"}, {"name": "VLAN0015", "status": "active", "vlan_id": "15"}, {"name": "VLAN0016", "status": "active", "vlan_id": "16"}, {"name": "VLAN0017", "status": "active", "vlan_id": "17"}, {"name": "VLAN0018", "status": "active", "vlan_id": "18"}, {"name": "VLAN0019", "status": "active", "vlan_id": "19"}, {"name": "peer_keepalive", "status": "active", "vlan_id": "20"}, {"name": "VLAN0022", "status": "active", "vlan_id": "22"}, {"name": "VLAN0030", "status": "active", "vlan_id": "30"}, {"name": "VLAN0040", "status": "active", "vlan_id": "40"}, {"name": "native", "status": "active", "vlan_id": "99"}, {"name": "VLAN0100", "status": "active", "vlan_id": "100"}, {"name": "VLAN0101", "status": "active", "vlan_id": "101"}, {"name": "VLAN0102", "status": "active", "vlan_id": "102"}, {"name": "VLAN0103", "status": "active", "vlan_id": "103"}, {"name": "VLAN0104", "status": "active", "vlan_id": "104"}, {"name": "VLAN0105", "status": "active", "vlan_id": "105"}, {"name": "VLAN0123", "status": "active", "vlan_id": "123"}, {"name": "VLAN0200", "status": "active", "vlan_id": "200"}]}
+```
+
+---
+
+# snmp_facts
+
+- Multi-vendor fact gathering using SNMP
+- Returns:
+  - All IPv4 addresses
+  - interfaces
+  - sys contact
+  - sys description
+  - uptime
+
+```yaml
+- snmp_facts:
+    host: "{{ inventory_hostname }}"
+    version: v2c
+    community: networktocode
+```
+
+
+---
+
+
+# snmp_device_version
+
+The `snmp_device_version` module can be used to discover the device vendor, os, and version.  These items are returned as variables `ansible_device_vendor`, `ansible_device_os`, and `ansible_device_version`.
+
+Example Task:
+
+```yaml
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+```
+
+You can use these discovered variables for further processing devices in a dynamic fashion.
+
+```yaml
+  - ntc_show_command:
+      platform: "{{ ansible_device_vendor }}_{{ ansible_device_os }}"
+      ...
+```
+
+---
+
+
+# Creating Dynamic Groups
+
+You are able to create dynamic groups within Ansible using the `group_by` module.  Using the data collected by the `snmp_device_version` module we are able to dynamically group devices by vendor, os, or version.
+
+In this example we are grouping the devices by vendor.  This will create a group named `vendor_` followed by the vendor name.  This group can be used in subsequent plays within the playbook. Dont forget about `groups` builtin variable that will show a dictionary of keys that are all group names defined in the inventory file and values are list of host names that are members of the group.
+.s2-code[
+```yaml
+---
+
+  - name: DISCOVER VENDOR
+    hosts: iosxe,nxos,vmx
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+        tags: snmp
+
+      - group_by:
+          key: vendor_{{ ansible_device_vendor }}
+
+      - debug:
+          var: groups
+```
+]
+
+---
+
+# Using the URI Module
+
+The `uri` module can be used to make HTTP-based API calls.
+
+```yaml
+      - name: GET INTERFACE IP ADDRESS
+        uri:
+          url: https://{{ inventory_hostname }}/restconf/data/Cisco-IOS-XE-native:native/interface=GigabitEthernet/1/ip/address
+          method: GET
+          user: "{{ ansible_user }}"
+          password: "{{ ansible_ssh_pass }}"
+          return_content: yes
+          validate_certs: no
+          headers:
+            Content-Type: application/yang-data+json
+            Accept: application/yang-data+json
+        register: response
+```
+
+This example shows how to make an API call against an IOSXE device to pull the IP address information for the `GigabitEthernet1` interface and assigning the returned value to the `response` variable.
+
+You can test all of these settings using Postman before building your Ansible tasks.
+
+
+---
+
+# Tips: Using set_facts
+
+.left-column[
+- In contrast to using `register` to store the output of a task into a variable,
+the `set_fact` module allows a task to define a variable
+- Sometimes used to simplify the naming of a variable
+]
+
+.right-column[
+```yaml
+vars:
+  locations:
+    amer:
+      nyc:
+        - nyc-dc
+        - nyc-campus
+      sjc:
+        - sjc-branch
+    apac:
+      hk:
+        - hk-dc
+        - hk-campus
+
+tasks:
+  - name: PRINT ALL LOCATIONS
+    debug:
+      var: locations
+
+  - name: SJC LOCATIONS
+    set_fact:
+      sjc_locations: "{{ locations['amer']['sjc'] }}"
+
+  - name: PRINT ALL LOCATIONS
+    debug:
+      var: sjc_locations
+```
+]
+
+---
+
+# Tips: Using from_json Filter
+
+- In a recent example, an API call to the IOSXE device received a JSON response
+in python, `json.loads()` would be used to convert the JSON object to a dictionary
+- In Ansible, instead use the `from_json` filter
+- For example, assuming the `response` API variable is earlier in the play:
+
+```yaml
+      - set_fact:
+          ip_info: "{{ response['content'] | from_json }}"
+
+      - debug:
+          var: ip_info['Cisco-IOS-XE-native:address']['primary']['address']
+```
+
+---
+
+# Creating Documentation
+
+.left-column[
+
+You choose:
+
+- text
+- html
+- markdown
+- asciidoc
+- ...
+]
+
+
+.right-column[
+Then:
+- publish
+- alert
+- chatops
+- mail
+
+]
+
+
+---
+
+# Know the Available Facts/Variables
+
+.left-column[
+
+- Template
+
+```bash
+# general.j2
+
+Device: {{ inventory_hostname }}
+
+Vendor:           {{ ntc_vendor }}
+Platform:         {{ platform }}
+Operating System: {{ ansible_network_os }}
+Image:            {{ kickstart_image }}
+
+```
+
+- Playbook
+
+```yaml
+---
+
+  - name: DC P1
+    hosts: n9k1
+    connection: local
+    gather_facts: no
+
+    tasks:
+      - nxos_facts:
+
+      - template:
+          src: general.j2
+          dest: "files/general.md"
+
+```
+]
+
+--
+
+.right-column[
+- Document
+
+```bash
+
+Device: n9k1
+
+Vendor:           cisco
+Platform:         Nexus9000 C9396PX Chassis
+Operating System: 7.0(3)I2(1)
+Image:            7.0(3)I2(1)
+
+```
+]
+
+---
+
+# Documenting Neighbors
+
+.left-column[
+
+- Template
+
+```bash
+# neighbors.j2
+
+DEVICE: {{ inventory_hostname }}
+
+{% for neighbor in ntc_neighbors.response %}
+NEIGHBOR:           {{ neighbor.neighbor }}
+NEIGHBOR INTERFACE: {{ neighbor.neighbor_interface }}
+LOCAL INTERFACE:    {{ neighbor.local_interace }}
+
+{% endfor %}
+
+```
+- Playbook
+
+.s2-code[
+```yaml
+---
+  - name: DC P1
+    hosts: eos-spine1
+    connection: local
+    gather_facts: no
+
+    tasks:
+      - ntc_show_command:
+          provider: "{{ ntc_provider }}"
+          command: "show lldp neighbor"
+        register: ntc_neighbors
+
+      - template:
+          src: neighbors.j2
+          dest: "files/neighbors.md"
+
+```
+]
+]
+
+--
+
+.right-column[
+- Document
+
+```bash
+
+
+Device: eos-spine1
+
+NEIGHBOR:           leaf-tor1.arista.test
+NEIGHBOR INTERFACE: Ethernet1
+LOCAL INTERFACE:    Ethernet1
+
+NEIGHBOR:           leaf-tor2.arista.test
+NEIGHBOR INTERFACE: Ethernet1
+LOCAL INTERFACE:    Ethernet2
+
+NEIGHBOR:           spine2.arista.test
+NEIGHBOR INTERFACE: Ethernet5
+LOCAL INTERFACE:    Ethernet5
+
+NEIGHBOR:           spine2.arista.test
+NEIGHBOR INTERFACE: Ethernet6
+LOCAL INTERFACE:    Ethernet6
+
+NEIGHBOR:           spine2.arista.test
+NEIGHBOR INTERFACE: Ethernet7
+LOCAL INTERFACE:    Ethernet7
+
+```
+]
+
+---
+
+# Using a Table (Neighbors)
+
+.left-column[
+
+- Template
+
+```bash
+# neighbors-table.j2
+| Source     | Interface    | Neighbor  | Interface    |
+| ---------- |--------------| ----------|------------- |
+{% for neighbor in ntc_neighbors.response %}
+| {{ inventory_hostname }} | {{ neighbor.local_interface }} | {{ neighbor.neighbor }} | {{ neighbor.neighbor_interface }} |
+{% endfor %}
+```
+- Playbook
+
+```yaml
+---
+  - name: DC P1
+    hosts: eos-spine1
+    connection: local
+    gather_facts: no
+    tasks:
+      - ntc_show_command:
+          provider: "{{ ntc_provider }}"
+          command: "show lldp neighbor"
+        register: ntc_neighbors
+
+      - template:
+          src: neighbors.j2
+          dest: "files/neighbors-table.md"
+```
+
+
+]
+--
+
+.right-column[
+- Markdown generated table
+.center[
+<img src="data/media/neighbor-table.png" alt="Neighbors Markdown Table" style="alight:middle;width:440px;height:340px;">
+]
+]
+
+---
+
+# Summary
+
+- Understand the various ways to collect data about the network.
+- Templating is great for documentation (not just configurations)
+- Know your variables
+  - Any variable can be used in the playbook **and** template
+- Know your document formats
+- Understand Jinja2
+- Auto publish to github, web server, etc.
+- Key modules:
+  - template
+  - assemble
+
+---
+
+# Lab Time
+
+- Lab 19 - Making REST API Calls from Ansible
+- Lab 20 - Data Collection Modules & Reporting
+  - Facts Data Collection Modules
+  - Structured Data from CLI Devices (ntc_show_command)
+  - Inventory Report
+
+---
+
+class: middle, segue
+
+# Ansible Roles
+### Ansible for Network Automation
+
+---
+
+# Reusable Abstractions
+
+- include statement
+- _includes_ tasks from another file
+
+
+```yaml
+# main playbook
+---
+
+  - name: PB
+    hosts: all
+    connection: network_cli
+    gather_facts: no
+
+
+    tasks:
+
+      - include: get-facts.yml
+```
+
+```yaml
+---
+# get-facts.yml
+
+- name: GET FACTS FROM ARISTA DEVICES
+  eos_facts:
+    connection: "{{ inventory_hostname }}"
+
+  ...<more getter tasks>...
+```
+
+
+
+---
+
+# Parameterized Include
+
+- Pass parameters to _included_ tasks
+
+
+```yaml
+# main playbook
+---
+  - name: CONFIGURE DEVICES
+    hosts: all
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - include: get-facts.yml vendor={{ ntc_vendor }}
+```
+
+```yaml
+# get-facts.yml
+---
+
+- name: GET FACTS FROM ARISTA DEVICES
+  eos_facts:
+    connection: "{{ inventory_hostname }}"
+  when: vendor == "arista"
+
+- name: GET FACTS FROM CISCO NXOS DEVICES
+  nxos_facts:
+    connection: "{{ inventory_hostname }}"
+  when: vendor == "cisco"
+```
+
+---
+
+# Roles
+
+- re-usable abstraction of code (tasks, variables, and handlers)
+- Ansible Galaxy shares roles
+
+
+.left-column[
+
+```bash
+site.yml
+inventory
+roles/
+   common/
+     files/
+     templates/
+     tasks/
+     handlers/
+     vars/
+     defaults/
+   vlans/
+     templates/
+     tasks/
+       main.yml
+       eos.yml
+       nxos.yml
+       junos.yml
+     vars/
+   snmp/
+     templates/
+     tasks/
+     vars/
+```
+]
+
+.right-column[
+
+```yaml
+---
+
+- name: SAMPLE PLAYBOOK USING ROLES
+  hosts: leaves
+  connection: network_cli
+  gather_facts: no
+
+  roles:
+     - common
+     - vlans
+```
+
+- directory structure is an example
+- no need to have tasks or vars for every role
+- files in each sub-directory are called `main.yml`
+
+]
+
+---
+
+# Parameterized Roles
+
+```yaml
+---
+
+- hosts: spine
+  connection: network_cli
+  gather_facts: no
+  roles:
+    - common
+    - spine
+    - role: vlan
+      vlan_id: 10
+    - role: snmp
+      contact: Bob
+```
+
+---
+
+# VLAN Role
+
+.left-column[
+
+```yaml
+# main playbook
+.---
+
+  - name: DC P1
+    hosts: datacenter
+    connection: network_cli
+    gather_facts: no
+
+    roles:
+      - vlans
+
+```
+
+
+```yaml
+# roles/vlans/tasks/main.yml
+---
+
+- name: ARISTA VLANs
+  eos_vlan:
+    vlanid: "{{ item.id }}"
+    connection: "{{ inventory_hostname }}"
+  loop: "{{ vlans }}"
+  when: vendor == "arista"
+
+- name: CISCO VLANs
+  nxos_vlan:
+    vlan_id: "{{ item.id }}"
+    host: "{{ inventory_hostname }}"
+  loop: "{{ vlans }}"
+  when: vendor == "cisco"
+```
+
+
+
+]
+
+.right-column[
+
+```bash
+[datacenter]
+spine1 vendor=arista
+n9k1 vendor=cisco
+```
+
+
+
+```yaml
+# group_vars/all.yml
+
+vlans:
+  - id: 10
+    name: web_servers
+  - id: 20
+  - id: 30
+    name: db_servers
+
+```
+
+
+]
+
+---
+
+# VLAN Role Improved
+
+.left-column[
+
+```yaml
+# main playbook
+.---
+  - name: DC P1
+    hosts: datacenter
+    connection: network_cli
+    gather_facts: no
+    roles:
+      - vlans
+
+```
+
+
+```yaml
+# roles/vlans/tasks/main.yml
+---
+- include: "{{ ntc_vendor }}.yml"
+```
+
+```yaml
+# roles/vlans/tasks/arista.yml
+---
+- name: ARISTA VLANs
+  eos_vlan:
+    vlanid: "{{ item.id }}"
+    connection: "{{ inventory_hostname }}"
+  loop: "{{ vlans }}"
+```
+```yaml
+# roles/vlans/tasks/cisco.yml
+- name: CISCO VLANs
+  nxos_vlan:
+    vlan_id: "{{ item.id }}"
+    host: "{{ inventory_hostname }}"
+  loop: "{{ vlans }}"
+```
+]
+
+.right-column[
+
+```bash
+[datacenter]
+spine1 ntc_vendor=arista
+n9k1 ntc_vendor=cisco
+```
+
+
+
+```yaml
+# group_vars/all.yml
+
+vlans:
+  - id: 10
+    name: web_servers
+  - id: 20
+  - id: 30
+    name: db_servers
+
+```
+
+
+]
+
+
+---
+
+
+# Summary
+
+- Think about the functions, features, or applications of the device
+- Big Picture vs. Details
+- Encapsulate
+- For networking- think multi-vendor features
+
+---
+
+# Lab Time
+
+- Lab 21 - Creating an Ansible Role
+  - Create a multi-vendor VLAN role that works with Cisco and Arista devices
+  
+---
+class: middle, segue
+#3rd Party Modules
+##Exploring NAPALM, NTC and more modules
+  
 
 ---
 
@@ -2688,8 +5222,8 @@ $ ansible-playbook -i inventory backup.yml --limit nxos --tags=deploy
 
 # Lab Time
 
-- Lab 9 - Backup and Restore Network Configurations Part 1
-- Lab 10 - Backup and Restore Network Configurations Part 2
+- Lab 22 - Backup and Restore Network Configurations Part 1
+- Lab 23 - Backup and Restore Network Configurations Part 2
 
 ---
 
@@ -3366,2484 +5900,19 @@ playbook: build-push.yml
 
 # Lab Time
 
-- Lab 11 - Build / Push with NAPALM
+- Lab 24 - Build / Push with NAPALM3
   - You will use the "template" and "napalm_install_config" modules
   - Choose any *1* vendor to complete this lab
 
----
 
+---
 class: middle, segue
-
-# Issuing Show (Exec) Commands on Network Devices
-### Ansible for Network Automation
-
----
-
-# Core Modules
-
-We cover three types of core modules:
-
-- *_command - Run arbitrary commands on devices
-- *_config - Manage configuration sections on devices
-- *_facts - Gather facts on devices
-
-The modules are vendor specific and usually support SSH plus a vendor API:
-- iosxr_*
-- ios_*
-- eos_*
-- junos_*
-- nxos_*
-- actively growing
-
----
-
-# *_command
-
-.left-column[
-
-The _command modules are used to send enable and exec mode commands to the device, e.g. execute show commands and gather data from devices.
-
-- `commands` parameter can accept a single command or a list of commands
-- Refer to `ansible-doc` for full list of parameters
-]
-
-.right-column[
-.med-code[
-```yaml
----
-
-  - name: EXECUTE SHOW COMMANDS IOS DEVICES
-    hosts: ios
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
-
-    - name: EXECUTE A SINGLE COMAND
-      ios_command:
-        commands: "show version"
-
-    - name: EXECUTE LIST OF COMMANDS
-      ios_command:
-        commands:
-          - "show version"
-          - "show ip int brief"
-
-
-
-```
-]
-]
-
----
-
-# Demo
-
-* Review `ansible-doc` for `ios_command` and see available parameters
-* Take note of the examples at the bottom of the output
+#Extra Bonus
+##Device discovery, Dynamic Groups and Dynamic Inventory
 
 
 ---
-
-# *_command (cont'd)
-
-* There are a number of options available to change the format of data returned (for select OS types).  
-
-.left-column[
-.med-code[
-```yaml
-    - name: SINGLE COMMAND
-      nxos_command:
-        commands: show version
-
-    - name: LIST OF COMMAND STRINGS
-      nxos_command:
-        commands:
-          - show version
-          - show hostname
-
-    - name: LIST OF DICTIONARIES
-      nxos_command:
-        commands:
-          - command: show version
-            output: json
-          - command: show version
-            output: text
-
-
-```
-]
-]
-
-.right-column[
-.med-code[
-```yaml
-  - hosts: junos
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
-
-      - name: EXECUTE JUNOS COMMANDS
-        junos_command:
-          commands:
-            - show version
-            - show interfaces
-
-      - name: EXECUTE JUNOS COMMANDS - TEXT
-        junos_command:
-          format: text
-          commands:
-            - show version
-            - show interfaces
-```
-]
-]
-
----
-
-# Playbook Execution
-
-Sample playbook execution:
-
-.med-code[
-```bash
-$ ansible-playbook -i inventory gather.yml
-
-PLAY [RUN COMMANDS] *********************************************************************
-
-TASK [SINGLE COMMAND] *********************************************************************
-ok: [csr1]
-ok: [csr2]
-ok: [csr3]
-
-PLAY RECAP *********************************************************************
-csr1            : ok=1    changed=0    unreachable=0    failed=0
-csr2            : ok=1    changed=0    unreachable=0    failed=0
-csr3            : ok=1    changed=0    unreachable=0    failed=0
-
-```
-]
-
----
-
-
-class: center, middle, title
-.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
-
-# How do you see the data being gathered?
-
-
----
-
-# Viewing Response Data
-
-There are two ways to view data returned from a module.
-
-**Remember, every module returns JSON data.**
-<br>
-<br>
-There are two ways to see it:
-
-.left-column[
-
-1. Execute playbooks in verbose mode,e.g. `-v`
-2. Use the register task attribute with the debug module
-
-]
-
-.right-column[
-.med-code[
-```yaml
-    - name: EXECUTE COMMANDS
-      nxos_command:
-        commands:
-          - show version
-      register: output
-
-    - debug:
-        var: output
-
-```
-]
-]
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-Using **register** saves the JSON return data as a dictionary that can be consumed as a variable within a playbook or template.
-
----
-
-# Demo
-
-* Demo playbook using `ios_command`
-* Show sending both 1 and 2 commands and see the difference in response data
-* Check length of `stdout`
-
-
-
-
----
-
-# *_command
-
-* Run arbitrary commands on devices.
-* Show command data stored in `stdout` (always a list)
-* The `stdout` list has a length equal to the number of commands sent to the device
-
-.left-column[
-```yaml
-
-  - name: SEND SHOW VERSION TO DEVICE
-    ios_command:
-      commands:
-        - 'show version'
-    register: output
-
-  - name: TEST REGISTERED OUTPUT --> SEE TO RIGHT
-    debug:
-      var: output
-
-
-  - name: SEE ALL KEYS OF REGISTERED DICTIONARY
-    debug:
-      var: output.keys()
-
-  - name: TEST GETTING SHOW DATA
-    debug:
-      var: output['stdout'][0]
-
-
-```
-]
-
-.right-column[
-.s2-code[
-```yaml
-
-TASK [TEST REGISTERED OUTPUT] ********************************************
-ok: [csr1] => {
-    "output": {
-        "changed": false,
-        "stdout": ["Cisco IOS XE Software, Version 16.06.02\nCisco
-            IOS Software [Everest], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M),
-            Version 16.6.2, RELEASE SOFTWARE (fc2)\nTechnical Support:
-            http://www.cisco.com/techsupport\nCopyright (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Wed 01-Nov-17 07:24 by mcpre\n\n\nCisco IOS-XE software, Copyright (c) 2005-2017
-            by cisco Systems, Inc.\nAll rights reserved.  Certain
-            components of Cisco IOS-XE software are\nlicensed under the GNU General Public License (\"GPL\") Version 2.0. The\nsoftware code licensed under GPL Version 2.0 is free software that comes\nwith ABSOLUTELY NO WARRANTY.  You can redistribute and/or modify such\nGPL code under the terms of GPL Version 2.0.  For more details, see the\ndocumentation or \"License Notice\" file accompanying the IOS-XE software,\nor the applicable URL provided on the flyer accompanying the IOS-XE\nsoftware.\n\n\nROM: IOS-XE ROMMON\n\n
-            csr1 uptime is 30 - output omitted"],
-        "stdout_lines": [], # list closed for slide formatting
-        "warnings": []
-    }
-}
-
-```
-]
-]
-
----
-
-# Saving show command data to a file
-
-
-* Using templates to save data to a file (use any logic as necessary)
-* Use `copy` module to just _dump_ show response to a file
-
-.left-column[
-```yaml
----
-
-  - name: BACKUP SHOW VERSION
-    hosts: iosxe
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
-      - name: GET SHOW COMMANDS
-        ios_command:
-          commands:
-            - show version
-        register: output
-
-      - name: OPTION 1 - SAVE SH COMMAND TO FILE
-        template:
-          src: basic-copy.j2
-          dest: ./commands/{{ inventory_hostname}}-ver.txt
-
-
-      - name: OPTION 2 - SAVE SH COMMAND TO FILE
-        copy:
-          content: "{{ output['stdout'][0] }}"
-          dest: ./commands/{{ inventory_hostname}}-ver.txt
-```
-]
-
-.right-column[
-```yaml
-# basic-copy.j2
-
-{{ output['stdout'][0] }}
-
-```
-
-]
-
-
-
-
----
-
-
-# Performing Compliance Checks
-
-- Using the `assert` module
-- Ensure certain conditions exist within the network
-- Leverage data that you previously _registered_
-- Validate routes exist, changes happen, and configuration is as desired
-
-.med-code[
-```yaml
-  - name: IOS show version
-    ios_command:
-      commands:
-        - show version
-    register: output
-
-  - name: Ensure OS version is correct
-    assert:
-      that:
-        - "'Version 16.6.2' in output['stdout'][0]"
-
-```
-
-]
-
----
-
-# Performing Compliance Checks (cont'd)
-
-- Using the `assert` module
-- Ensure certain conditions exist within the network
-- Leverage data that you previously _registered_
-- Validate routes exist, changes happen, and configuration is as desired
-
-.med-code[
-```yaml
-  - name: IOS show version
-    ios_command:
-      commands:
-        - show version
-    register: output
-
-  - name: Ensure OS version is correct
-    assert:
-      that:
-        - "'Version 16.6.2' in output['stdout'][0]"
-        - "'0x2102' in output['stdout'][0]"
-
-```
-
-]
-
----
-
-# Demo
-
-* What happens when an assertion fails?
-* When a task fails, the default is that no other task runs for that device in a playbook.
-* An assertion failure counts as a task failure
-* Introduce `ignore_errors`
-
----
-
-# Lab Time
-
-- Lab 12 - Getting Started with the Command Module
-- Lab 13 - Continuous Compliance with Ansible
-
-
-
----
-
-class: center, middle, title
-.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
-
-# Jinja Filters, Loops, Register, and more...
-
-
----
-
-# Jinja Filters
-.left-column[
-- Filters transform data within a parameter or Jinja Expression
-- Are used with the operator `|` like `hostname | upper` will transform
-the hostname variable using the upper built-in filter to be uppercase
-- Custom filters are possible, and Ansible has built-in filters in addition to
-Jinja2 built-in filters
-- For a complete list of [Ansible filters](https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html)
-  - Network Filters
-  - List filters
-  - Dictionary filters
-  - RegEx
-- Easily create your own filter
-]
-.right-column[
-```yaml
-    vars:
-      hostname: nycr1
-      device_ip: 10.1.1.1
-      bad_ip: X.10.Y.2
-
-    tasks:
-      - name: COVNERT HOSTNAME TO UPPERCASE
-        debug:
-          var: hostname | upper
-
-      - name: CHECK TO SEE IF A IP ADDR IS VALID
-        debug:
-          var: device_ip | ipaddr
-
-      - name: CHECK TO SEE IF A IP ADDR IS VALID
-        debug:
-          var: bad_ip | ipaddr
-```
-
-Sample Output:
-
-```yaml
-"hostname | upper": "NYCR1"
-"device_ip | ipaddr": "10.1.1.1"
-"bad_ip | ipaddr": false
-```
-]
-
----
-
-# Demo
-
-* Testing Jinja filters
-* You do not need to create a Jinja template to test Jinja2 filters
-* Just use the `debug` module!
-* Learn about a few other helpful filters
-
----
-
-
-# Embedding Loops within a task
-
-* Iterate over a list of strings using the `loop` task attribute
-* `item` is built-in variable equal to an element of the list as you're iterating
-* In this case, `item` is a string
-
-```yaml
-  - name: ITERATE OVER LIST OF STRINGS
-    hosts: iosxe
-    connection: network_cli
-    gather_facts: no
-
-    vars:
-      commands:
-        - show ip int brief
-        - show version
-        - show ip route
-
-    tasks:
-      - name: SEND A SERIES OF SHOW COMMANDS
-        ios_command:
-          commands: "{{ item }}"
-        loop: "{{ commands }}"
-```
-
----
-
-
-# loop (cont'd)
-
-* Iterate over a list of dictionaries
-* `item` is built-in variable equal to an element of the list as you're iterating
-* In this case, `item` is a dictionary
-
-```yaml
----
-
-  - name: ITERATE OVER LIST OF DICTIONARIES
-    hosts: csr1
-    connection: local
-    gather_facts: no
-
-    vars:
-      vlans:
-        - id: 10
-          name: web_vlan
-        - id: 20
-          name: app_vlan
-        - id: 30
-          name: db_vlan
-
-    tasks:
-      - name: PRACTICE DEBUGGING WITH LOOPS
-        debug:
-          msg: "The VLAN name is {{ item.name }} and the ID is {{ item.id }}"
-        loop: "{{ vlans }}"
-```
-
-
-
----
-
-# loop dict2items filter
-
-* Iterate over a dictionary
-* Root keys are `item.key`
-* Values are `item.value`
-
-```yaml
----
-
-    vars:
-      locations:
-        amer: sjc-branch
-        apac: hk-dc
-
-    tasks:
-      - name: PRINT ALL LOCATIONS
-        debug:
-          msg: "Region is {{ item.key }} and Site is {{ item.value }}"
-        loop: "{{ locations|dict2items }}"
-```
-
-* Sample output:
-
-```yaml
-"msg": "Regions are apac and Sites is hk-dc"
-"msg": "Regions are amer and Sites is sjc-branch"
-```
-
----
-
-# Register (with loop)
-
-* We saw earlier that `register` gives you access to the JSON data returned from a given module
-
-
-.left-column[
-```yaml
-
-  - name: SEND SHOW VERSION TO DEVICE
-    ios_command:
-      commands:
-        - 'show version'
-    register: output
-
-  - name: TEST REGISTERED OUTPUT --> SEE TO RIGHT
-    debug:
-      var: output
-
-  - name: TEST GETTING SHOW DATA
-    debug:
-      var: output['stdout'][0]
-
-
-```
-
-
-Remember, when _registering_ the response from a `_command` module, there are 4 keys and we primarily focused on `stdout`.
-
-
-]
-
-.right-column[
-.s2-code[
-```yaml
-
-TASK [TEST REGISTERED OUTPUT] ********************************************
-ok: [csr1] => {
-    "output": {
-        "changed": false,
-        "stdout": ["Cisco IOS XE Software, Version 16.06.02\nCisco
-            IOS Software [Everest], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M),
-            Version 16.6.2, RELEASE SOFTWARE (fc2)\nTechnical Support:
-            http://www.cisco.com/techsupport\nCopyright (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Wed 01-Nov-17 07:24 by mcpre\n\n\nCisco IOS-XE software, Copyright (c) 2005-2017
-            by cisco Systems, Inc.\nAll rights reserved.  Certain
-            components of Cisco IOS-XE software are\nlicensed under the GNU General Public License (\"GPL\") Version 2.0. The\nsoftware code licensed under GPL Version 2.0 is free software that comes\nwith ABSOLUTELY NO WARRANTY.  You can redistribute and/or modify such\nGPL code under the terms of GPL Version 2.0.  For more details, see the\ndocumentation or \"License Notice\" file accompanying the IOS-XE software,\nor the applicable URL provided on the flyer accompanying the IOS-XE\nsoftware.\n\n\nROM: IOS-XE ROMMON\n\n
-            csr1 uptime is 30 - output omitted"],
-        "stdout_lines": [], # list closed for slide formatting
-        "warnings": []
-    }
-}
-
-```
-]
-]
-
-
----
-
-
-# Register (cont'd)
-
-* Using `register` with `loop`
-
-
-.left-column[
-```yaml
-
-  - name: SEND PING COMMANDS TO DEVICES
-    ios_command:
-      commands: "ping {{ item }} repeat 2"
-    register: ping_responses
-    loop:
-      - 8.8.8.8
-      - 4.4.4.4
-      - 198.6.1.4
-
-  - name: TEST REGISTERED OUTPUT
-    debug:
-      var: ping_responses
-
-
-```
-
-
-Now, there is a `results` key that is a list of dictionaries.  Each dictionary contains the "standard" JSON data along with an `item` key to access the _item_ that is being iterated over.
-
-
-]
-
-.right-column[
-.s2-code[
-```yaml
-
-TASK [TEST REGISTERED OUTPUT] ********************************************
-ok: [csr1] => {
-    "ping_responses": {
-        "changed": false,
-        "msg": "All items completed",
-        "results": [
-            {
-                "_ansible_ignore_errors": null,
-                "_ansible_item_result": true,
-                "_ansible_no_log": false,
-                "_ansible_parsed": true,
-                "changed": false,
-                "failed": false,
-                "invocation": {
-                    "module_args": {
-                        "auth_pass": null,
-                        "authorize": null,
-                        "commands": [
-                            "ping 8.8.8.8 repeat 2"
-                        ],
-                        # omitted for brevity
-
-                    }
-                },
-                "item": "8.8.8.8",
-                "stdout": [
-                    "Type escape sequence to abort.\nSending 2, 100-byte ICMP Echos to 8.8.8.8, timeout is 2 seconds:\n!!\nSuccess rate is 100 percent (2/2), round-trip min/avg/max = 2/2/2 ms"
-                ],
-                "stdout_lines": []
-              }
-              }]
-
-```
-]
-]
-
-
----
-
-
-# Register (cont'd)
-
-* Since `items` is a key in the last slide and `item` is also a built-in variable when using loops, be cautious of `item.item`
-
-
-*  `item` is the _item_ in the list being iterated over
-
-```yaml
-
-      - name: TEST LOOPING OVER REGISTERED VARIABLE
-        debug:
-          var: "{{ item }}"    
-        loop: "{{ ping_responses.results }}"  
-```
-
-* The inside key `item` is the IP address for that iteration, e.g. 8.8.8.8
-
-```yaml
-
-      - name: TEST LOOPING OVER REGISTERED VARIABLE
-        debug:
-          var: "{{ item['item'] }}"    
-        loop: "{{ ping_responses.results }}"  
-
-
-```
-
-
-
-
-
-
----
-
-# Lab Time
-
-
-- Lab 14 - Validating Reachability with the Command Module
-
-
----
-
-
-
-# Parsing Response Data
-
-When running commands use the core command module it is often necessary to parse needed information from the command response data.
-
-The following methods can be used to parse the response data:
-
-- `parse_cli_textfsm`
-- `regex_search`
-- `regex_findall`
-
-You will notice that these methods are the same as methods used to parse data in Python.
-
-
----
-
-
-# TextFSM Overview
-
-- Python module for parsing semi-formatted text.
-- Originally developed to allow programmatic access to information given by the output of CLI driven devices, such as network routers and switches
-  - It can however be used for any such textual output.
-
----
-
-# Using TextFSM
-
-- The engine takes two inputs
-  - Template file
-  - Text input (such as command responses from the CLI of device)
-- Returns a list of records that contains the data parsed from the text.
-- Note: A template file is needed for each uniquely structured text input.
-
----
-
 class: middle, segue
-
-# TextFSM
-### Network Examples
-
----
-
-# Example 1: Text Input
-
-- show vlan (Arista EOS)
-- Filename: `arista_eos_show_vlan.raw `
-
-```bash
-VLAN  Name                             Status    Ports
------ -------------------------------- --------- -------------------------------
-1     default                          active    Et1
-10    Test1                            active    Et1, Et2
-20    Test2                            suspended
-30    VLAN0030                         suspended
-```
-
----
-
-# Example 1: Template File
-
-- show vlan (Arista EOS)
-- Order is important
-- Filename: `arista_eos_show_vlan.template`
-
-```bash
-Value VLAN_ID (\d+)
-Value NAME (\w+)
-Value STATUS (active|suspended)
-
-Start
-  ^${VLAN_ID}\s+${NAME}\s+${STATUS} -> Record
-```
-
----
-
-# Example 1: Executing textfsm
-
-```bash
-VLAN  Name                             Status    Ports
------ -------------------------------- --------- -------------------------------
-1     default                          active    Et1
-```
-
-.ubuntu[
-```
-ntc@ntc$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw
-FSM Template:
-Value VLAN_ID (\d+)
-Value NAME (\w+)
-Value STATUS (active|suspended)
-
-Start
-  ^${VLAN_ID}\s+${NAME}\s+${STATUS} -> Record
-
-
-FSM Table:
-['VLAN_ID', 'NAME', 'STATUS']
-['1', 'default', 'active']
-['10', 'Test1', 'active']
-['20', 'Test2', 'suspended']
-['30', 'VLAN0030', 'suspended']
-```
-]
-
----
-
-
-# Parsing Data Using parse_cli_textfsm
-
-The `parse_cli_textfsm` Jinja2 filter can use the same `textfsm` templates that are used in Python to parse data in Ansible.
-
-```yaml
----
-
-  - name: TEST PARSE USING PARSE_CLI_TEXTFSM
-    hosts: csr1
-    connection: network_cli
-    gather_facts: no
-
-    vars:
-      template_path: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/"
-      show_version_path: "{{ template_path }}cisco_ios_show_version.template"
-
-    tasks:
-
-      - name: GET SHOW COMMANDS
-        ios_command:
-          commands: show version
-        register: config_data
-
-      - set_fact:
-          show_version: "{{ config_data.stdout.0 | parse_cli_textfsm(show_version_path) }}"
-
-      - debug:
-          var: show_version
-```
-
-
----
-
-# Parsing Data Using parse_cli_textfsm
-
-You will see that `parse_cli_textfsm` will return structured data.  
-This is the output from the `debug` module on the previous slide:
-
-```bash
-TASK [debug] ***************************************************
-ok: [csr1] => {
-    "show_version": [
-        {
-            "CONFIG_REGISTER": "0x2102",
-            "HARDWARE": [
-                "CSR1000V"
-            ],
-            "HOSTNAME": "csr1",
-            "ROMMON": "IOS-XE",
-            "RUNNING_IMAGE": "packages.conf",
-            "SERIAL": [
-                "9KIBQAQ3OPE"
-            ],
-            "UPTIME": "6 hours, 18 minutes",
-            "VERSION": "16.6.2"
-        }
-    ]
-}
-```
-
----
-
-# NTC Templates
-
-* Network to Code maintains the largest open source repository of TextFSM templates for network "show command" parsing
-* They are broken down based on vendor and OS:
-* https://github.com/networktocode/ntc-templates/tree/master/templates
-
-
-
-
----
-
-# Parsing Data Using regex filters
-
-You can also use the `regex_search` and `regex_findall` Jinja2 filters to parse data.
-
-In this example we issued the ping command from an IOS device and want to parse out the success precentage.
-
-```yaml
----
-
-  - name: PING TEST AND TRACEROUTE
-    hosts: csr1
-    connection: network_cli
-    gather_facts: no
-
-    vars:
-      dest: "8.8.8.8"
-
-    tasks:
-
-    - name: ISSUE PING
-      ios_command:
-        commands: "ping {{ dest }} repeat 2"
-      register: output
-```
-
-We are registering the response from the ping command to the `output` variable.
-
----
-
-# Parsing Data Using regex_search
-
-Using `regex_search` we can parse the `stdout` from the `output` variable to find the success percentage.
-
-```yaml
-    - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
-      set_fact:
-        ping_pct: "{{ output.stdout.0 | regex_search('Success rate is (\\d+)\\s+percent') }}"
-```
-
-`ping_pct` is equal to **Success rate is 100 percent**
-
-
-```yaml
-    - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
-      set_fact:
-        ping_pct: "{{ output.stdout.0 | regex_search('Success rate is (\\d+)\\s+percent') | regex_search('(\\d+)') }}"
-```
-
-`ping_pct` is equal to **"100"**
-
-
-* The solution chains together two `regex_search` filters due to how the `regex_search` filter works.
-* The first part returns everything matched within parentheses and the second captures the percentage within the first capture and saves that value in the `ping_pct` fact (variable).
-
-
----
-
-# Parsing Data Using regex_findall
-
-Using `regex_findall` is another way to parse the `stdout` from the `output` variable to find the success percentage.
-
-```yaml
-    - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
-      set_fact:
-        ping_pct: "{{ output.stdout.0 | regex_findall('Success rate is (\\d+)\\s+percent') | first }}"
-```
-
-* The filter works as you'd expect (unlike `regex_search`).  It only returns what's inside parentheses (capture group), but it's always a list.
-* The `first` filter returns the first element in the list.  This result is assigned to the variable `ping_pct`.
-
-
----
-
-# Lab Time
-
-- Lab 15 - Parsing Show Commands with TextFSM
-- Lab 16 - Performing a Conditional Traceroute with RegEx filters
-
----
-
-# *_config
-
-.left-column[
-
-By default, it compares the lines against the running configuration
-
-You can pass commands into the module a few different ways:
-
-- Using the `lines` parameter
-- Using the `src` parameter and point to a pre-built config file
-- Using the `src` parameter and point to a Jinja2 template
-
-]
-
-.right-column[
-```yaml
----
-
-  - name: DEPLOY SNMP COMMUNITY STRINGS ON IOS DEVICES
-    hosts: ios
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
-
-    - name: USE COMMANDS IN THE PLAYBOOK
-      ios_config:
-        lines:
-          - "snmp-server community ntc123 ro"
-
-    - name: DEPLOY FROM CONFIG FILE
-      ios_config:
-        src: "configs/snmp.cfg"
-
-
-
-```
-]
-
----
-
-# *_config
-
-```yaml
-# Ensure these lines are present in the configuration
-- nxos_config:
-    commands:
-      - snmp-server community public group network-operator
-      - snmp-server community networktocode group network-operator
-
-```
-
-```yaml
-# Ensure these lines are present in the configuration
-- junos_config:
-    src: snmp.conf
-
-```
-
-
----
-
-# *_config (cont'd)
-
-.left-column[
-- Modules support many parameters
-- Use `ansible-doc` to view them all
-- `parents` - ordered list of commands that identify the section the commands should be checked against
-
-]
-
-.right-column[
-```yaml
-- name: ENSURE GIGE4 IS CONFIGURED PROPERLY
-  ios_config:
-    parents:
-      - interface GigabitEthernet4
-    lines:
-      - description Configured by Ansible
-      - ip address 10.100.100.1 255.255.255.0
-
-```
-]
-
----
-
-# *_config (cont'd)
-
-.left-column[
-- Modules support many parameters
-- Use `ansible-doc` to view them all
-- `parents` - ordered list of commands that identify the section the commands should be checked against
-- `before` - ordered list of commands to be prepended to `lines` if a change needs to be made
-- `after` - ordered list of commands to be appended to `lines` if a change needs to be made
-- Note: these are just a sub-set of parameters supported
-
-]
-
-.right-column[
-```yaml
-# this would remove any other commands previously covered for
-# the other ASN
-    - name: ENSURE BGP CONFIG IS CORRECT
-      ios_config:
-        before: ['no router bgp 65512']
-        parents:
-          - router bgp 65512
-        lines:
-          - bgp router-id 10.10.10.10
-          - bgp log-neighbor-changes
-          - network 10.101.1.0 mask 255.255.255.0
-          - network 10.101.2.0 mask 255.255.255.0
-          - timers bgp 5 15
-          - neighbor 10.10.10.2 remote-as 102
-          - neighbor 10.10.10.2 description ISP_CARRIER_X
-          - neighbor 10.10.10.2 send-community
-          - neighbor 10.10.10.2 soft-reconfiguration inbound
-        after: ['copy run start']
-```
-]
-
----
-# *_config (cont'd)
-.left-column[
-The `save_when` parameter is needed to commit running config to the NVRAM. (Deprecated command `save` no longer works with Ansible 2.4 and above)
-Available options for the  save_when parameter:
-
-- always
-- modified
-- never
-
-]
-
-.right-column[
-
-``` yaml
-
-    - name: ENSURE THAT LOOPBACK 222 IS CONFIGURED
-      ios_config:
-        commands:
-          - ip address 10.222.222.222 255.255.255.255
-        parents:
-          - interface loopback 222
-        save_when: modified
-```
-]
-
-
----
-
-# The diff_against Parameter
-
-Introduced in Ansible 2.4. Test running configuration against:
-
-- The startup configuration
-    - Check if there are ephemeral configurations
-- A configuration intent
-    - Check whether running configuration deviates from compliance/golden configuration
-- Pending configuration lines
-    - Check exact configuration impact of config lines being pushed
-
-
-*Invoked with `--diff` flag*
-
----
-
-# diff_against -  startup
-
-``` yaml
-    - name: COMPARE RUNNING CONFIG WITH STARTUP
-      ios_config:
-        diff_against: startup
-```
-
-```bash
-TASK [COMPARE RUNNING CONFIG WITH STARTUP] **************************************
---- before
-+++ after
-@@ -36,6 +63,8 @@
- redundancy
- lldp run
- cdp run
-+interface Loopback222
-+ ip address 10.222.222.222 255.255.255.255
- interface GigabitEthernet1
-  vrf forwarding MANAGEMENT
-  ip address 10.0.0.51 255.255.255.0
-
-```
-
----
-
-# The lookup plugin
-
-.left-column[
-
-Powerful Ansible plugin that is used access data from outside sources
-  * Regular text file content
-  * CSV
-  * INI
-  * DNS Lookup
-  * MongoDB and many more
-
-Can be used to assign values to variables
-]
-
-.right-column[
-
-.s2-code[
-
-``` yaml
-vars:
-  config_file: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
-
-tasks:
-  - debug:
-      msg: "The file name is {{ config_file }}"
-```
-
-
-.ubuntu[
-
-```
-ntc@ntc:ansible$ ansible-playbook -i inventory file_lookup_demo.yml
-
-PLAY [DEMO FILE LOOKUPS] ****************************************************
-
-TASK [debug] ****************************************************************
-ok: [csr1] => {
-    "msg": "The file name is snmp-server community PUBLIC123 RO 5\nsnmp-server community PRIVATE123 RW 95\nsnmp-server location GLOBAL\nsnmp-server contact LOCAL_ADMIN\nsnmp-server host 1.1.1.1\n\nvlan 10\n name web_servers\nvlan 20\nvlan 30\n name db_servers"
-}
-
-PLAY RECAP ******************************************************************
-csr1                       : ok=1    changed=0    unreachable=0    failed=0
-
-
-```
-
-]
-]
-]
-
-
----
-
-# diff_against - intended
-
-
-``` yaml
-  tasks:
-    - name: VALIDATE CONFIGURATION INTENT
-      ios_config:
-        diff_against: intended
-        intended_config: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
-
-```
-
-
-```bash
-TASK [VALIDATE CONFIGURATION INTENT] **************************************
---- before
-+++ after
-@@ -63,6 +63,8 @@
- redundancy
- lldp run
- cdp run
-+interface Loopback222
-+ ip address 10.222.222.222 255.255.255.255
- interface GigabitEthernet1
-  vrf forwarding MANAGEMENT
-  ip address 10.0.0.51 255.255.255.0
-
-```
-
-
----
-
-# diff_against -  impending configuration lines
-
-
-``` yaml
-    - name: ENSURE THAT LOOPBACK222 IS CONFIGURED
-      ios_config:
-        commands:
-          - ip address 10.222.222.222 255.255.255.255
-        parents:
-          - interface loopback 222
-        diff_against: running
-```
-
-
-
-```bash
-TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED]
-**************************************
-+++ after
-@@ -63,6 +63,8 @@
- redundancy
- lldp run
- cdp run
-+interface Loopback222
-+ ip address 10.222.222.222 255.255.255.255
- interface GigabitEthernet1
-  vrf forwarding MANAGEMENT
-  ip address 10.0.0.51 255.255.255.0
-
-```
-
-**Note: This task will actually make changes to the running config!**
-
----
-
-# Declarative Configuration
-
-- Data model
-
-.med-code[
-```yaml
-snmp_communities:
-  - community: ntc-public
-    group: network-operator
-  - community: ntc-private
-    group: network-admin
-```
-
-- Template for Nexus
-
-```jinja
-{% for snmp in snmp_communities %}
-snmp-server community {{ snmp.community }} group {{ snmp.group }}
-{% endfor %}
-```
-]
-
-
----
-
-# Declarative Configuration (cont'd)
-
-- Generate configuration
-
-```yaml
----
-- name: Declarative Configuration
-  hosts: nxos
-  connection: network_cli
-  gather_facts: False
-
-  tasks:
-    - name: GENERATE CONFIGURATION
-      template:
-        src: "./templates/snmp.j2"
-        dest: "./snmp-config.cfg"
-```
-
-- snmp-config.cfg
-
-```bash
-snmp-server community ntc-public group network-operator
-snmp-server community ntc-private group network-admin
-```
-
----
-
-# Declarative Configuration (cont'd)
-
-- Push configuration
-
-.med-code[
-```yaml
-    - name: PUSH SNMP COMMUNITIES
-      nxos_config:
-        src: "./snmp-config.cfg"
-```
-]
-
-
----
-
-# Declarative Configuration (cont'd)
-
-- Get existing SNMP communities and set fact
-
-```yaml
-    - name: GET CONFIG FOR SNMP PARSING
-      nxos_command:
-        commands:
-          - show run section snmp
-      register: output
-
-    - name: GET EXISTING SNMP COMMUNITIES AND SET FACT
-      set_fact:
-        existing_snmp_communities: "{{ output.stdout[0] | regex_findall('snmp-server community (\\S+)') }}"
-
-    - debug:
-        var: existing_snmp_communities
-```
-
-.s2-code[
-```bash
-TASK [GET CONFIG FOR SNMP PARSING] *********************************************
-ok: [nxos]
-
-TASK [GET EXISTING SNMP COMMUNITIES AND SET FACT] ******************************
-ok: [nxos]
-
-TASK [debug] *******************************************************************
-ok: [nxos] => {
-    "existing_snmp_communities": [
-        "ntc-public",
-        "ntc-private",
-        "public",
-        "networktocode"
-    ]
-}
-
-```
-]
-
----
-
-# Declarative Configuration (cont'd)
-
-- **public** and **networktocode** communities are not part of the data model. Therefore, they may be undesired and need to be removed
-- Calculate communities to remove
-
-.s2-code[
-```yaml
-    - name: SET FACT FOR PROPOSED (DESIRED) COMMUNITIES
-      set_fact:
-        proposed_snmp_communities: "{{ snmp_communities|map(attribute='community')|list }}"
-
-    - name: CALCULATE AND SET FACT FOR COMMUNITIES TO REMOVE
-      set_fact:
-        snmp_communities_to_remove: "{{ existing_snmp_communities|difference(proposed_snmp_communities) }}"
-
-    - debug:
-        var: snmp_communities_to_remove
-```
-
-```bash
-TASK [SET FACT FOR PROPOSED (DESIRED) COMMUNITIES] *****************************
-ok: [nxos]
-
-TASK [CALCULATE AND SET FACT FOR COMMUNITIES TO REMOVE] ************************
-ok: [nxos]
-
-TASK [debug] *******************************************************************
-ok: [nxos] => {
-    "snmp_communities_to_remove": [
-        "public",
-        "networktocode"
-    ]
-}
-```
-]
-
----
-
-# Declarative Configuration (cont'd)
-
-- Remove undesired communities
-
-
-```yaml
-    - name: PURGE SNMP COMMUNITIES
-      nxos_config:
-        commands:
-          - "no snmp-server community {{ item }}"
-      with_items: "{{ snmp_communities_to_remove }}"
-```
-
-```bash
-TASK [PURGE SNMP COMMUNITIES] **************************************************
-changed: [nxos] => (item=public)
-changed: [nxos] => (item=networktocode)
-```
-
----
-
-# Summary
-
-* Modules are under active development
-* Currently performing "offline" diffs
-* Great for achieving idempotency on config sections
-* You can use the base **template** module to build a config and still push with these modules (as we did with NAPALM)
-
----
-
-# Lab Time
-
-- Lab 17 - Using the Config Module
-
----
-
-
-
-class: middle, segue
-
-# Data Collection & Reporting
-### Ansible for Network Automation
-
----
-
-# Modules
-
-- Core Facts Modules
-  - nxos_facts
-  - eos_facts
-  - junos_facts
-  - ios_facts
-- 3rd Party Facts and Data Collection
-  - ntc_get_facts
-  - ntc_show_command
-  - napalm_get_facts
-  - snmp_facts
-  - snmp_device_version
-- Dynamics Groups & REST APIs
-
----
-
-# Core Facts
-
-Core facts modules collect a number of useful pieces of information:
-
-  * All IP addresses
-  * Filesystems
-  * Hostname
-  * Image
-  * All interfaces with some Layer 2 and Layer 3 attributes
-  * Serial Number
-  * OS Version
-  * Neighbors broken down by interface
-
----
-
-# Collecting Facts
-
-Sample playbook gathering IOS facts:
-
-.left-column[
-```yaml
-  - name: GATHER IOS FACTS
-    hosts: iosxe
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
-      - name: GET FACTS
-        ios_facts:
-```
-]
---
-
-.right-column[
-
-* Default value for `gather_subset` is  **!config**
-
-```yaml
-  - name: GATHER ALL FACTS
-    ios_facts:
-      gather_subset: all
-
-  - name: GATHER A SHOW RUN AND DEFAULT SYSTEM FACTS
-    ios_facts:
-      gather_subset:
-        - config
-
-  - name: GATHER ALL FACTS EXCEPT HARDWARE FACTS
-   ios_facts:
-    gather_subset:
-      - "!hardware"
-```
-
-]
-
-
----
-
-# Collecting Facts
-
-```yaml
-  - name: GATHER IOS FACTS
-    hosts: iosxe
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
-      - name: GET FACTS
-        ios_facts:
-        register: ntc_ios_facts
-
-      - debug:
-          var: ntc_ios_facts
-```
-
----
-
-
-
-# Sample Response (IOS)
-
-.left-column[
-```bash
-    "ntc_ios_facts": {
-        "ansible_facts": {
-            "ansible_net_all_ipv4_addresses": [
-                "10.0.0.53"
-            ],
-            "ansible_net_all_ipv6_addresses": [],
-            "ansible_net_filesystems": [
-                "bootflash:"
-            ],
-            "ansible_net_hostname": "csr3",
-            "ansible_net_image": "bootflash:packages.conf",
-            "ansible_net_interfaces": {
-                "GigabitEthernet1": {
-                    "bandwidth": 1000000,
-                    "description": null,
-                    "duplex": "Full",
-                    "ipv4": {
-                        "address": "10.0.0.53",
-                        "masklen": 24
-                    },
-                    "lineprotocol": "up ",
-                    "macaddress": "2cc2.604c.4e06",
-                    "mediatype": "RJ45",
-                    "mtu": 1500,
-                    "operstatus": "up",
-                    "type": "CSR vNIC"
-                }
-            }
-```
-]
-.right-column[
-```bash
-            "ansible_net_memfree_mb": 322777,
-            "ansible_net_memtotal_mb": 2047264,
-            "ansible_net_model": null,
-            "ansible_net_neighbors": {
-                "Gi1": [
-                    {
-                        "host": "eos-leaf1.ntc.com",
-                        "port": "Management1"
-                    },
-                    {
-                        "host": "eos-leaf2.ntc.com",
-                        "port": "Management1"
-                    }
-                ]
-            },
-            "ansible_net_serialnum": "9KXI0D7TVFI",
-            "ansible_net_version": "16.3.1"
-        }
-
-```
-]
-
----
-
-
-# Viewing Facts For a Device
-
-
-.left-column[
-**OPTION 1**
-```yaml
-
-
-- name: GET FACTS
-  ios_facts:
-  register: ntc_ios_facts
-
-- debug:
-    var: ntc_ios_facts
-
-- debug:
-    var: ntc_ios_facts['ansible_facts']['ansible_net_hostname']
-```
-
-**OPTION 2**
-```yaml
-
-- name: GET FACTS
-  ios_facts:
-
-- name: Display variables/facts known for a given host
-  debug:
-    var: hostvars[inventory_hostname]
-
-- debug:
-    var: ansible_net_hostname
-```
-]
-
-
-.right-column[
-
-**Note:** any key inside `ansible_facts` can be accessed directly
-
-```json
-    "ntc_ios_facts": {
-        "ansible_facts": {
-            "ansible_net_all_ipv4_addresses": [
-                "10.0.0.53"
-            ],
-            "ansible_net_all_ipv6_addresses": [],
-            "ansible_net_filesystems": [
-                "bootflash:"
-            ],
-            "ansible_net_hostname": "csr3",
-```
-]
-
-
----
-
-# ntc_get_facts
-
-- uptime - Uptime of the device
-- vendor - vendor of the device
-- model - Device model
-- hostname - Hostname of the device
-- fqdn - FQDN of the device
-- os_version - String with the OS version running on the device.
-- serial_number - Serial number of the device
-- interfaces - List of the interfaces of the device
-- vlans - List of the vlans configured on the device
-
-
-```yaml
-- ntc_get_facts:
-    provider: "{{ ntc_provider }}"
-    platform: "{{ ntc_vendor }}_{{ ansible_network_os }}_{{ ntc_api }}"
-```
-
-
----
-
-# ntc_show_command
-
-- Multi-vendor Ansible module to streamline converting raw text into JSON key/value pairs
-- Leverages TextFSM
-- netmiko is used for transport to enable support for _all_ devices
-
-```yaml
-tasks:
-
-  - name: GET DATA
-    ntc_show_command:
-      connection: ssh
-      platform: cisco_nxos
-      command: 'show vlan'
-      provider: "{{ ntc_provider }}"
-      template_dir: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates"
-
-```
-
----
-
-class: ubuntu
-
-# ntc_show_command
-
-- JSON data now available to re-use
-- Use as inputs to other modules or in templates (docs)
-
-```
-TASK: [GET DATA] **************************************************************
-ok: [n9k1] => {"changed": false, "response": [{"name": "default", "status": "active", "vlan_id": "1"}, {"name": "VLAN0002", "status": "active", "vlan_id": "2"}, {"name": "VLAN0003", "status": "active", "vlan_id": "3"}, {"name": "VLAN0004", "status": "active", "vlan_id": "4"}, {"name": "VLAN0005", "status": "active", "vlan_id": "5"}, {"name": "VLAN0006", "status": "active", "vlan_id": "6"}, {"name": "VLAN0007", "status": "active", "vlan_id": "7"}, {"name": "VLAN0008", "status": "active", "vlan_id": "8"}, {"name": "VLAN0009", "status": "active", "vlan_id": "9"}, {"name": "VLAN10_WEB", "status": "active", "vlan_id": "10"}, {"name": "VLAN0011", "status": "active", "vlan_id": "11"}, {"name": "VLAN0012", "status": "active", "vlan_id": "12"}, {"name": "VLAN0013", "status": "active", "vlan_id": "13"}, {"name": "VLAN0014", "status": "active", "vlan_id": "14"}, {"name": "VLAN0015", "status": "active", "vlan_id": "15"}, {"name": "VLAN0016", "status": "active", "vlan_id": "16"}, {"name": "VLAN0017", "status": "active", "vlan_id": "17"}, {"name": "VLAN0018", "status": "active", "vlan_id": "18"}, {"name": "VLAN0019", "status": "active", "vlan_id": "19"}, {"name": "peer_keepalive", "status": "active", "vlan_id": "20"}, {"name": "VLAN0022", "status": "active", "vlan_id": "22"}, {"name": "VLAN0030", "status": "active", "vlan_id": "30"}, {"name": "VLAN0040", "status": "active", "vlan_id": "40"}, {"name": "native", "status": "active", "vlan_id": "99"}, {"name": "VLAN0100", "status": "active", "vlan_id": "100"}, {"name": "VLAN0101", "status": "active", "vlan_id": "101"}, {"name": "VLAN0102", "status": "active", "vlan_id": "102"}, {"name": "VLAN0103", "status": "active", "vlan_id": "103"}, {"name": "VLAN0104", "status": "active", "vlan_id": "104"}, {"name": "VLAN0105", "status": "active", "vlan_id": "105"}, {"name": "VLAN0123", "status": "active", "vlan_id": "123"}, {"name": "VLAN0200", "status": "active", "vlan_id": "200"}]}
-```
-
----
-
-# snmp_facts
-
-- Multi-vendor fact gathering using SNMP
-- Returns:
-  - All IPv4 addresses
-  - interfaces
-  - sys contact
-  - sys description
-  - uptime
-
-```yaml
-- snmp_facts:
-    host: "{{ inventory_hostname }}"
-    version: v2c
-    community: networktocode
-```
-
-
----
-
-
-# snmp_device_version
-
-The `snmp_device_version` module can be used to discover the device vendor, os, and version.  These items are returned as variables `ansible_device_vendor`, `ansible_device_os`, and `ansible_device_version`.
-
-Example Task:
-
-```yaml
-      - name: QUERY DEVICE VIA SNMP
-        snmp_device_version:
-          community: networktocode
-          version: 2c
-          host: "{{ inventory_hostname }}"
-```
-
-You can use these discovered variables for further processing devices in a dynamic fashion.
-
-```yaml
-  - ntc_show_command:
-      platform: "{{ ansible_device_vendor }}_{{ ansible_device_os }}"
-      ...
-```
-
----
-
-
-# Creating Dynamic Groups
-
-You are able to create dynamic groups within Ansible using the `group_by` module.  Using the data collected by the `snmp_device_version` module we are able to dynamically group devices by vendor, os, or version.
-
-In this example we are grouping the devices by vendor.  This will create a group named `vendor_` followed by the vendor name.  This group can be used in subsequent plays within the playbook. Dont forget about `groups` builtin variable that will show a dictionary of keys that are all group names defined in the inventory file and values are list of host names that are members of the group.
-.s2-code[
-```yaml
----
-
-  - name: DISCOVER VENDOR
-    hosts: iosxe,nxos,vmx
-    connection: local
-    gather_facts: no
-
-    tasks:
-
-      - name: QUERY DEVICE VIA SNMP
-        snmp_device_version:
-          community: networktocode
-          version: 2c
-          host: "{{ inventory_hostname }}"
-        tags: snmp
-
-      - group_by:
-          key: vendor_{{ ansible_device_vendor }}
-
-      - debug:
-          var: groups
-```
-]
-
----
-
-# Using the URI Module
-
-The `uri` module can be used to make HTTP-based API calls.
-
-```yaml
-      - name: GET INTERFACE IP ADDRESS
-        uri:
-          url: https://{{ inventory_hostname }}/restconf/data/Cisco-IOS-XE-native:native/interface=GigabitEthernet/1/ip/address
-          method: GET
-          user: "{{ ansible_user }}"
-          password: "{{ ansible_ssh_pass }}"
-          return_content: yes
-          validate_certs: no
-          headers:
-            Content-Type: application/yang-data+json
-            Accept: application/yang-data+json
-        register: response
-```
-
-This example shows how to make an API call against an IOSXE device to pull the IP address information for the `GigabitEthernet1` interface and assigning the returned value to the `response` variable.
-
-You can test all of these settings using Postman before building your Ansible tasks.
-
-
----
-
-# Tips: Using set_facts
-
-.left-column[
-- In contrast to using `register` to store the output of a task into a variable,
-the `set_fact` module allows a task to define a variable
-- Sometimes used to simplify the naming of a variable
-]
-
-.right-column[
-```yaml
-vars:
-  locations:
-    amer:
-      nyc:
-        - nyc-dc
-        - nyc-campus
-      sjc:
-        - sjc-branch
-    apac:
-      hk:
-        - hk-dc
-        - hk-campus
-
-tasks:
-  - name: PRINT ALL LOCATIONS
-    debug:
-      var: locations
-
-  - name: SJC LOCATIONS
-    set_fact:
-      sjc_locations: "{{ locations['amer']['sjc'] }}"
-
-  - name: PRINT ALL LOCATIONS
-    debug:
-      var: sjc_locations
-```
-]
-
----
-
-# Tips: Using from_json Filter
-
-- In a recent example, an API call to the IOSXE device received a JSON response
-in python, `json.loads()` would be used to convert the JSON object to a dictionary
-- In Ansible, instead use the `from_json` filter
-- For example, assuming the `response` API variable is earlier in the play:
-
-```yaml
-      - set_fact:
-          ip_info: "{{ response['content'] | from_json }}"
-
-      - debug:
-          var: ip_info['Cisco-IOS-XE-native:address']['primary']['address']
-```
-
----
-
-# Creating Documentation
-
-.left-column[
-
-You choose:
-
-- text
-- html
-- markdown
-- asciidoc
-- ...
-]
-
-
-.right-column[
-Then:
-- publish
-- alert
-- chatops
-- mail
-
-]
-
-
----
-
-# Know the Available Facts/Variables
-
-.left-column[
-
-- Template
-
-```bash
-# general.j2
-
-Device: {{ inventory_hostname }}
-
-Vendor:           {{ ntc_vendor }}
-Platform:         {{ platform }}
-Operating System: {{ ansible_network_os }}
-Image:            {{ kickstart_image }}
-
-```
-
-- Playbook
-
-```yaml
----
-
-  - name: DC P1
-    hosts: n9k1
-    connection: local
-    gather_facts: no
-
-    tasks:
-      - nxos_facts:
-
-      - template:
-          src: general.j2
-          dest: "files/general.md"
-
-```
-]
-
---
-
-.right-column[
-- Document
-
-```bash
-
-Device: n9k1
-
-Vendor:           cisco
-Platform:         Nexus9000 C9396PX Chassis
-Operating System: 7.0(3)I2(1)
-Image:            7.0(3)I2(1)
-
-```
-]
-
----
-
-# Documenting Neighbors
-
-.left-column[
-
-- Template
-
-```bash
-# neighbors.j2
-
-DEVICE: {{ inventory_hostname }}
-
-{% for neighbor in ntc_neighbors.response %}
-NEIGHBOR:           {{ neighbor.neighbor }}
-NEIGHBOR INTERFACE: {{ neighbor.neighbor_interface }}
-LOCAL INTERFACE:    {{ neighbor.local_interace }}
-
-{% endfor %}
-
-```
-- Playbook
-
-.s2-code[
-```yaml
----
-  - name: DC P1
-    hosts: eos-spine1
-    connection: local
-    gather_facts: no
-
-    tasks:
-      - ntc_show_command:
-          provider: "{{ ntc_provider }}"
-          command: "show lldp neighbor"
-        register: ntc_neighbors
-
-      - template:
-          src: neighbors.j2
-          dest: "files/neighbors.md"
-
-```
-]
-]
-
---
-
-.right-column[
-- Document
-
-```bash
-
-
-Device: eos-spine1
-
-NEIGHBOR:           leaf-tor1.arista.test
-NEIGHBOR INTERFACE: Ethernet1
-LOCAL INTERFACE:    Ethernet1
-
-NEIGHBOR:           leaf-tor2.arista.test
-NEIGHBOR INTERFACE: Ethernet1
-LOCAL INTERFACE:    Ethernet2
-
-NEIGHBOR:           spine2.arista.test
-NEIGHBOR INTERFACE: Ethernet5
-LOCAL INTERFACE:    Ethernet5
-
-NEIGHBOR:           spine2.arista.test
-NEIGHBOR INTERFACE: Ethernet6
-LOCAL INTERFACE:    Ethernet6
-
-NEIGHBOR:           spine2.arista.test
-NEIGHBOR INTERFACE: Ethernet7
-LOCAL INTERFACE:    Ethernet7
-
-```
-]
-
----
-
-# Using a Table (Neighbors)
-
-.left-column[
-
-- Template
-
-```bash
-# neighbors-table.j2
-| Source     | Interface    | Neighbor  | Interface    |
-| ---------- |--------------| ----------|------------- |
-{% for neighbor in ntc_neighbors.response %}
-| {{ inventory_hostname }} | {{ neighbor.local_interface }} | {{ neighbor.neighbor }} | {{ neighbor.neighbor_interface }} |
-{% endfor %}
-```
-- Playbook
-
-```yaml
----
-  - name: DC P1
-    hosts: eos-spine1
-    connection: local
-    gather_facts: no
-    tasks:
-      - ntc_show_command:
-          provider: "{{ ntc_provider }}"
-          command: "show lldp neighbor"
-        register: ntc_neighbors
-
-      - template:
-          src: neighbors.j2
-          dest: "files/neighbors-table.md"
-```
-
-
-]
---
-
-.right-column[
-- Markdown generated table
-.center[
-<img src="data/media/neighbor-table.png" alt="Neighbors Markdown Table" style="alight:middle;width:440px;height:340px;">
-]
-]
-
----
-
-# Summary
-
-- Understand the various ways to collect data about the network.
-- Templating is great for documentation (not just configurations)
-- Know your variables
-  - Any variable can be used in the playbook **and** template
-- Know your document formats
-- Understand Jinja2
-- Auto publish to github, web server, etc.
-- Key modules:
-  - template
-  - assemble
-
----
-
-# Lab Time
-
-- Lab 18 - Making REST API Calls from Ansible
-- Lab 19 - Discovering Device Types and Dynamically Creating Groups
-- Lab 20 - Data Collection Modules & Reporting
-  - Facts Data Collection Modules
-  - Structured Data from CLI Devices (ntc_show_command)
-  - Inventory Report
-
----
-
-class: middle, segue
-
-# Ansible Roles
-### Ansible for Network Automation
-
----
-
-# Reusable Abstractions
-
-- include statement
-- _includes_ tasks from another file
-
-
-```yaml
-# main playbook
----
-
-  - name: PB
-    hosts: all
-    connection: network_cli
-    gather_facts: no
-
-
-    tasks:
-
-      - include: get-facts.yml
-```
-
-```yaml
----
-# get-facts.yml
-
-- name: GET FACTS FROM ARISTA DEVICES
-  eos_facts:
-    connection: "{{ inventory_hostname }}"
-
-  ...<more getter tasks>...
-```
-
-
-
----
-
-# Parameterized Include
-
-- Pass parameters to _included_ tasks
-
-
-```yaml
-# main playbook
----
-  - name: CONFIGURE DEVICES
-    hosts: all
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
-
-      - include: get-facts.yml vendor={{ ntc_vendor }}
-```
-
-```yaml
-# get-facts.yml
----
-
-- name: GET FACTS FROM ARISTA DEVICES
-  eos_facts:
-    connection: "{{ inventory_hostname }}"
-  when: vendor == "arista"
-
-- name: GET FACTS FROM CISCO NXOS DEVICES
-  nxos_facts:
-    connection: "{{ inventory_hostname }}"
-  when: vendor == "cisco"
-```
-
----
-
-# Roles
-
-- re-usable abstraction of code (tasks, variables, and handlers)
-- Ansible Galaxy shares roles
-
-
-.left-column[
-
-```bash
-site.yml
-inventory
-roles/
-   common/
-     files/
-     templates/
-     tasks/
-     handlers/
-     vars/
-     defaults/
-   vlans/
-     templates/
-     tasks/
-       main.yml
-       eos.yml
-       nxos.yml
-       junos.yml
-     vars/
-   snmp/
-     templates/
-     tasks/
-     vars/
-```
-]
-
-.right-column[
-
-```yaml
----
-
-- name: SAMPLE PLAYBOOK USING ROLES
-  hosts: leaves
-  connection: network_cli
-  gather_facts: no
-
-  roles:
-     - common
-     - vlans
-```
-
-- directory structure is an example
-- no need to have tasks or vars for every role
-- files in each sub-directory are called `main.yml`
-
-]
-
----
-
-# Parameterized Roles
-
-```yaml
----
-
-- hosts: spine
-  connection: network_cli
-  gather_facts: no
-  roles:
-    - common
-    - spine
-    - role: vlan
-      vlan_id: 10
-    - role: snmp
-      contact: Bob
-```
-
----
-
-# VLAN Role
-
-.left-column[
-
-```yaml
-# main playbook
-.---
-
-  - name: DC P1
-    hosts: datacenter
-    connection: network_cli
-    gather_facts: no
-
-    roles:
-      - vlans
-
-```
-
-
-```yaml
-# roles/vlans/tasks/main.yml
----
-
-- name: ARISTA VLANs
-  eos_vlan:
-    vlanid: "{{ item.id }}"
-    connection: "{{ inventory_hostname }}"
-  loop: "{{ vlans }}"
-  when: vendor == "arista"
-
-- name: CISCO VLANs
-  nxos_vlan:
-    vlan_id: "{{ item.id }}"
-    host: "{{ inventory_hostname }}"
-  loop: "{{ vlans }}"
-  when: vendor == "cisco"
-```
-
-
-
-]
-
-.right-column[
-
-```bash
-[datacenter]
-spine1 vendor=arista
-n9k1 vendor=cisco
-```
-
-
-
-```yaml
-# group_vars/all.yml
-
-vlans:
-  - id: 10
-    name: web_servers
-  - id: 20
-  - id: 30
-    name: db_servers
-
-```
-
-
-]
-
----
-
-# VLAN Role Improved
-
-.left-column[
-
-```yaml
-# main playbook
-.---
-  - name: DC P1
-    hosts: datacenter
-    connection: network_cli
-    gather_facts: no
-    roles:
-      - vlans
-
-```
-
-
-```yaml
-# roles/vlans/tasks/main.yml
----
-- include: "{{ ntc_vendor }}.yml"
-```
-
-```yaml
-# roles/vlans/tasks/arista.yml
----
-- name: ARISTA VLANs
-  eos_vlan:
-    vlanid: "{{ item.id }}"
-    connection: "{{ inventory_hostname }}"
-  loop: "{{ vlans }}"
-```
-```yaml
-# roles/vlans/tasks/cisco.yml
-- name: CISCO VLANs
-  nxos_vlan:
-    vlan_id: "{{ item.id }}"
-    host: "{{ inventory_hostname }}"
-  loop: "{{ vlans }}"
-```
-]
-
-.right-column[
-
-```bash
-[datacenter]
-spine1 ntc_vendor=arista
-n9k1 ntc_vendor=cisco
-```
-
-
-
-```yaml
-# group_vars/all.yml
-
-vlans:
-  - id: 10
-    name: web_servers
-  - id: 20
-  - id: 30
-    name: db_servers
-
-```
-
-
-]
-
-
----
-
-
-# Summary
-
-- Think about the functions, features, or applications of the device
-- Big Picture vs. Details
-- Encapsulate
-- For networking- think multi-vendor features
-
----
-
-# Lab Time
-
-- Lab 21 - Creating an Ansible Role
-  - Create a multi-vendor VLAN role that works with Cisco and Arista devices
-
----
-
-
-class: middle, segue
-
 # Dynamic Inventory
 ### Ansible for Network Automation
 
