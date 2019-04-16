@@ -1,4 +1,4 @@
-## Lab 11 - Build / Push with Ansible
+## Lab 25 - Build / Push with Ansible
 
 
 ![Lab Topology](images/lab-topology.png)

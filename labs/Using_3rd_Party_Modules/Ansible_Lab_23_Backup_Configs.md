@@ -1,4 +1,4 @@
-## Lab 09 - Backup and Restore Network Configurations Part 1
+## Lab 23 - Backup and Restore Network Configurations Part 1
 
 This lab will show how to use Ansible to manage network device configurations and focuses on the process of backing up and re-storing and deploying full configuration files.
 

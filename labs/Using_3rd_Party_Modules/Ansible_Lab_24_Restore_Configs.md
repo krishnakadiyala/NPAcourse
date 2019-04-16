@@ -1,4 +1,4 @@
-## Lab 10 - Backup and Restore Network Configurations Part 2
+## Lab 24 - Backup and Restore Network Configurations Part 2
 
 This lab will "restore" the configuration files you previously backed up.
 
