@@ -201,7 +201,7 @@ The `selectattr` filter reads through a sequence of objects by applying a test t
           speed: 1000
           duplex: full
           status: true
-        - name: Eth3
+        - name: Eth2
           speed: 1000
           duplex: full
           status: true
@@ -268,7 +268,7 @@ ok: [localhost] => {
         },
         {
             "duplex": "full",
-            "name": "Eth3",
+            "name": "Eth2",
             "speed": 1000,
             "status": true
         }
@@ -316,7 +316,7 @@ TASK [RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES
 ok: [localhost] => {
     "interfaces_config | map(attribute=\"name\") | list": [
         "Eth1",
-        "Eth3",
+        "Eth2",
         "Eth3"
     ]
 }
@@ -366,7 +366,7 @@ TASK [RETURN JUST LIST OF INTERFACE NAMES THAT ARE UP (TRUE)] ******************
 ok: [localhost] => {
     "interfaces_config | selectattr(\"status\") | map(attribute=\"name\") | list": [
         "Eth1",
-        "Eth3"
+        "Eth2"
     ]
 }
 
@@ -398,7 +398,7 @@ tasks:
         debug:
           var: interface_state | ternary("up", "down")
 
-      - name: CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING
+      - name: CONVERT BOOLEAN T/F USING PROGRAMING LOGIC
         debug:
           msg: "{{ 'up' if interface_state else 'down' }}"
 
@@ -420,7 +420,7 @@ ok: [localhost] => {
     "interface_state | ternary(\"up\", \"down\")": "down"
 }
 
-TASK [CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING] ****************************************************
+TASK [CONVERT BOOLEAN T/F USING PROGRAMING LOGIC] ****************************************************
 ok: [localhost] => {
     "msg": "down"
 }
@@ -464,7 +464,7 @@ Check the final playbook
           speed: 1000
           duplex: full
           status: true
-        - name: Eth3
+        - name: Eth2
           speed: 1000
           duplex: full
           status: true
@@ -507,7 +507,7 @@ Check the final playbook
         debug:
           var: interface_state | ternary("up", "down")
 
-      - name: CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING
+      - name: CONVERT BOOLEAN T/F USING PROGRAMING LOGIC
         debug:
           msg: "{{ 'up' if interface_state else 'down' }}"
 ```
