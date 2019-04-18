@@ -20,7 +20,7 @@
  Configuration Templating with Jinja2 and YAML
 - [Lab 12 - Getting Started with Jinja2 Templates](labs/Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_12_Jinja2_Config_Templates_01.md)
 - [Lab 13 - Expanding the use of Jinja2 Templates](labs/Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_13_Jinja2_Config_Templates_02.md)
-- [Lab 14 Using Network Centric Jija2 Filters - ](labs/Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_14_Using_Network_Centric_Jinja2_Filters.md)
+- [Lab 14 Using Network Centric Jija2 Filters](labs/Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_14_Using_Network_Centric_Jinja2_Filters.md)
 
  Diving Deeper into Core Command and Config Modules 
 - [Lab 15 - Validating Reachability with the Command Module](labs/Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_15_Core_Command_Module_02.md)
@@ -32,8 +32,8 @@
 - [Lab 21 - Getting Started with Roles](labs/Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_21_Creating_Ansible_Role.md)
 
  Using 3rd Party Modules 
-- [Lab 22 - Backing Up Configs with NTC (3rd Party) ](labs/Using_3rd_Party_Modules/Ansible_Lab_22_Backup_Configs.md)
-- [Lab 23 - Restoring Configs with NAPALM (3rd Party) ](labs/Using_3rd_Party_Modules/Ansible_Lab_23_Restore_Configs.md)
+- [Lab 22 - Backing Up Configs with NTC (3rd Party)](labs/Using_3rd_Party_Modules/Ansible_Lab_22_Backup_Configs.md)
+- [Lab 23 - Restoring Configs with NAPALM (3rd Party)](labs/Using_3rd_Party_Modules/Ansible_Lab_23_Restore_Configs.md)
 - [Lab 24 - Build / Push with NAPALM ](labs/Using_3rd_Party_Modules/Ansible_Lab_24_Build_Push.md)
 
  Bonus Labs 

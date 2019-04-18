@@ -1,10 +1,83 @@
 ## Lab 23 - Backup and Restore Network Configurations Part 1
 
+Before Starting the lab we are going to go over how to add a 3rd party modules to your ansible workstation. Below are some tips on how to do it, but for this lab environment it has already been added so we don't have to apply any changes. 
+
+---
+#### Adding 3rd Party Modules
+
+##### Step 1
+
+You need to perform two steps to start using 3rd party modules.
+
+* Ensure this repository is in your Ansible module search path
+* Install Dependencies
+
+ ```commandline
+   ntc@jump-host:~/ansible$ ansible --version
+   ansible 2.7.9
+      config file = /etc/ansible/ansible.cfg
+      configured module search path = [u'/etc/ansible/library']
+      ansible python module location = /Library/Python/2.7/site-packages/ansible
+      executable location = /usr/local/bin/ansible
+      python version = 2.7.10 (default, Aug 17 2018, 17:41:52)
+      
+   ntc@jump-host:~/ansible$
+  ```
+  
+If you already have a search path configured, clone the repo (see options below) while you are in your search path.
+
+If you have a "default" or No search path shown, open the config file that is shown in the output above, in this example we have `/etc/ansible/ansible.cfg`.
+In that file, you'll see these first few lines:
+
+```commandline
+  [defaults]
+
+  # some basic default values...
+
+  inventory      = /etc/ansible/hosts
+  library        = ADD PATH HERE
+```
+
+##### Step 2
+
+Add a path for library - this will become your search path. Validate it with ansible --version after you make the change. If you would like to add an additional path use `:` to add another path to the list.
+
+```bash
+[defaults]
+
+# some basic default values...
+
+inventory      = /etc/ansible/hosts
+library        = /home/ntc/projects/:/etc/ansible/library
+```
+
+```commandline
+   ntc@jump-host:~/ansible$ ansible --version
+   ansible 2.7.9
+      config file = /etc/ansible/ansible.cfg
+      configured module search path = [u'/etc/ansible/library', u'/home/ntc/projects']
+      ansible python module location = /Library/Python/2.7/site-packages/ansible
+      executable location = /usr/local/bin/ansible
+      python version = 2.7.10 (default, Aug 17 2018, 17:41:52)
+    
+   ntc@jump-host:~/ansible$
+```
+
+##### Step 3
+
+* After the ansible.cfg file has been configured you can start installing the 3rd party module. Since not every module is the same the common process of installation is to run a `pip install` or `git clone repo`
+
+* It's recommend to follow the 3rd party module instructions to make sure it has met its depencies requirements, what's important after the install is to make sure the libraries are in placed in where we have configured `configured module search path = [u'/etc/ansible/library', u'/home/ntc/projects']` of the `ansible.cfg` file.
+
+
+
+---
+### Task 1 - Backup Configurations
+
+
 This lab will show how to use Ansible to manage network device configurations and focuses on the process of backing up and re-storing and deploying full configuration files.
 
 We'll use two main modules to do this:  one that is used to backup the configurations (ntc_show_command) and another that is used to deploy the configurations (NAPALM).
-
-### Task 1 - Backup Configurations
 
 In this task, you will save and backup the current running configuration of all of your devices.
 

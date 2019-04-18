@@ -198,6 +198,7 @@ Now create three new files in the `host_vars` directory - one per device.  These
 File: `host_vars/csr1.yml`
 
 ```yaml
+
 ---
 
 interfaces:
@@ -227,6 +228,9 @@ interfaces:
 File: `host_vars/csr2.yml`
 
 ```yaml
+
+---
+
 interfaces:
   - name: Loopback100
     state: up
@@ -248,7 +252,6 @@ interfaces:
     mask: 255.255.255.0
     description: CONNECTS_CSR2
     cdp: true
-
 ```
 
 
@@ -257,6 +260,9 @@ File: `host_vars/csr3.yml`
 Notice the different syntax that can be used for a list of dictionaries.
 
 ```yaml
+
+---
+
 interfaces:
   - name: Loopback100
     state: up
@@ -378,7 +384,6 @@ ospf_interfaces:
   - GigabitEthernet2
   - GigabitEthernet4
   - Loopback100
-
 ```
 
 
@@ -391,7 +396,6 @@ ospf_interfaces:
   - GigabitEthernet3
   - GigabitEthernet4
   - Loopback100
-
 ```
 
 
@@ -404,7 +408,6 @@ ospf_interfaces:
   - GigabitEthernet2
   - GigabitEthernet3
   - Loopback100
-
 ```
 
 
@@ -507,6 +510,7 @@ VARS FILES:
 `group_vars/all.yml`:
 
 ```yaml
+
 ---
 
 # Possible other content from previous labs
@@ -532,13 +536,13 @@ snmp:
   ro_comm: networktocode
   location: NYC_NY_DC1
   contact: NETWORK_ADMIN
-
 ```
 
 
 `host_vars/csr1.yml`
 
 ```yaml
+
 ---
 
 # Possible other content from previous labs
@@ -571,13 +575,12 @@ ospf_interfaces:
   - GigabitEthernet2
   - GigabitEthernet4
   - Loopback100
-
-
 ```
 
 `host_vars/csr2.yml`
 
 ```yaml
+
 ---
 
 # Possible other content from previous labs
@@ -611,12 +614,12 @@ ospf_interfaces:
   - GigabitEthernet3
   - GigabitEthernet4
   - Loopback100
-
 ```
 
 `host_vars/csr3.yml`
 
 ```yaml
+
 ---
 
 # Possible other content from previous labs
@@ -649,7 +652,6 @@ ospf_interfaces:
   - GigabitEthernet2
   - GigabitEthernet3
   - Loopback100
-
 ```
 
 
@@ -678,6 +680,7 @@ Two parameters will be passed to the module:  `src` which is the source template
 This play should be limited to the `iosxe` group in the inventory file, so use the `hosts: iosxe` in the play definition.
 
 ```yaml
+
 ---
 
   - name: Build & Deploy IOS Configurations
@@ -764,6 +767,7 @@ The following parameters will be used for the napalm_install_config module (as s
 Add the following task to the `build-push.yml` playbook:
 
 ```yaml
+
 ---
 
   - name: Build & Deploy IOS Configurations
