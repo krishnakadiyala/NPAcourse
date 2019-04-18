@@ -38,9 +38,6 @@ Add a new SNMP command to the `ios_config` `commands`  and `junos_config` `lines
             - set snmp community supersecret authorization read-write
             - set snmp location NYC_HQ
             - set snmp contact JOHN_SMITH
-  
-  
-  
 ```
 
 Save the playbook.
@@ -176,8 +173,7 @@ So that the complete playbook looks like this:
             - set snmp community public authorization read-only
             - set snmp community supersecret authorization read-write
             - set snmp location NYC_HQ_COLO
-            - set snmp contact JOHN_SMITH
-            
+            - set snmp contact JOHN_SMITH      
 ```
 
 

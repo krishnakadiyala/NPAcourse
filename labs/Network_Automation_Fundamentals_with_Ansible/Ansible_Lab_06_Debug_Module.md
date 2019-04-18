@@ -47,7 +47,6 @@ Use the following for the starting point of the playbook.  This will execute for
     tasks:
       - name: DEBUG AND PRINT TO TERMINAL
         debug: var=ntc_vendor
-
 ```
 
 ##### Step 5
@@ -87,7 +86,6 @@ Note, this just printed the variable to the terminal.
 Change the `hosts:` in the play definition to automate "all" devices in the inventory file.
 
 ```
-
     hosts: all
 ```
 
@@ -195,8 +193,6 @@ Add a task to the playbook to debug the `device_type` variable so the playbook r
 
       - name: DEBUG AND PRINT DEVICE TYPE TO TERMINAL
         debug: var=ntc_device_type
-
-
 ```
 
 ##### Step 3
@@ -205,11 +201,9 @@ Save and execute the following:
 
 ```
 ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
-
 ```
 
 You should see the following output for the new task:
-
 
 ```
 TASK [DEBUG AND PRINT DEVICE TYPE TO TERMINAL] **********************************
@@ -249,7 +243,6 @@ ok: [nxos-spine1] => {
 ok: [nxos-spine2] => {
     "ntc_device_type": "unknown"
 }
-
 ```
 
 ##### Step 4
@@ -271,8 +264,6 @@ ansible_network_os=nxos
 ntc_api=nxapi
 ntc_vendor=cisco
 ntc_device_type=n7kv
-
-
 ```
 
 ##### Step 5
@@ -281,7 +272,6 @@ Save and execute the following:
 
 ```
 ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
-
 ```
 
 You should see the following output for the new task:
@@ -324,8 +314,6 @@ ok: [nxos-spine1] => {
 ok: [nxos-spine2] => {
     "ntc_device_type": "n7kv"
 }
-
-
 ```
 
 See how the more specific group variables are taking priority over the _all_ group?
@@ -349,7 +337,6 @@ csr3
 [nxos-spines]
 nxos-spine1  ntc_device_type=n9k
 nxos-spine2
-
 ```
 
 ##### Step 2
@@ -415,7 +402,6 @@ Add a new task to the playbook to debug the `inventory_hostname` and `ansible_ne
 
 The `inventory_hostname` variable is a built-in variable that's equal to the hostname of the device as you've defined it in the inventory file.
 
-
 ```
 
 ---
@@ -435,7 +421,6 @@ The `inventory_hostname` variable is a built-in variable that's equal to the hos
 
       - name: DEBUG AND PRINT THE OS
         debug: msg="The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
-
 ```
 
 ##### Step 2
@@ -482,8 +467,6 @@ ok: [nxos-spine1] => {
 ok: [nxos-spine2] => {
     "msg": "The OS for nxos-spine2 is nxos."
 }
-
-
 ```
 
 
@@ -527,7 +510,6 @@ However, Ansible also supports a more native YAML syntax using colons in which i
 ##### Step 1
 
 Convert this playbook to using the YAML syntax.
-
 
 ```yaml
 
@@ -631,8 +613,6 @@ ok: [eos-leaf1] => {
 ok: [eos-leaf2] => {
     "msg": "Devices defined in inventory_hostname: eos-leaf2 and ansible_host: eos-leaf2"
 }
-
-
 ```
 
 

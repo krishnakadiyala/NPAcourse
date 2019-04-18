@@ -8,7 +8,6 @@ In this task, you will use the cli_command module to issue show commands against
 
 Create a new playbook called `cli-command.yml` in the `ansible` directory.  You have your choice to automate EOS, or NXOS devices.  While all examples reflect IOS and JUNOS devices, it's the same workflow for any of them.
 
-
 ```yaml
 
 ---
@@ -41,7 +40,6 @@ Add a task to issue the `show version` command.
         cli_command:
           command: show version
         register: config_data
-
 ```
 
 ##### Step 3
@@ -102,7 +100,6 @@ ok: [vmx1] => {
         "stdout": "Hostname: vmx1\nModel: vmx\nJunos: 18.2R1.9\nJUNOS OS Kernel 64-bit  [20180614.6c3f819_builder_stable_11]\nJUNOS OS libs [20180614.6c3f819_builder_stable_11]\nJUNOS OS runtime [20180614.6c3f819_builder_stable_11]\nJUNOS
         
         output ommited ...
-
 ```
 
 `config_data` is a JSON object (think dictionary) that has several key value pairs, e.g. `changed`, `failed`, `stdout`, and `stdout_lines` (not shown).
@@ -198,14 +195,12 @@ Full and final playbook will look like this:
       - name: SAVE SH VERSION TO FILE
         template:
          src: basic-copy.j2
-         dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
-          
+         dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt        
 ```
 
 ##### Step 13
 
 Save and execute the playbook and check the new files created in the `command-outputs` directory. 
-
 
 ```commandline
 
