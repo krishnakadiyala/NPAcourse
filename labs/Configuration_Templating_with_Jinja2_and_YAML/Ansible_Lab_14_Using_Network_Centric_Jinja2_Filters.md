@@ -197,15 +197,15 @@ The `selectattr` filter reads through a sequence of objects by applying a test t
           name: db_vlan
           
       interfaces_config:
-        - name: Eth1
+        - name: GigabitEthernet1
           speed: 1000
           duplex: full
           status: true
-        - name: Eth3
+        - name: GigabitEthernet2
           speed: 1000
           duplex: full
           status: true
-        - name: Eth3
+        - name: GigabitEthernet3
           speed: 1000
           duplex: full
           status: false
@@ -262,13 +262,13 @@ ok: [localhost] => {
     "interfaces_config | selectattr(\"status\") | list": [
         {
             "duplex": "full",
-            "name": "Eth1",
+            "name": "GigabitEthernet1",
             "speed": 1000,
             "status": true
         },
         {
             "duplex": "full",
-            "name": "Eth3",
+            "name": "GigabitEthernet2",
             "speed": 1000,
             "status": true
         }
@@ -315,9 +315,9 @@ ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
 TASK [RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES] *******************************************************
 ok: [localhost] => {
     "interfaces_config | map(attribute=\"name\") | list": [
-        "Eth1",
-        "Eth3",
-        "Eth3"
+        "GigabitEthernet1",
+        "GigabitEthernet2",
+        "GigabitEthernet3"
     ]
 }
 
@@ -365,8 +365,8 @@ ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
 TASK [RETURN JUST LIST OF INTERFACE NAMES THAT ARE UP (TRUE)] ***************************************************
 ok: [localhost] => {
     "interfaces_config | selectattr(\"status\") | map(attribute=\"name\") | list": [
-        "Eth1",
-        "Eth3"
+        "GigabitEthernet1",
+        "GigabitEthernet2"
     ]
 }
 
@@ -398,7 +398,7 @@ tasks:
         debug:
           var: interface_state | ternary("up", "down")
 
-      - name: CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING
+      - name: CONVERT BOOLEAN T/F USING PROGRAMING LOGIC
         debug:
           msg: "{{ 'up' if interface_state else 'down' }}"
 
@@ -420,7 +420,7 @@ ok: [localhost] => {
     "interface_state | ternary(\"up\", \"down\")": "down"
 }
 
-TASK [CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING] ****************************************************
+TASK [CONVERT BOOLEAN T/F USING PROGRAMING LOGIC] ****************************************************
 ok: [localhost] => {
     "msg": "down"
 }
@@ -460,15 +460,15 @@ Check the final playbook
           name: db_vlan
           
       interfaces_config:
-        - name: Eth1
+        - name: GigabitEthernet1
           speed: 1000
           duplex: full
           status: true
-        - name: Eth3
+        - name: GigabitEthernet2
           speed: 1000
           duplex: full
           status: true
-        - name: Eth3
+        - name: GigabitEthernet3
           speed: 1000
           duplex: full
           status: false
@@ -507,7 +507,146 @@ Check the final playbook
         debug:
           var: interface_state | ternary("up", "down")
 
-      - name: CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING
+      - name: CONVERT BOOLEAN T/F USING PROGRAMING LOGIC
         debug:
           msg: "{{ 'up' if interface_state else 'down' }}"
+          
 ```
+
+
+### Task 2 - Challenge:  Build Configuration using filters we just used
+
+##### Step 1
+
+Create a new playbook in the `ansible` directory called `jinja_challenge.yml`  and a new jinja2 template in the templates directory called `challenge_config.j2`.
+
+
+```commandline
+
+ntc@jump-host:ansible$ touch jinja_challenge.yml
+ntc@jump-host:ansible$
+ntc@jump-host:ansible$ touch templates/challenge_config.j2
+ntc@jump-host:ansible$
+
+```
+##### Step 2
+
+We are going to use the same variables as the previous task, so add them to the new playbook and add a single task using the `template` module. Like before we are going to use this module to render data from our variables and our `jinja2` template.
+
+````yaml
+
+---
+
+  - name: JINJA CHALLENGE
+    hosts: localhost
+    connection: local
+    gather_facts: no
+
+    vars:
+
+        hostname: nycr1
+
+      vlans:
+        - id: 10
+          name: web_vlan
+        - id: 20
+          name: app_vlan
+        - id: 30
+          name: db_vlan
+          
+      interfaces_config:
+        - name: GigabitEthernet1
+          speed: 1000
+          duplex: full
+          status: true
+        - name: GigabitEthernet2
+          speed: 1000
+          duplex: full
+          status: true
+        - name: GigabitEthernet3
+          speed: 1000
+          duplex: full
+          status: false
+
+    tasks:
+
+
+      - name: GENERATE CONFIGURATION
+        template:
+          src: challenge_config.j2
+          dest: ./configs/challenge_config.cfg
+````
+
+
+##### Step 3
+
+In the `challenge_config.j2` add the required filters that will give us this output:
+
+
+```
+
+hostname NYCR1
+interface GigabitEthernet1
+  vlan-id dot1q 10
+  description WEB_VLAN
+
+  vlan-id dot1q 20
+  description APP_VLAN
+
+  vlan-id dot1q 30
+  description DB_VLAN
+
+interface GigabitEthernet2
+  vlan-id dot1q 10
+  description WEB_VLAN
+
+  vlan-id dot1q 20
+  description APP_VLAN
+
+  vlan-id dot1q 30
+  description DB_VLAN
+
+```
+
+>Note: I would recomend to use https://td4a.now.sh to make things easier if needed.
+
+Below is the **jinja2** template that needs to be added to `challenge_config.j2`
+
+```
+
+
+hostname {{ hostname | filter }}
+{% for interface in interfaces_config | filter | filter | filter %}
+interface {{ interface }}
+{% for vlan in vlans %}
+  vlan-id dot1q {{ vlan['id'] }}
+  description {{ vlan['name'] | filter }}
+
+{% endfor %}
+{% endfor %}
+
+```
+
+##### Step 4
+
+After adding the required filters to the template. Save the `challenge_config.j2` and run the playbook. You should be able to see the following output:
+
+```commandline
+
+ntc@jump-host:ansible$ ansible-playbook jinja_challenge.j2
+PLAY [JINJA CHALLENGE] ******************************************************
+
+TASK [GENERATE CONFIGURATION] ***************************************************
+changed: [localhost]
+
+PLAY RECAP *******************************************************************
+localhost                  : ok=1    changed=1    unreachable=0    failed=0
+
+ntc@jump-host:ansible$
+
+```
+
+After running the playbook look inside the `./configs/` directory to find the built config file. 
+
+
+
