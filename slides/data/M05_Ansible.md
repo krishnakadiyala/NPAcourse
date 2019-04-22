@@ -104,6 +104,7 @@ class: center, middle, title
 # Updating SNMP Community strings
 
 ```yaml
+
 ---
 
   - name: DEPLOY SNMP COMMUNITY STRINGS ON IOS DEVICES
@@ -125,8 +126,6 @@ class: center, middle, title
     - name: DEPLOY USING JINJA2 TEMPLATE
       ios_config:
         src: "snmp.j2"
-
-
 ```
 
 
@@ -138,6 +137,7 @@ class: center, middle, title
 
 
 ```yaml
+
 ---
 
   - name: UPGRADE NEXUS SWITCHES
@@ -159,7 +159,6 @@ class: center, middle, title
       - name: PERFORM THE UPGRADE
         nxos_install_os:
           system_image_file: nxos.7.0.3.I2.2d.bin
-
 ```
 
 Note: a more seamless upgrade requires a few more tasks.
@@ -170,6 +169,7 @@ Note: a more seamless upgrade requires a few more tasks.
 # Backup Configuration and Restore
 
 ```yaml
+
 ---
 
   - name: BACKUP AND RESTORE
@@ -195,7 +195,6 @@ Note: a more seamless upgrade requires a few more tasks.
           commit_changes: true
           dev_os: "{{ ansible_network_os }}"
         tags: restore
-
 ```
 
 ---
@@ -205,6 +204,7 @@ Note: a more seamless upgrade requires a few more tasks.
 Configure interface descriptions based on active neighbors
 
 ```yaml
+
 ---
 
   - name: Auto-configure port descriptions
@@ -922,9 +922,372 @@ ansible_connection=local
 ```
 ]
 
+
 ---
 
-#TODO
+# YAML
+
+- Human readable data serialization language
+- Heavily used for configuration files
+- Relies heavily on indentation
+- 2 space indent is common
+- Superset of JSON
+
+
+---
+
+# YAML Basics
+
+**YAML documents start with 3 hyphens (`---`)**
+
+Basic Key-Value Pairs
+.left-column[
+YAML
+
+```yaml
+---
+  hostname: switch1
+  snmp_ro: public
+  snmp_rw: private
+  snmp_location: "nyc"
+
+  # integer
+  vlan_id: 100
+
+  # string
+  vlan_id: "101"
+
+```
+]
+
+.right-column[
+JSON
+
+``` json
+{
+  hostname: switch1,
+  snmp_ro: public,
+  snmp_rw: private,
+  snmp_location: "nyc",
+  vlan_id: 100,
+  vlan_id: "101"
+}
+
+
+Note: You can comment YAML but not JSON
+
+```
+]
+
+
+
+---
+
+# YAML Basics
+
+List of Strings / Numbers
+
+.left-column[
+YAML
+
+```yaml
+---
+  snmp_ro_communities:
+    - public
+    - public123
+
+  vlans:
+    - 100
+    - 101
+    - 102
+    - 103
+    - 104
+
+```
+]
+
+.right-column[
+JSON
+
+``` json
+{
+    "snmp_ro_communities": [
+        "public",
+        "public123"
+    ],
+    "vlans": [
+        100,
+        101,
+        102,
+        103,
+        104
+    ]
+}
+
+
+```
+
+]
+
+
+---
+
+# YAML Basics
+
+List of dictionaries
+
+.left-column[
+YAML
+
+``` yaml
+---
+  - vlan_name: web
+    vlan_id: '10'
+    vlan_state: active
+  - vlan_name: app
+    vlan_id: '20'
+    vlan_state: active
+  - vlan_name: DB
+    vlan_id: '30'
+    vlan_state: active
+
+```
+]
+
+.right-column[
+JSON
+
+``` json
+[
+    {
+    "vlan_name": "web",
+    "vlan_id": "10",
+    "vlan_state": "active"
+    },
+    {
+    "vlan_name": "app",
+    "vlan_id": "20",
+    "vlan_state": "active"
+    },
+    {
+    "vlan_name": "DB",
+    "vlan_id": "30",
+    "vlan_state": "active"
+    }
+
+]
+
+```
+]
+
+
+---
+
+# YAML Advanced Data Types
+
+Dictionaries
+
+.left-column[
+YAML
+
+```yaml
+---
+
+snmp:
+  ro: public
+  rw: private
+  info:
+    location: nyc
+    contact: bob
+
+vlans:
+  10:
+    name: web
+  20:
+    name: app
+
+
+```
+
+]
+
+.right-column[
+JSON
+
+``` json
+{
+  "snmp": {
+    "ro": "public",
+    "rw": "private",
+    "info": {
+      "location": "nyc",
+      "contact": "bob"
+    }
+  },
+  "vlans": {
+    "10": {
+      "name": "web"
+    },
+    "20": {
+      "name": "app"
+    }
+  }
+}
+```
+
+]
+
+
+---
+# YAML Advanced Data Types
+Dictionaries that are lists of dictionaries
+
+.left-column[
+YAML
+
+```yaml
+---
+vlans:
+  - id: 10
+    name: web
+  - id: 20
+    name: app
+
+snmp_community_strings:
+  - type: ro
+    community: public
+  - type: ro
+    community: networktocode
+  - type: rw
+    community: private
+
+```
+
+]
+
+.right-column[
+JSON
+
+.small-code[
+``` json
+{
+  "vlans": [
+    {
+      "id": 10,
+      "name": "web"
+    },
+    {
+      "id": 20,
+      "name": "app"
+    }
+  ],
+  "snmp_community_strings": [
+    {
+      "type": "ro",
+      "community": "public"
+    },
+    {
+      "type": "ro",
+      "community": "networktocode"
+    },
+    {
+      "type": "rw",
+      "community": "private"
+    }
+  ]
+}
+
+```
+]
+]
+
+---
+
+# YAML Advanced Data Types
+
+YAML is a superset of JSON
+
+.left-column[
+YAML
+
+``` yaml
+---
+ned:Loopback:
+  #YAML supports comments
+  name: 200
+  ip:
+    address:
+      primary:
+        address: 100.200.2.2
+        mask: 255.255.255.0
+      secondary:
+      - address: 100.200.20.20
+      - address: 100.200.200.200
+
+```
+
+
+]
+
+.right-column[
+JSON
+
+``` json
+{
+  "ned:Loopback": {
+    "name": 200,
+      "ip": {
+      "address": {
+        "primary": {
+          "address": "100.200.2.2",
+          "mask": "255.255.255.0"
+        },
+        "secondary": [
+          {
+            "address": "100.200.20.20"
+          },
+          {
+            "address": "100.200.200.200"
+          }
+        ]
+      }
+      }
+  }
+}
+
+```
+
+]
+
+---
+
+# Data Types - Summary
+
+- For most automation tasks YAML and JSON have 1-1 mapping
+- They both tie back to dictionaries
+- A lot of initial automation tasks revolve around parsing return
+  data, therefore it is important to understand:
+      - Lists of lists
+      - Lists of dictionaries
+      - Dictionaries with lists
+      - Complex nested objects
+- Always remember to traverse a complex object from left to right
+---
+
+
+# Demo
+
+- Validate YAML
+- http://yamllint.com/
+- YAML to JSON Conversion
+- JSON to YAML Conversion
+- https://www.json2yaml.com
+- Understand how to model network configuration data in YAML (for use in Ansible)
+- Compare/Contrast Data Models on different platforms
+
+---
+
+#TODO -- DONE needs review
 
 ADD A SLIDE ON YAML SYNTAX AND JSON
 
@@ -951,6 +1314,24 @@ You have other options so you don't have to always use `-i`:
   * Default inventory file is `/etc/ansible/hosts`
   * Define (export) an environment variable called `ANSIBLE_INVENTORY`
   * Over-ride the default in your `ansible.cfg` file (verify with `ansible --version`)
+
+---
+
+# TODO
+
+Add a slide describing the PLAY RECAP after running a playbook
+
+```
+TASK [file] ***************************************************************
+changed: [csr2]
+ok: [csr1]
+ok: [csr3]
+
+PLAY RECAP *****************************************************************
+csr1                       : ok=2    changed=0    unreachable=0    failed=0
+csr2                       : ok=2    changed=1    unreachable=0    failed=0
+csr3                       : ok=2    changed=0    unreachable=0    failed=0
+```
 
 ---
 
@@ -1088,8 +1469,11 @@ class: center, middle
 - Lab 1 - Deploying "Basic" Configurations with Ansible
   - Write Your First Ansible Playbook that will configure SNMP setting on 6 devices!
         - 3 IOS and 3 JUNOS devices
-- Lab 2 - Deploying Configs From a File
+- Lab 2 - Deploying Configs From a File Using *_config
   - Shows how to push configuration using files.
+- Lab 3 - Deploying Configs From a File Using cli_config
+  - Shows how to push configuration using files.
+
 
 
 ---
@@ -1760,17 +2144,10 @@ ntc@ntc:ansible$
 
 # Lab Time
 
-- Lab 3 - Using Check Mode and Verbosity
-- Lab 4 - Deploying Configs From a File Using cli_config
+- Lab 4 - Using Check Mode and Verbosity
 - Lab 5 - Building the course inventory file
 - Lab 6 - Using the debug module
 - Lab 7 - Prompting the User for Input
-
-
-
----
-class: middle, segue
-#Diving Deeper into Core Command and Config Modules
 
 
 ---
@@ -2097,7 +2474,16 @@ ok: [csr1] => {
 ]
 
 
+---
 
+#TODO
+
+Add slide or few on `cli_command` which is for lab 10
+
+- show the difference on how we are able to use a single task for two different vendors rather than a module per vendor
+- It cuts down the number of lines in a playbook
+- show the difference in the output for `stdout`
+- add demo slide
 
 ---
 
@@ -2171,15 +2557,7 @@ Add slide on `file` module which is for LAB 8
 - show ansible-doc on file module 
 - the difference between building files and directories manually vs automated
 
----
 
-#TODO
-
-Add slide or few on `cli_command` which is for lab 10
-
-- show the difference on how we are able to use a single task for two different vendors rather than a module per vendor
-- It cuts down the number of lines in a playbook
-- show the difference in the output for `stdout`
 
 ---
 
@@ -2190,6 +2568,11 @@ Add slide or few on `cli_command` which is for lab 10
 - Lab 10 - Getting started with the cli_command Module
 - Lab 11 - Continuous Compliance with Ansible
 
+---
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# Configuration Templating with Jinja2 and YAML
 
 
 
@@ -2536,14 +2919,12 @@ Sample Output:
 - Lab 13 - Using Improved Jinja2 Templates
 - Lab 14 - Using Network Centric Jija2 Filters
 
-
-
 ---
 
-#TODO
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
-- Add intro slide on Diving Deeper into Core Command and Config Modules
-
+# Diving Deeper into Core Command and Config Modules
 
 ---
 
@@ -2822,11 +3203,10 @@ ok: [csr1] => {
 
 
 ---
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
 
-#TODO
-
-ADD TITLE OR INTRO PAGE TO PARSING
-
+# Parsing Unstructured Data
 
 ---
 
@@ -3089,12 +3469,10 @@ Using `regex_findall` is another way to parse the `stdout` from the `output` var
 - Lab 16 - Parsing Show Commands with TextFSM
 - Lab 17 - Performing a Conditional Traceroute with RegEx filters
 
-
 ---
+class: center, middle, title
+# *_config Module
 
-#TODO
-
-ADD INTRO SLIDE TO *_config, --diff, lookup plugin, declarative configuration
 
 ---
 
@@ -3244,6 +3622,10 @@ Available options for the  save_when parameter:
         save_when: modified
 ```
 ]
+
+---
+class: center, middle, title
+# The diff_against Parameter
 
 
 ---
@@ -3407,6 +3789,13 @@ TASK [ENSURE THAT LOOPBACK 222 IS CONFIGURED]
 ```
 
 **Note: This task will actually make changes to the running config!**
+
+
+---
+class: center, middle, title
+.footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
+
+# Declerative Configuration
 
 ---
 
@@ -3578,33 +3967,19 @@ changed: [nxos] => (item=networktocode)
 
 ---
 
-# Summary
-
-* Modules are under active development
-* Currently performing "offline" diffs
-* Great for achieving idempotency on config sections
-* You can use the base **template** module to build a config and still push with these modules (as we did with NAPALM)
-
----
-
 # Lab Time
 
 - Lab 18 - Using the Config Module
 
 
 ---
-
----
-
-#TODO
-
-Section needs to be refactored to move all 3rd party modules to the correct section and replace with core module slides and examples
-
----
-class: middle, segue
+class: middle, segue, title
 
 # Data Collection & Reporting
-### Ansible for Network Automation
+
+---
+
+MAY NEED REFACTORING TO MOVE 3rd PARTY SECTION TO THE NEXT LESSON
 
 ---
 
@@ -4582,7 +4957,7 @@ vlans:
   - Create a multi-vendor VLAN role that works with Cisco and Arista devices
   
 ---
-class: middle, segue
+class: middle, segue, title
 #3rd Party Modules
 ##Exploring NAPALM, NTC and more modules
   
@@ -5006,10 +5381,10 @@ Be cautious of device support.  This is based on NAPALM driver implementation wh
 
 ---
 
-class: middle, segue
+class: middle, segue, title
 
 # Backing up and Restoring Configurations
-### Ansible for Network Automation
+
 
 ---
 
@@ -5229,11 +5604,6 @@ $ ansible-playbook -i inventory backup.yml --limit nxos --tags=deploy
 
 ]
 
----
-
-#TODO
-
-Add slides on Ansible Network_Eng
 
 ---
 
@@ -5241,7 +5611,6 @@ Add slides on Ansible Network_Eng
 
 - Lab 22 - Backup and Restore Network Configurations Part 1
 - Lab 23 - Backup and Restore Network Configurations Part 2
-- NEW LAB 
 
 ---
 
@@ -5922,6 +6291,15 @@ playbook: build-push.yml
   - You will use the "template" and "napalm_install_config" modules
   - Choose any *1* vendor to complete this lab
 
+---
+
+# TODO
+Add slides on Ansible Network_Eng
+
+---
+# Lab Time
+- Lab 25 - Using Parser Templates
+
 
 ---
 class: middle, segue
@@ -6152,7 +6530,8 @@ n9k2.ntc.com               : ok=1    changed=0    unreachable=0    failed=0
 
 # Lab Time
 
-- Lab 22 - Using a Dynamic Inventory Script
+- Lab 26 - Dynamic Device Discovery with Dynamic Groups
+- Lab 27 - Using a Dynamic Inventory Script
   - You will execute a playbook that uses a pre-created inventory script that queries a public REST API
 
 

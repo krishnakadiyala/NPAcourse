@@ -7,8 +7,8 @@
  Network Automation Fundamentals with Ansible 
 - [Lab 1 - Deploying Basic Configuration Commands](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_01_Deploy_Basic_Configs.md)
 - [Lab 2 - Deploying Configurations From Files](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_02_Deploy_Config_Files.md)
-- [Lab 3 - Using Check Mode and Verbosity](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_03_Config_Verbosity_Check.md)
-- [Lab 4 - Deploying Configuration From Files using cli_config](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_04_CLI_Config.md)
+- [Lab 3 - Deploying Configuration From Files using cli_config](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_03_CLI_Config.md)
+- [Lab 4 - Using Check Mode and Verbosity](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_04_Config_Verbosity_Check.md)
 - [Lab 5 - Creating the Course Inventory](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_05_Course_Inventory_File.md)
 - [Lab 6 - Using the debug Module](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_06_Debug_Module.md)
 - [Lab 7 - Passing in Interactive User Input](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_07_User_Input.md)
