@@ -25,6 +25,7 @@ In this task in the play, use the `ios_facts` module to gather the device facts.
 
 
 ```yaml
+
 ---
 
   - name: GATHER IOS FACTS
@@ -43,7 +44,7 @@ In this task in the play, use the `ios_facts` module to gather the device facts.
 Execute the playbook.
 
 ```
-$ ansible-playbook -i inventory core-facts.yml
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory core-facts.yml
 
 PLAY [GATHER IOS FACTS] ********************************************************
 
@@ -69,7 +70,7 @@ By now you should know there are two options: (1) use verbose mode (running the 
 Re-run the playbook using verbose mode and limit the playbook to just **csr1** to make the viewing of the output a little cleaner.
 
 ```
-$ ansible-playbook -i inventory core-facts.yml -v --limit csr1
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory core-facts.yml -v --limit csr1
 
 Using /etc/ansible/ansible.cfg as config file
 
@@ -97,6 +98,7 @@ The updated playbook should look like this:
 
 
 ```yaml
+
 ---
 
   - name: GATHER IOS FACTS
@@ -121,7 +123,7 @@ Execute the playbook.  This time **not** using verbose mode, but still limiting 
 
 
 ```
-$ ansible-playbook -i inventory core-facts.yml --limit csr1
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory core-facts.yml --limit csr1
 
 PLAY [GATHER IOS FACTS] ********************************************************
 

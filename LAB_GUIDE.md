@@ -35,7 +35,8 @@
 - [Lab 22 - Backing Up Configs with NTC (3rd Party)](labs/Using_3rd_Party_Modules/Ansible_Lab_22_Backup_Configs.md)
 - [Lab 23 - Restoring Configs with NAPALM (3rd Party)](labs/Using_3rd_Party_Modules/Ansible_Lab_23_Restore_Configs.md)
 - [Lab 24 - Build / Push with NAPALM ](labs/Using_3rd_Party_Modules/Ansible_Lab_24_Build_Push.md)
+- [Lab 25 - Using Parser Templates ](labs/Using_3rd_Party_Modules/Ansible_Lab_25_Parser_Templates.md)
 
  Bonus Labs 
-- [Lab 25 - Dynamic Device Discovery with Dynamic Groups](labs/Bonus_Labs/Ansible_Lab_25_Device_Discovery_Dynamic_Groups.md)
-- [Lab 26 - Exploring Dynamic Inventory](labs/Bonus_Labs/Ansible_Lab_26_Dynamic_Inventory.md)
+- [Lab 26 - Dynamic Device Discovery with Dynamic Groups](labs/Bonus_Labs/Ansible_Lab_26_Device_Discovery_Dynamic_Groups.md)
+- [Lab 27 - Exploring Dynamic Inventory](labs/Bonus_Labs/Ansible_Lab_27_Dynamic_Inventory.md)

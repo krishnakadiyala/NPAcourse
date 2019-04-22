@@ -2233,6 +2233,15 @@ class: middle, segue
   - Supports conditionals, loops, and more functionality (lightweight programming)
   - GOAL: Keep templates simple
 
+
+
+---
+
+#TODO
+
+Add slides on Jinja syntax like `{}`, `{%%}`, `{#   #}`, `{% set % }`, `{% include %}`
+
+
 ---
 
   # Jinja2 Templating
@@ -4554,6 +4563,7 @@ vlans:
 ]
 
 
+
 ---
 
 
@@ -5218,12 +5228,20 @@ $ ansible-playbook -i inventory backup.yml --limit nxos --tags=deploy
 
 
 ]
+
+---
+
+#TODO
+
+Add slides on Ansible Network_Eng
+
 ---
 
 # Lab Time
 
 - Lab 22 - Backup and Restore Network Configurations Part 1
 - Lab 23 - Backup and Restore Network Configurations Part 2
+- NEW LAB 
 
 ---
 

@@ -100,7 +100,7 @@ PLAY [PLAY 1 - DISCOVER OS] ****************************************************
 
 TASK [QUERY DEVICE VIA SNMP] ***************************************************
 ok: [nxos-spine1] => {"ansible_facts": {"ansible_device_os": "nxos", "ansible_device_vendor": "cisco", "ansible_device_version": "7.3(1)D1(1)"}, "changed": false}
-ok: [csr1] => {"ansible_facts": {"ansible_device_os": "ios", "ansible_device_vendor": "cisco", "ansible_device_version": "16.6.2"}, "changed": false}
+ok: [csr1] => {"ansible_facts": {"ansible_device_os": "ios", "ansible_device_vendor": "cisco", "ansible_device_version": "16.08.01a"}, "changed": false}
 ```
 
 See the data discovered for each device?
@@ -130,7 +130,7 @@ Save and re-run the playbook just for both devices again--still using verbose mo
 PLAY [PLAY 1 - DISCOVER OS] ****************************************************
 
 TASK [QUERY DEVICE VIA SNMP] ***************************************************
-ok: [csr1] => {"ansible_facts": {"ansible_device_os": "ios", "ansible_device_vendor": "cisco", "ansible_device_version": "16.6.2"}, "changed": false}
+ok: [csr1] => {"ansible_facts": {"ansible_device_os": "ios", "ansible_device_vendor": "cisco", "ansible_device_version": "16.08.01a"}, "changed": false}
 ok: [nxos-spine1] => {"ansible_facts": {"ansible_device_os": "nxos", "ansible_device_vendor": "cisco", "ansible_device_version": "7.3(1)D1(1)"}, "changed": false}
 
 TASK [debug] *******************************************************************
@@ -143,7 +143,7 @@ ok: [nxos-spine1] => {
 
 TASK [debug] *******************************************************************
 ok: [csr1] => {
-    "ansible_device_version": "16.6.2"
+    "ansible_device_version": "16.08.01a"
 }
 ok: [nxos-spine1] => {
     "ansible_device_version": "7.3(1)D1(1)"
@@ -360,13 +360,13 @@ ok: [vmx3] => {
 
 TASK [debug] **********************************************************
 ok: [csr1] => {
-    "ansible_device_version": "16.6.2"
+    "ansible_device_version": "16.08.01a"
 }
 ok: [csr2] => {
-    "ansible_device_version": "16.6.2"
+    "ansible_device_version": "16.08.01a"
 }
 ok: [csr3] => {
-    "ansible_device_version": "16.6.2"
+    "ansible_device_version": "16.08.01a"
 }
 ok: [nxos-spine1] => {
     "ansible_device_version": "7.3(1)D1(1)"
