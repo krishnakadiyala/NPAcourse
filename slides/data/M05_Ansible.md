@@ -686,241 +686,11 @@ Two files are required to get started:
 ```
 ]]
 
-
-
 ---
 
-# Play(s)
+class: center, middle, title
+# Quick look at YAML and JSON
 
-.left-column[
-- Begins with a hyphen
-  - denotes list of plays (YAML list)
-- `name`
-  - arbitrary description of the play and is displayed to terminal when executed (optional)
-- `hosts`
-  - one or more hosts or groups as defined in inventory file or _expression_
-- `connection: network_cli`
-  - does not use default SSH connection mechanism / use method as defined *inside* modules
-- Play contains one or more tasks
-]
-
-.right-column[.big-code[
-```yaml
----
-
-- name: Play 1 - Deploy router configs
-  hosts: routers
-  connection: network_cli
-  gather_facts: no
-
-  tasks:
-
-    # list of tasks
-
-
-```
-]]
---
-.right-column[.big-code[
-```yaml
-- name: Play 2 - Deploy vlans on switches
-  hosts: switches
-  connection: network_cli
-  gather_facts: no
-
-  tasks:
-
-```
-]]
-
----
-
-# Connection Types
-.left-column[
-- Theres are two different locations we can define our connection type.
-  - Inventory as `ansible_connection=local`
-  - Play definition `connection: local`
-- With ```connection: local```, each task passed the connection parameters, which had to be stored in your playbooks or inventory.
-- We will see this being used on Ansible versions before 2.5 and 3rd party modules or non ssh tasks using modules like:
-  - template
-  - debug
-
-]
-.right-column[.big-code[
-
-```yaml
-[all:vars]
-ansible_connection=local
-```
-
-```yaml
----
-  - name: Connection Types
-    hosts: all
-    connection: local
-    gather_facts: no
-
-```
-]]
-
----
-# Connection Types (cont)
-.left-column[
-
-- Ansible 2.5 introduces two top-level persistent connection types ```network_cli``` and ```netconf```
-- With ```network_cli``` and ```netconf``` the playbook passes the connection parameters once.
-- We recommend to use ```network_cli``` and ```netconf``` whenever possible for your Ansible core modules.
-
-- For more details on available options on each network platform, we can look at the [Ansible docs](https://docs.ansible.com/ansible/latest/network/user_guide/platform_index.html#platform-options) - make sure you check your Ansible version beforehand!
-
-]
-
-
-.right-column[.big-code[
-```yaml
----
-  - name: Connection Types
-    hosts: all
-    connection: network_cli
-    gather_facts: no
-```
-
-
-```yaml
----
-  - name: Connection Types
-    hosts: junos
-    connection: netconf
-    gather_facts: no
-
-```
-]]
-
----
-
-# Task(s)
-
-.left-column[
-- One or more tasks comprise a play
-- Executed on devices defined in inventory file
-- Each task:
-  - Executes a module using specified parameters (key/value pairs)
-  - `name`: optional, arbitrary text displayed when task is executed
-- There is more than one supported syntax
-  - Native YAML is recommended
-]
-
-.right-column[.big-code[
-```yaml
----
-
-- name: PLAY 1 - Deploy vlans on switches
-  hosts: switches
-  connection: network_cli
-  gather_facts: no
-
-  tasks:
-
-    - name: TASK ONE - YOUR TASK NAME HERE
-      MODULE_NAME:
-        key1: value1
-        key2: value
-
-    - name: TASK TWO - MANAGE SNMP
-      ios_config:
-        commands:
-          - snmp-server contact NET_BOB
-        save_when: modified
-
-
-```
-]]
-
----
-
-
-# Modules, Parameters, and Variables
-
-.left-column[
-- Modules
-  - Idempotent
-  - Mostly written in Python
-  - Parameterized
-  - `nxos_vlan` is the module name
-- Parameters
-  - `vlan_id`, `name`, and `state` are all module parameters
-
-]
-
-.right-column[.med-code[
-```yaml
----
-
-- name: MANAGE VLANS
-  hosts: switches
-  connection: network_cli
-  gather_facts: no
-
-  tasks:
-
-    - name: ensure VLAN exists
-      nxos_vlan:
-        vlan_id: 10
-        name: web_vlan
-        state: present
-
-```
-]]
-
-<br>.med-code[....]<br>
-
-**Idempotency** in the context of Ansible
-
-- Modules that perform a change _should_ only make the change once (the first execution)
-- You can run the task a 1000 and it'll only occur once
-
----
-
-# Modules, Parameters, and Variables (cont)
-
-.left-column[
-- Module name: `ios_config`
-- Parameters: `lines`, `commands`, and `src`
-- Technically `lines` is the parameter and `commands` is an alias since they are just "lines within a config file".
-- `src` and `lines/commands` are mutually exclusive for this module
-- Take note of the data type of `commands` - it is a list as can be inferred from the hyphens in YAML.
-- Each task can use, `name`, an optional task attribute that maps to arbitrary text that is displayed when you run the playbook providing context on where in the playbook execution you are.
-
-]
-
-.right-column[
-```yaml
----
-
-  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
-    hosts: routers
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
-
-      - name: ENSURE SNMP COMMANDS EXIST ON IOS DEVICES TASK 1 in PLAY 1
-        ios_config:
-          commands:
-            - snmp-server community ntc-course RO
-            - snmp-server location NYC_HQ
-            - snmp-server contact JOHN_SMITH
-
-      - name: ENSURE STATIC ROUTE EXISTS ON IOS DEVICES TASK 2 in PLAY 1
-        ios_config:
-          lines:
-            - ip route 172.16.1.0 255.255.255.0 172.16.2.1
-
-      - name: ENSURE CONFIG EXISTS ON IOS DEVICES TASK 3 in PLAY 1
-        ios_config:
-          src: cisco_ios.cfg
-```
-]
 
 
 ---
@@ -1297,6 +1067,242 @@ ADD A SLIDE ON YAML SYNTAX AND JSON
 
 ---
 
+# Play(s)
+
+.left-column[
+- Begins with a hyphen
+  - denotes list of plays (YAML list)
+- `name`
+  - arbitrary description of the play and is displayed to terminal when executed (optional)
+- `hosts`
+  - one or more hosts or groups as defined in inventory file or _expression_
+- `connection: network_cli`
+  - does not use default SSH connection mechanism / use method as defined *inside* modules
+- Play contains one or more tasks
+]
+
+.right-column[.big-code[
+```yaml
+---
+
+- name: Play 1 - Deploy router configs
+  hosts: routers
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+
+    # list of tasks
+
+
+```
+]]
+--
+.right-column[.big-code[
+```yaml
+- name: Play 2 - Deploy vlans on switches
+  hosts: switches
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+
+```
+]]
+
+---
+
+# Connection Types
+.left-column[
+- Theres are two different locations we can define our connection type.
+  - Inventory as `ansible_connection=local`
+  - Play definition `connection: local`
+- With ```connection: local```, each task passed the connection parameters, which had to be stored in your playbooks or inventory.
+- We will see this being used on Ansible versions before 2.5 and 3rd party modules or non ssh tasks using modules like:
+  - template
+  - debug
+
+]
+.right-column[.big-code[
+
+```yaml
+[all:vars]
+ansible_connection=local
+```
+
+```yaml
+---
+  - name: Connection Types
+    hosts: all
+    connection: local
+    gather_facts: no
+
+```
+]]
+
+---
+# Connection Types (cont)
+.left-column[
+
+- Ansible 2.5 introduces two top-level persistent connection types ```network_cli``` and ```netconf```
+- With ```network_cli``` and ```netconf``` the playbook passes the connection parameters once.
+- We recommend to use ```network_cli``` and ```netconf``` whenever possible for your Ansible core modules.
+
+- For more details on available options on each network platform, we can look at the [Ansible docs](https://docs.ansible.com/ansible/latest/network/user_guide/platform_index.html#platform-options) - make sure you check your Ansible version beforehand!
+
+]
+
+
+.right-column[.big-code[
+```yaml
+---
+  - name: Connection Types
+    hosts: all
+    connection: network_cli
+    gather_facts: no
+```
+
+
+```yaml
+---
+  - name: Connection Types
+    hosts: junos
+    connection: netconf
+    gather_facts: no
+
+```
+]]
+
+---
+
+# Task(s)
+
+.left-column[
+- One or more tasks comprise a play
+- Executed on devices defined in inventory file
+- Each task:
+  - Executes a module using specified parameters (key/value pairs)
+  - `name`: optional, arbitrary text displayed when task is executed
+- There is more than one supported syntax
+  - Native YAML is recommended
+]
+
+.right-column[.big-code[
+```yaml
+---
+
+- name: PLAY 1 - Deploy vlans on switches
+  hosts: switches
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+
+    - name: TASK ONE - YOUR TASK NAME HERE
+      MODULE_NAME:
+        key1: value1
+        key2: value
+
+    - name: TASK TWO - MANAGE SNMP
+      ios_config:
+        commands:
+          - snmp-server contact NET_BOB
+        save_when: modified
+
+
+```
+]]
+
+---
+
+
+# Modules, Parameters, and Variables
+
+.left-column[
+- Modules
+  - Idempotent
+  - Mostly written in Python
+  - Parameterized
+  - `nxos_vlan` is the module name
+- Parameters
+  - `vlan_id`, `name`, and `state` are all module parameters
+
+]
+
+.right-column[.med-code[
+```yaml
+---
+
+- name: MANAGE VLANS
+  hosts: switches
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+
+    - name: ensure VLAN exists
+      nxos_vlan:
+        vlan_id: 10
+        name: web_vlan
+        state: present
+
+```
+]]
+
+<br>.med-code[....]<br>
+
+**Idempotency** in the context of Ansible
+
+- Modules that perform a change _should_ only make the change once (the first execution)
+- You can run the task a 1000 and it'll only occur once
+
+---
+
+# Modules, Parameters, and Variables (cont)
+
+.left-column[
+- Module name: `ios_config`
+- Parameters: `lines`, `commands`, and `src`
+- Technically `lines` is the parameter and `commands` is an alias since they are just "lines within a config file".
+- `src` and `lines/commands` are mutually exclusive for this module
+- Take note of the data type of `commands` - it is a list as can be inferred from the hyphens in YAML.
+- Each task can use, `name`, an optional task attribute that maps to arbitrary text that is displayed when you run the playbook providing context on where in the playbook execution you are.
+
+]
+
+.right-column[
+```yaml
+---
+
+  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
+    hosts: routers
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: ENSURE SNMP COMMANDS EXIST ON IOS DEVICES TASK 1 in PLAY 1
+        ios_config:
+          commands:
+            - snmp-server community ntc-course RO
+            - snmp-server location NYC_HQ
+            - snmp-server contact JOHN_SMITH
+
+      - name: ENSURE STATIC ROUTE EXISTS ON IOS DEVICES TASK 2 in PLAY 1
+        ios_config:
+          lines:
+            - ip route 172.16.1.0 255.255.255.0 172.16.2.1
+
+      - name: ENSURE CONFIG EXISTS ON IOS DEVICES TASK 3 in PLAY 1
+        ios_config:
+          src: cisco_ios.cfg
+```
+]
+
+
+
+---
+
 # Executing a Playbook
 
 
@@ -1317,22 +1323,71 @@ You have other options so you don't have to always use `-i`:
 
 ---
 
-# TODO
+# Play Recap
 
-Add a slide describing the PLAY RECAP after running a playbook
+.small-code[
+##### CHANGE - `"changed": true`  
+```commandline
+$ ansible-playbook -i inventory deploy-vlans.yml
 
+PLAY [MANAGE VLANS] *******************************************************************************
+
+TASK [ensure VLAN exists] *************************************************************************
+changed: [nxos-spine1] => {"changed": true, "commands": ["vlan 20", "name web_vlan", "exit"]}
+
+PLAY RECAP ****************************************************************************************
+nxos-spine1                : ok=1    changed=1    unreachable=0    failed=0
 ```
-TASK [file] ***************************************************************
-changed: [csr2]
-ok: [csr1]
-ok: [csr3]
+]
 
-PLAY RECAP *****************************************************************
-csr1                       : ok=2    changed=0    unreachable=0    failed=0
-csr2                       : ok=2    changed=1    unreachable=0    failed=0
-csr3                       : ok=2    changed=0    unreachable=0    failed=0
+.small-code[
+##### SUCCESS - `"changed": false`
+```commandline
+$ ansible-playbook -i inventory deploy-vlans.yml
+
+PLAY [MANAGE VLANS] ******************************************************************************
+
+TASK [ensure VLAN exists] ************************************************************************
+ok: [nxos-spine1] => {"changed": false, "commands": []}
+
+PLAY RECAP ***************************************************************************************
+nxos-spine1                : ok=1    changed=0    unreachable=0    failed=0
+```
+]
+
+---
+
+# Play Recap (Cont)
+
+.small-code[
+##### FAIL - `"changed": false` and `failed=1`
+```commandline
+$ ansible-playbook -i inventory deploy-vlans.yml
+
+PLAY [MANAGE VLANS] ***********************************************************************************************************************************************************
+
+TASK [ensure VLAN exists] *****************************************************************************************************************************************************
+fatal: [nxos-spine1]: FAILED! => {"changed": false, "msg": "vlan 4098\r\r\n                          ^\r\n% Invalid value/range at '^' marker.\r\n\rnxos-spine1(config)# "}
+	to retry, use: --limit @/Users/jump-host/ansible/deploy_vlans.retry
+
+PLAY RECAP ********************************************************************************************************************************************************************
+nxos-spine1                : ok=0    changed=0    unreachable=0    failed=1
 ```
 
+##### RETRY - Fix the error and try again by running the `.retry` file
+###### to retry, use: --limit @/Users/jump-host/ansible/deploy_vlans.retry
+```commandline
+$ ansible-playbook -i inventory deploy-vlans.yml --limit @/Users/jump-host/ansible/deploy_vlans.retry
+
+PLAY [MANAGE VLANS] *************************************************************************************************************************************************************
+
+TASK [ensure VLAN exists] *******************************************************************************************************************************************************
+changed: [nxos-spine1]
+
+PLAY RECAP **********************************************************************************************************************************************************************
+nxos-spine1                : ok=1    changed=1    unreachable=0    failed=0
+```
+]
 ---
 
 # Managing Credentials
@@ -2258,8 +2313,9 @@ The _command modules are used to send enable and exec mode commands to the devic
 .right-column[
 .med-code[
 ```yaml
-  - hosts: junos
-    connection: network_cli
+  - name: SHOW COMMANDS TO JUNOS
+    hosts: junos
+    connection: netconf
     gather_facts: no
 
     tasks:
@@ -2473,20 +2529,191 @@ ok: [csr1] => {
 
 ]
 
+---
+
+# Multi Vendor cli_command Module
+
+.left-column[
+- You can create a single task to send a single command for two different vendor devices
+
+```yaml
 
 ---
 
-#TODO
+  - name: SHOW VERSION FOR IOS
+    hosts: csr1,vmx1
+    connection: network_cli
+    gather_facts: no
 
-Add slide or few on `cli_command` which is for lab 10
+    tasks:
 
-- show the difference on how we are able to use a single task for two different vendors rather than a module per vendor
-- It cuts down the number of lines in a playbook
-- show the difference in the output for `stdout`
-- add demo slide
+      - name: GET SHOW COMMANDS
+        cli_command:
+          command: show version
+         register: output
+```
+]
+
+
+.right-column[
+- You can also send a list of commands using a single module for both vendors
+
+```yaml
 
 ---
 
+  - name: SHOW VERSION FOR IOS
+    hosts: csr1,vmx1
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: GET SHOW COMMANDS
+        cli_command:
+          command: "{{ item }}"
+        register: output
+        loop: 
+          - show version
+          - show interface
+```
+]
+
+>Note: Not all CLI commands are compatible for all vendors, so make sure the command you are sending works for the devices being targeted.
+
+---
+
+# cli_command Single Command
+
+* Run arbitrary commands on devices.
+* Show command data stored in `stdout` (always a dictionary)
+
+.left-column[.medium-code[
+```yaml
+    - name: GET SHOW COMMANDS
+      cli_command:
+        command: show version
+      register: output
+
+    - name: TEST REGISTERED OUTPUT --> SEE TO RIGHT
+      debug:
+        var: output
+        
+    - name: SEE ALL KEYS OF REGISTERED DICTIONARY
+      debug:
+        var: output.keys()
+
+    - name: TEST GETTING SHOW DATA
+      debug:
+        var: output['stdout']
+```
+]]
+.right-column[.small-code[
+```commandline
+TASK [TEST REGISTERED OUTPUT ] ***********************************************************************************************************************************************************************************************************************************************************
+ok: [vmx1] => {
+    "output": {
+        "changed": false,
+        "failed": false,
+        "stdout": "Hostname: vmx1\nModel: vmx\nJunos: 18.2R1.9\nJUNOS OS Kernel 64-bit  [20180614.6c3f819_builder_stable_11]\nJUNOS OS libs [20180614.6c3f819_builder_stable_11]\nJUNOS OS runtime [20180614.6c3f819_builder_stable_11]\nJUNOS OS time zone information
+       ....output omitted
+        "stdout_lines": [
+            "Hostname: vmx1",
+            "Model: vmx",
+            "Junos: 18.2R1.9",
+            ....output omitted
+            ]
+    }
+}
+ok: [csr1] => {
+    "output": {
+        "changed": false,
+        "failed": false,
+        "stdout": "Cisco IOS XE Software, Version 16.08.01a\nCisco IOS Software [Fuji], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.8.1a, RELEASE SOFTWARE (fc1)\nTechnical Support: http://www.cisco.com/techsupport\nCopyright (c) 1986-2018 by Cisco Systems,
+        ....output omitted
+        "stdout_lines": [
+            "Cisco IOS XE Software, Version 16.08.01a",
+            ....output omitted
+               ]
+    }
+}
+```
+]]
+
+---
+
+# cli_command List of Commands
+
+- When it's a list of commands we get a list of `results`
+- Each element inside `results` will be `stdout` per command
+
+.left-column[
+
+```yaml
+  
+  - name: GET SHOW COMMANDS
+    cli_command:
+       command: "{{ item }}"
+      register: output
+    loop: 
+       - show version
+       - show interfac
+       
+  - name: TEST REGISTERED OUTPUT --> SEE TO RIGHT
+    debug:
+      var: output
+      
+  - name: SEE ALL KEYS OF REGISTERED DICTIONARY
+    debug:
+      var: output.keys()
+        
+  - name: TEST GETTING SHOW VERSION
+    debug:
+      var: output['results'][0]['stdout']
+  
+  - name: TEST GETTING SHOW INTERFACE
+    debug:
+      var: output['results'][1]['stdout']
+```
+]
+
+.left-column[.small-code[
+
+```commandline
+TASK [SEE ALL KEYS OF REGISTERED DICTIONARY] **************************
+ok: [csr1] => {
+    "output.keys()": "dict_keys(['results', 'msg', 'changed'])"
+}
+ok: [vmx1] => {
+    "output.keys()": "dict_keys(['results', 'msg', 'changed'])"
+}
+
+TASK [TEST GETTING SHOW VERSION] ******************************************************************************************************************
+ok: [csr1] => {
+    "output['results'][0]['stdout']": "Cisco IOS XE Software, Version 16.08.01a\nCisco IOS Software [Fuji], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), 
+    Version 16.8.1a, RELEASE SOFTWARE (fc1)\nTechnical Support: http://www.cisco.com/techsupport\nCopyright (c) 1986-2018 by Cisco Systems, Inc.\nCompiled 
+    Tue 03-Apr-18 18:43 by mcpre\n\n\nCisco IOS-XE software, Copyright (c) 2005-2018 by cisco Systems, Inc.\nAll rights reserved.  Certain components of Cisco IOS-XE software are\nlicensed under
+    ...output omitted
+}
+ok: [vmx1] => {
+    "output['results'][0]['stdout']": "Hostname: vmx1\nModel: vmx\nJunos: 18.2R1.9\nJUNOS OS Kernel 64-bit  [20180614.6c3f819_builder_stable_11]\nJUNOS OS libs [20180614.6c3f819_builder_stable_11]
+    \nJUNOS OS runtime [20180614.6c3f819_builder_stable_11]\nJUNOS OS time zone information [20180614.6c3f819_builder_stable_11]\nJUNOS network stack and utilities [20180628.003405_builder_junos_182_r1]\nJUNOS
+    ...output omitted
+
+TASK [TEST GETTING SHOW INTERFACE] ***************************************************************************************************************
+ok: [csr1] => {
+    "output['results'][1]['stdout']": "GigabitEthernet1 is up, line protocol is up \n  Hardware is CSR vNIC, address is 9299.0014.0000 (bia 9299.0014.0000)\n  
+    Description: MANAGEMENT_INTEFACE__DO_NOT_CHANGE\n  Internet address is 100.96.0.18/12\n  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec, \n     
+    reliability 255/255, txload 1/255, rxload 1/255\n  Encapsulation ARPA
+    ...output omitted
+ok: [vmx1] => {
+    "output['results'][1]['stdout']": "show interfaces \nPhysical interface: ge-0/0/0, Enabled, Physical link is Up\n  Interface index: 148, SNMP ifIndex: 526\n
+      Link-level type: Ethernet, MTU: 1514, MRU: 1522, LAN-PHY mode, Speed: 1000mbps, BPDU Error: None,
+    ...output omitted
+```
+]]
+
+---
 
 # Performing Compliance Checks
 
@@ -2551,13 +2778,60 @@ Add slide or few on `cli_command` which is for lab 10
 
 ---
 
-#TODO
+# Auto Create Files
 
-Add slide on `file` module which is for LAB 8
-- show ansible-doc on file module 
-- the difference between building files and directories manually vs automated
+.left-column[
+- Manually creating directories can be a tedious task
+- You can use the Ansible `file` module to auto create directories, empty files and symlinks.
+
+Check the docs to see more info and available parameters
+```commandline
+ntc@jump-host:ansible$ ansible-doc file
+> FILE (/home/ntc/.local/lib/python3.6/site-packages/ansible/modules/files/file.py)
+
+Sets attributes of files, symlinks, and directories, 
+or removes files/symlinks/directories. 
+Many other modules support the same options as the 
+`file' module - including [copy], [template], and [assemble]. 
+For Windows targets, use the [win_file] module instead.
 
 
+```
+
+
+]
+
+.right-column[
+Manual Way
+.small-code[
+```bash
+ntc@jump-host:ansible$ mkdir ios junos nxos arista
+ntc@jump-host:ansible$
+```
+]
+
+Automated Way
+.small-code[
+```yaml
+      - name: CREATE DIRECTORIES BASED ON OS
+        file:
+          path: ./{{ ansible_network_os }}/
+          state: directory
+```
+
+Results 
+```bash
+ntc@jump-host:ansible$ tree
+.
+├── arista
+├── ios
+├── junos
+└── nxos
+
+4 directories, 0 files
+ntc@jump-host:ansible$
+```
+]]
 
 ---
 
@@ -2574,9 +2848,6 @@ class: center, middle, title
 
 # Configuration Templating with Jinja2 and YAML
 
-
-
-
 ---
 
 class: middle, segue
@@ -2590,6 +2861,8 @@ class: middle, segue
 
 # Templating
 
+- How do I automate multiple devices?
+  - What if the IP addresses, VLANS or SNMP communities are different on each device?
 
 - Manual method:
   - Enterprises have golden configuration standard for type of device, location of device etc
@@ -2606,23 +2879,18 @@ class: middle, segue
 ---
 
   # What is Jinja2?
-
+  
   - Templating language for Python
   - Each programming language has one or more templating language
   - Used heavily within HTML programming too
-  - Double curly braces denote a variable
+  - Double curly braces denote a variable `{{ variable  }}`
     - Strings, Lists, Dictionaries (Just like we've seen in Ansible / Python)
     - Jinja2 is built for Python
   - Supports conditionals, loops, and more functionality (lightweight programming)
+    - Syntax changes to `{% %}` for conditionals and logic
   - GOAL: Keep templates simple
+  - More info got to http://jinja.pocoo.org/docs/
 
-
-
----
-
-#TODO
-
-Add slides on Jinja syntax like `{}`, `{%%}`, `{#   #}`, `{% set % }`, `{% include %}`
 
 
 ---
@@ -2633,15 +2901,18 @@ Add slides on Jinja syntax like `{}`, `{%%}`, `{#   #}`, `{% set % }`, `{% inclu
 
     1.  Jinja2 template
     2.  Variables (or data) to insert into the template
+    
+  To expand or replace a section of code, use double curly brackets `{{ }}`
 
   De-constructing configs/files into templates:
 
   .left-column[
-
+Example.yml
   ```bash
   snmp-server community ro PUBLIC
   ```
 
+Text file
   ```bash
   Dear John,
 
@@ -2651,16 +2922,19 @@ Add slides on Jinja syntax like `{}`, `{%%}`, `{#   #}`, `{% set % }`, `{% inclu
 
   .right-column[
 
+Example.j2
   ```bash
   snmp-server community ro {{ ro_string }}
   ```
-
+Text.j2
   ```bash
   Dear {{ NAME }},
 
   Thanks for attending.
   ```
   ]
+
+
 
 ---
 
@@ -2708,14 +2982,13 @@ Add slides on Jinja syntax like `{}`, `{%%}`, `{#   #}`, `{% set % }`, `{% inclu
   Data Variables (inputs):
 
 ```yaml
-  ---
+---
+hostname: NYCR01
 
-  hostname: NYCR01
-
-  interfaces_list:
-    - Eth1
-    - Eth2
-    - Eth3
+interfaces_list:
+  - Eth1
+  - Eth2
+  - Eth3
 ```
 ]
 
@@ -2754,8 +3027,6 @@ Add slides on Jinja syntax like `{}`, `{%%}`, `{#   #}`, `{% set % }`, `{% inclu
 
 ```yaml
 ---
-
-
   interfaces_list:
     - name: Eth1
       state: down
@@ -2805,9 +3076,8 @@ Add slides on Jinja syntax like `{}`, `{%%}`, `{#   #}`, `{% set % }`, `{% inclu
   Data Variables (inputs):
 
 ```yaml
+
   ---
-
-
   interfaces_list:
     - name: Eth1
       state: down
@@ -2816,6 +3086,62 @@ Add slides on Jinja syntax like `{}`, `{%%}`, `{#   #}`, `{% set % }`, `{% inclu
     - name: Eth3
       state: up
 
+```
+
+ Use {# . . . #} to enclose comments
+
+```bash
+{# This code not needed, keep for reference
+    {% for vlan in vlans %}
+        ...
+    {% endfor %}
+#}
+```
+]
+
+---
+
+# Jinja2 include Directive
+
+- Use include statements to pull in other Jinja2 templates
+- Included Jinja2 templates have access to the variables of the parent template
+```bash
+{% if install == 'new' %}
+{% include 'new_install.conf' %}
+{% else %}
+{% include 'merge_install.conf' %}
+{% endif %}
+```
+
+-  `ignore missing` prevents Jinja2 from throwing an error if there is a missing file
+```bash
+{% include 'merge_install.conf' ignore missing %}
+```
+
+
+---
+
+# Jinja2 set Directive
+
+.left-column[
+- Use the set directive to assign values to variables
+
+- There are different ways to insert values into a script. 
+
+- One of the ways is to add it to our `YAML` files like we have been doing or to use the set directive statement to define the variable within the jinja2 template itself.
+]
+
+.right-column[
+```bash
+{% set install = 'new' %}
+
+{% if install == 'new' %}
+{% include 'new_install.conf' %}
+
+{% else %}
+{% include 'merge_install.conf' %}
+
+{% endif %}
 ```
 ]
 

@@ -12,7 +12,7 @@ Create a new playbook called `cli-command.yml` in the `ansible` directory.  You 
 
 ---
 
-  - name: BACKUP SHOW VERSION FOR IOS
+  - name: BACKUP SHOW VERSION FOR IOS AND JUNOS
     hosts: csr1,vmx1
     connection: network_cli
     gather_facts: no
@@ -29,7 +29,7 @@ Add a task to issue the `show version` command.
 
 ---
 
-  - name: BACKUP SHOW VERSION ON IOS
+  - name: BACKUP SHOW VERSION FOR IOS AND JUNOS
     hosts: csr1,vmx1
     connection: network_cli
     gather_facts: no
@@ -172,7 +172,7 @@ Full and final playbook will look like this:
 
 ---
 
-  - name: BACKUP SHOW VERSION ON IOS
+  - name: BACKUP SHOW VERSION FOR IOS AND JUNOS
     hosts: iosxe,vmx
     connection: network_cli
     gather_facts: no

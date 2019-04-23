@@ -1,4 +1,4 @@
-## Lab 3 - Using Check Mode and Verbosity
+## Lab 4 - Using Check Mode and Verbosity
 
 This lab builds on the first lab you did with sending SNMP configurations to network devices.
 

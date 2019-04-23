@@ -1,4 +1,4 @@
-## Lab 4 - Deploying Configs From a File Using cli_config
+## Lab 3 - Deploying Configs From a File Using cli_config
 
 In the last lab, you deployed configurations while hard-coding commands in a playbook.  In this lab, you will deploy from a pre-built configuration file.
 
