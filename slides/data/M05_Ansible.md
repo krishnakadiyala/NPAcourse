@@ -4293,30 +4293,10 @@ class: middle, segue, title
 
 # Data Collection & Reporting
 
----
-
-MAY NEED REFACTORING TO MOVE 3rd PARTY SECTION TO THE NEXT LESSON
 
 ---
 
-# Modules
-
-- Core Facts Modules
-  - nxos_facts
-  - eos_facts
-  - junos_facts
-  - ios_facts
-- 3rd Party Facts and Data Collection
-  - ntc_get_facts
-  - ntc_show_command
-  - napalm_get_facts
-  - snmp_facts
-  - snmp_device_version
-- Dynamics Groups & REST APIs
-
----
-
-# Core Facts
+# Core *_facts Modules
 
 Core facts modules collect a number of useful pieces of information:
 
