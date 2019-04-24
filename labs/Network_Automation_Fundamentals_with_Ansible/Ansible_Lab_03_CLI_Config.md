@@ -1,10 +1,12 @@
 ## Lab 3 - Deploying Configs From a File Using cli_config
 
-In the last lab, you deployed configurations while hard-coding commands in a playbook.  In this lab, you will deploy from a pre-built configuration file.
+
+In the last lab, you deployed from a pre-built configuration file using the vendor specific core modules with two different plays to separate the vendors.
+In this lab we are going to do the same but in a single play and a single module.
 
 ##### Step 1
 
-Create a sub-directory called `configs` **inside** the `ansible` directory.  After creating it, navigate inside it:
+Create two sub-directoris called `junos` and `ios` **inside** the `ansible` directory.
 
 ```
 ntc@jump-host:ansible$ mkdir junos
@@ -15,7 +17,7 @@ ntc@jump-host:ansible$
 
 ##### Step 2
 
-Create two files that will contain the SNMP configuration - one for Cisco and one for Juniper respectively.
+Create two files that will contain the SNMP configuration - one for Cisco and one for Juniper respectively inside each directory previously created.
 
 ```
 ntc@jump-host:ansible$ touch junos/snmp.cfg
@@ -60,8 +62,8 @@ ntc@jump-host:ansible$
 
 ##### Step 6
 
-Open this file with a text editor and create two plays similar to **Lab 1** to deploy the changes.
-This time, however, we will use the source file to deploy the configuration instead of using commands inside the playbook.
+Open this file with a text editor and create a single play to deploy the changes.
+This time, we will use the source file to deploy the configuration instead of using commands inside the playbook.
 
 
 ```yaml
@@ -79,9 +81,8 @@ This time, however, we will use the source file to deploy the configuration inst
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS and JUNOS DEVICES
         cli_config:
           config: "{{ lookup('file', './{{ ansible_network_os }}/snmp.cfg') }}"
-
-
 ```
+>Note: We are using a `lookup` plugin that will read the specified file as raw text and `cli_config` will push the configuration to the device.
 
 ##### Step 7
 

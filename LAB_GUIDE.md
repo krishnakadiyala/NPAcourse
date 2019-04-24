@@ -13,7 +13,7 @@
 - [Lab 6 - Using the debug Module](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_06_Debug_Module.md)
 - [Lab 7 - Passing in Interactive User Input](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_07_User_Input.md)
 - [Lab 8 - Auto-Create Directories using the file module](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_08_Auto_Create_Directories.md)
-- [Lab 9 - Getting Started with the Command Module](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_9_Core_Command_Module_01.md)
+- [Lab 9 - Getting Started with the Command Module](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_09_Core_Command_Module_01.md)
 - [Lab 10 - Getting started with the cli_command Module](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_10_Cli_Command_Module.md)
 - [Lab 11 - Continuous Compliance with Ansible](labs/Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_11_Core_Command_Compliance.md)
 
