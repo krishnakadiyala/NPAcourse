@@ -1055,15 +1055,6 @@ JSON
 - Understand how to model network configuration data in YAML (for use in Ansible)
 - Compare/Contrast Data Models on different platforms
 
----
-
-#TODO -- DONE needs review
-
-ADD A SLIDE ON YAML SYNTAX AND JSON
-
-- show https://www.json2yaml.com demo
-- explain how a playbook is build using data structures
-- after reviewing terminology and going over the playbook structure, demonstrating how a playbook is really a nested list of dicts can help the student understand it better.
 
 ---
 
@@ -2647,8 +2638,7 @@ ok: [csr1] => {
 - When it's a list of commands we get a list of `results`
 - Each element inside `results` will be `stdout` per command
 
-.left-column[
-
+.left-column[.medium-code[
 ```yaml
   
   - name: GET SHOW COMMANDS
@@ -2675,9 +2665,9 @@ ok: [csr1] => {
     debug:
       var: output['results'][1]['stdout']
 ```
-]
+]]
 
-.left-column[.small-code[
+.righ-column[.small-code[
 
 ```commandline
 TASK [SEE ALL KEYS OF REGISTERED DICTIONARY] **************************
@@ -4520,141 +4510,6 @@ Sample playbook gathering IOS facts:
 ]
 
 
----
-
-# ntc_get_facts
-
-- uptime - Uptime of the device
-- vendor - vendor of the device
-- model - Device model
-- hostname - Hostname of the device
-- fqdn - FQDN of the device
-- os_version - String with the OS version running on the device.
-- serial_number - Serial number of the device
-- interfaces - List of the interfaces of the device
-- vlans - List of the vlans configured on the device
-
-
-```yaml
-- ntc_get_facts:
-    provider: "{{ ntc_provider }}"
-    platform: "{{ ntc_vendor }}_{{ ansible_network_os }}_{{ ntc_api }}"
-```
-
-
----
-
-# ntc_show_command
-
-- Multi-vendor Ansible module to streamline converting raw text into JSON key/value pairs
-- Leverages TextFSM
-- netmiko is used for transport to enable support for _all_ devices
-
-```yaml
-tasks:
-
-  - name: GET DATA
-    ntc_show_command:
-      connection: ssh
-      platform: cisco_nxos
-      command: 'show vlan'
-      provider: "{{ ntc_provider }}"
-      template_dir: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates"
-
-```
-
----
-
-class: ubuntu
-
-# ntc_show_command
-
-- JSON data now available to re-use
-- Use as inputs to other modules or in templates (docs)
-
-```
-TASK: [GET DATA] **************************************************************
-ok: [n9k1] => {"changed": false, "response": [{"name": "default", "status": "active", "vlan_id": "1"}, {"name": "VLAN0002", "status": "active", "vlan_id": "2"}, {"name": "VLAN0003", "status": "active", "vlan_id": "3"}, {"name": "VLAN0004", "status": "active", "vlan_id": "4"}, {"name": "VLAN0005", "status": "active", "vlan_id": "5"}, {"name": "VLAN0006", "status": "active", "vlan_id": "6"}, {"name": "VLAN0007", "status": "active", "vlan_id": "7"}, {"name": "VLAN0008", "status": "active", "vlan_id": "8"}, {"name": "VLAN0009", "status": "active", "vlan_id": "9"}, {"name": "VLAN10_WEB", "status": "active", "vlan_id": "10"}, {"name": "VLAN0011", "status": "active", "vlan_id": "11"}, {"name": "VLAN0012", "status": "active", "vlan_id": "12"}, {"name": "VLAN0013", "status": "active", "vlan_id": "13"}, {"name": "VLAN0014", "status": "active", "vlan_id": "14"}, {"name": "VLAN0015", "status": "active", "vlan_id": "15"}, {"name": "VLAN0016", "status": "active", "vlan_id": "16"}, {"name": "VLAN0017", "status": "active", "vlan_id": "17"}, {"name": "VLAN0018", "status": "active", "vlan_id": "18"}, {"name": "VLAN0019", "status": "active", "vlan_id": "19"}, {"name": "peer_keepalive", "status": "active", "vlan_id": "20"}, {"name": "VLAN0022", "status": "active", "vlan_id": "22"}, {"name": "VLAN0030", "status": "active", "vlan_id": "30"}, {"name": "VLAN0040", "status": "active", "vlan_id": "40"}, {"name": "native", "status": "active", "vlan_id": "99"}, {"name": "VLAN0100", "status": "active", "vlan_id": "100"}, {"name": "VLAN0101", "status": "active", "vlan_id": "101"}, {"name": "VLAN0102", "status": "active", "vlan_id": "102"}, {"name": "VLAN0103", "status": "active", "vlan_id": "103"}, {"name": "VLAN0104", "status": "active", "vlan_id": "104"}, {"name": "VLAN0105", "status": "active", "vlan_id": "105"}, {"name": "VLAN0123", "status": "active", "vlan_id": "123"}, {"name": "VLAN0200", "status": "active", "vlan_id": "200"}]}
-```
-
----
-
-# snmp_facts
-
-- Multi-vendor fact gathering using SNMP
-- Returns:
-  - All IPv4 addresses
-  - interfaces
-  - sys contact
-  - sys description
-  - uptime
-
-```yaml
-- snmp_facts:
-    host: "{{ inventory_hostname }}"
-    version: v2c
-    community: networktocode
-```
-
-
----
-
-
-# snmp_device_version
-
-The `snmp_device_version` module can be used to discover the device vendor, os, and version.  These items are returned as variables `ansible_device_vendor`, `ansible_device_os`, and `ansible_device_version`.
-
-Example Task:
-
-```yaml
-      - name: QUERY DEVICE VIA SNMP
-        snmp_device_version:
-          community: networktocode
-          version: 2c
-          host: "{{ inventory_hostname }}"
-```
-
-You can use these discovered variables for further processing devices in a dynamic fashion.
-
-```yaml
-  - ntc_show_command:
-      platform: "{{ ansible_device_vendor }}_{{ ansible_device_os }}"
-      ...
-```
-
----
-
-
-# Creating Dynamic Groups
-
-You are able to create dynamic groups within Ansible using the `group_by` module.  Using the data collected by the `snmp_device_version` module we are able to dynamically group devices by vendor, os, or version.
-
-In this example we are grouping the devices by vendor.  This will create a group named `vendor_` followed by the vendor name.  This group can be used in subsequent plays within the playbook. Dont forget about `groups` builtin variable that will show a dictionary of keys that are all group names defined in the inventory file and values are list of host names that are members of the group.
-.s2-code[
-```yaml
----
-
-  - name: DISCOVER VENDOR
-    hosts: iosxe,nxos,vmx
-    connection: local
-    gather_facts: no
-
-    tasks:
-
-      - name: QUERY DEVICE VIA SNMP
-        snmp_device_version:
-          community: networktocode
-          version: 2c
-          host: "{{ inventory_hostname }}"
-        tags: snmp
-
-      - group_by:
-          key: vendor_{{ ansible_device_vendor }}
-
-      - debug:
-          var: groups
-```
-]
 
 ---
 
@@ -4781,7 +4636,7 @@ Device: {{ inventory_hostname }}
 Vendor:           {{ ntc_vendor }}
 Platform:         {{ platform }}
 Operating System: {{ ansible_network_os }}
-Image:            {{ kickstart_image }}
+Image:            {{ ansible_net_image }}
 
 ```
 
@@ -4791,7 +4646,7 @@ Image:            {{ kickstart_image }}
 ---
 
   - name: DC P1
-    hosts: n9k1
+    hosts: nxos-spine1
     connection: local
     gather_facts: no
 
@@ -4812,12 +4667,11 @@ Image:            {{ kickstart_image }}
 
 ```bash
 
-Device: n9k1
-
+Device: nxos-spine1
 Vendor:           cisco
-Platform:         Nexus9000 C9396PX Chassis
-Operating System: 7.0(3)I2(1)
-Image:            7.0(3)I2(1)
+Platform:         NX-OSv Chassis
+Operating System: nxos
+Image:            bootflash:///titanium-d1.7.3.1.D1.0.10.bin
 
 ```
 ]
@@ -4835,31 +4689,31 @@ Image:            7.0(3)I2(1)
 
 DEVICE: {{ inventory_hostname }}
 
-{% for neighbor in ntc_neighbors.response %}
-NEIGHBOR:           {{ neighbor.neighbor }}
-NEIGHBOR INTERFACE: {{ neighbor.neighbor_interface }}
-LOCAL INTERFACE:    {{ neighbor.local_interace }}
+{%  for local_int, details in ansible_net_neighbors.items() %}
+LOCAL INTERFACE:    {{ local_int }}
+{% for neigh_data in details %}
+NEIGHBOR:           {{ neigh_data.sysname }}
+NEIGHBOR INTERFACE: {{ neigh_data.port }}
 
+{% endfor %}
 {% endfor %}
 
 ```
 - Playbook
 
-.s2-code[
+.small-code[
 ```yaml
 ---
   - name: DC P1
-    hosts: eos-spine1
-    connection: local
+    hosts: nxos-spine1
+    connection: network_cli
     gather_facts: no
-
     tasks:
-      - ntc_show_command:
-          provider: "{{ ntc_provider }}"
-          command: "show lldp neighbor"
-        register: ntc_neighbors
+      - name: LLDP NEIGHBORS
+        nxos_facts:
 
-      - template:
+      - name: BUILD TABLE
+        template:
           src: neighbors.j2
           dest: "files/neighbors.md"
 
@@ -4873,29 +4727,27 @@ LOCAL INTERFACE:    {{ neighbor.local_interace }}
 - Document
 
 ```bash
+DEVICE: nxos-spine1
 
+LOCAL INTERFACE:    Ethernet2/3
+NEIGHBOR:           nxos-spine2(TB604B14E3B)
+NEIGHBOR INTERFACE: Ethernet2/3
 
-Device: eos-spine1
+LOCAL INTERFACE:    Ethernet2/4
+NEIGHBOR:           nxos-spine2(TB604B14E3B)
+NEIGHBOR INTERFACE: Ethernet2/4
 
-NEIGHBOR:           leaf-tor1.arista.test
-NEIGHBOR INTERFACE: Ethernet1
-LOCAL INTERFACE:    Ethernet1
+LOCAL INTERFACE:    mgmt0
+NEIGHBOR:           nxos-spine2(TB604B14E3B)
+NEIGHBOR INTERFACE: mgmt0
 
-NEIGHBOR:           leaf-tor2.arista.test
-NEIGHBOR INTERFACE: Ethernet1
-LOCAL INTERFACE:    Ethernet2
+LOCAL INTERFACE:    Ethernet2/2
+NEIGHBOR:           nxos-spine2(TB604B14E3B)
+NEIGHBOR INTERFACE: Ethernet2/2
 
-NEIGHBOR:           spine2.arista.test
-NEIGHBOR INTERFACE: Ethernet5
-LOCAL INTERFACE:    Ethernet5
-
-NEIGHBOR:           spine2.arista.test
-NEIGHBOR INTERFACE: Ethernet6
-LOCAL INTERFACE:    Ethernet6
-
-NEIGHBOR:           spine2.arista.test
-NEIGHBOR INTERFACE: Ethernet7
-LOCAL INTERFACE:    Ethernet7
+LOCAL INTERFACE:    Ethernet2/1
+NEIGHBOR:           nxos-spine2(TB604B14E3B)
+NEIGHBOR INTERFACE: Ethernet2/1
 
 ```
 ]
@@ -4910,10 +4762,12 @@ LOCAL INTERFACE:    Ethernet7
 
 ```bash
 # neighbors-table.j2
-| Source     | Interface    | Neighbor  | Interface    |
-| ---------- |--------------| ----------|------------- |
-{% for neighbor in ntc_neighbors.response %}
-| {{ inventory_hostname }} | {{ neighbor.local_interface }} | {{ neighbor.neighbor }} | {{ neighbor.neighbor_interface }} |
+| Source     | Interface    |         Neighbor          | Interface   |
+| ---------- |--------------|---------------------------|-------------|
+{% for local_int, details in ansible_net_neighbors.items() %}
+{% for neigh_data in details %}
+| {{ inventory_hostname }}| {{ local_int }}  |  {{ neigh_data.sysname }} | {{ neigh_data.port  }} |
+{% endfor %}
 {% endfor %}
 ```
 - Playbook
@@ -4921,14 +4775,12 @@ LOCAL INTERFACE:    Ethernet7
 ```yaml
 ---
   - name: DC P1
-    hosts: eos-spine1
-    connection: local
+    hosts: nxos-spine1
+    connection: network_cli
     gather_facts: no
     tasks:
-      - ntc_show_command:
-          provider: "{{ ntc_provider }}"
-          command: "show lldp neighbor"
-        register: ntc_neighbors
+      - name: LLDP NEIGHBORS
+        nxos_facts:
 
       - template:
           src: neighbors.j2
@@ -4942,7 +4794,7 @@ LOCAL INTERFACE:    Ethernet7
 .right-column[
 - Markdown generated table
 .center[
-<img src="data/media/neighbor-table.png" alt="Neighbors Markdown Table" style="alight:middle;width:440px;height:340px;">
+<img src="data/media/neighbor-table.png" alt="Neighbors Markdown Table" style="alight:middle;width:450px;height:280px;">
 ]
 ]
 
@@ -4968,7 +4820,6 @@ LOCAL INTERFACE:    Ethernet7
 - Lab 19 - Making REST API Calls from Ansible
 - Lab 20 - Data Collection Modules & Reporting
   - Facts Data Collection Modules
-  - Structured Data from CLI Devices (ntc_show_command)
   - Inventory Report
 
 ---
@@ -6617,10 +6468,710 @@ playbook: build-push.yml
   - You will use the "template" and "napalm_install_config" modules
   - Choose any *1* vendor to complete this lab
 
+
+---
+class: middle, segue, title
+# NTC and More Modules
+
+
 ---
 
-# TODO
-Add slides on Ansible Network_Eng
+# ntc_get_facts
+
+- uptime - Uptime of the device
+- vendor - vendor of the device
+- model - Device model
+- hostname - Hostname of the device
+- fqdn - FQDN of the device
+- os_version - String with the OS version running on the device.
+- serial_number - Serial number of the device
+- interfaces - List of the interfaces of the device
+- vlans - List of the vlans configured on the device
+
+
+```yaml
+- ntc_get_facts:
+    provider: "{{ ntc_provider }}"
+    platform: "{{ ntc_vendor }}_{{ ansible_network_os }}_{{ ntc_api }}"
+```
+
+
+---
+
+# ntc_show_command
+
+- Multi-vendor Ansible module to streamline converting raw text into JSON key/value pairs
+- Leverages TextFSM
+- netmiko is used for transport to enable support for _all_ devices
+
+```yaml
+tasks:
+
+  - name: GET DATA
+    ntc_show_command:
+      connection: ssh
+      platform: cisco_nxos
+      command: 'show vlan'
+      provider: "{{ ntc_provider }}"
+      template_dir: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates"
+
+```
+
+---
+
+class: ubuntu
+
+# ntc_show_command
+
+- JSON data now available to re-use
+- Use as inputs to other modules or in templates (docs)
+
+```
+TASK: [GET DATA] **************************************************************
+ok: [n9k1] => {"changed": false, "response": [{"name": "default", "status": "active", "vlan_id": "1"}, {"name": "VLAN0002", "status": "active", "vlan_id": "2"}, {"name": "VLAN0003", "status": "active", "vlan_id": "3"}, {"name": "VLAN0004", "status": "active", "vlan_id": "4"}, {"name": "VLAN0005", "status": "active", "vlan_id": "5"}, {"name": "VLAN0006", "status": "active", "vlan_id": "6"}, {"name": "VLAN0007", "status": "active", "vlan_id": "7"}, {"name": "VLAN0008", "status": "active", "vlan_id": "8"}, {"name": "VLAN0009", "status": "active", "vlan_id": "9"}, {"name": "VLAN10_WEB", "status": "active", "vlan_id": "10"}, {"name": "VLAN0011", "status": "active", "vlan_id": "11"}, {"name": "VLAN0012", "status": "active", "vlan_id": "12"}, {"name": "VLAN0013", "status": "active", "vlan_id": "13"}, {"name": "VLAN0014", "status": "active", "vlan_id": "14"}, {"name": "VLAN0015", "status": "active", "vlan_id": "15"}, {"name": "VLAN0016", "status": "active", "vlan_id": "16"}, {"name": "VLAN0017", "status": "active", "vlan_id": "17"}, {"name": "VLAN0018", "status": "active", "vlan_id": "18"}, {"name": "VLAN0019", "status": "active", "vlan_id": "19"}, {"name": "peer_keepalive", "status": "active", "vlan_id": "20"}, {"name": "VLAN0022", "status": "active", "vlan_id": "22"}, {"name": "VLAN0030", "status": "active", "vlan_id": "30"}, {"name": "VLAN0040", "status": "active", "vlan_id": "40"}, {"name": "native", "status": "active", "vlan_id": "99"}, {"name": "VLAN0100", "status": "active", "vlan_id": "100"}, {"name": "VLAN0101", "status": "active", "vlan_id": "101"}, {"name": "VLAN0102", "status": "active", "vlan_id": "102"}, {"name": "VLAN0103", "status": "active", "vlan_id": "103"}, {"name": "VLAN0104", "status": "active", "vlan_id": "104"}, {"name": "VLAN0105", "status": "active", "vlan_id": "105"}, {"name": "VLAN0123", "status": "active", "vlan_id": "123"}, {"name": "VLAN0200", "status": "active", "vlan_id": "200"}]}
+```
+
+---
+
+# snmp_facts
+
+- Multi-vendor fact gathering using SNMP
+- Returns:
+  - All IPv4 addresses
+  - interfaces
+  - sys contact
+  - sys description
+  - uptime
+
+```yaml
+- snmp_facts:
+    host: "{{ inventory_hostname }}"
+    version: v2c
+    community: networktocode
+```
+
+
+---
+
+
+# snmp_device_version
+
+The `snmp_device_version` module can be used to discover the device vendor, os, and version.  These items are returned as variables `ansible_device_vendor`, `ansible_device_os`, and `ansible_device_version`.
+
+Example Task:
+
+```yaml
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+```
+
+You can use these discovered variables for further processing devices in a dynamic fashion.
+
+```yaml
+  - ntc_show_command:
+      platform: "{{ ansible_device_vendor }}_{{ ansible_device_os }}"
+      ...
+```
+
+---
+class: center, middle, title
+# Network Engine and NTC Parsers
+
+
+---
+
+# Network Engine Overview
+
+- Set of consumable functions distributed as Ansible Roles
+
+- The Network Engine Role extracts data about your network devices as Ansible facts in a JSON data structure, ready to be added to your inventory host facts and/or consumed by Ansible tasks and templates
+
+- You define the data elements you want to extract from each network OS command in parser templates, using either YAML or Google TextFSM syntax
+    
+- The initial release of the Network Engine role includes two parser modules:
+     
+     - `command_parser` accepts YAML input, uses an internally maintained, loosely defined parsing language based on Ansible playbook directives
+     - `textfsm_parser` accepts Google TextFSM input, uses Google TextFSM parsing language
+        
+
+---
+class: center, middle 
+# Network Engine Examples
+
+
+---
+# Example 1: Text Input
+
+- show interfaces (Cisco IOS)
+
+
+.left-column[.small-code[
+```commandline
+GigabitEthernet1 is up, line protocol is up
+  Hardware is CSR vNIC, address is 2cc2.6031.1341 (bia 2cc2.6031.1341)
+  Internet address is 10.0.0.51/24
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full Duplex, 1000Mbps, link type is auto, media type is RJ45
+  output flow-control is unsupported, input flow-control is unsupported
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:15, output 00:00:04, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 2000 bits/sec, 2 packets/sec
+  5 minute output rate 2000 bits/sec, 2 packets/sec
+     8063 packets input, 732260 bytes, 0 no buffer
+     Received 0 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     9171 packets output, 723414 bytes, 0 underruns
+     0 output errors, 0 collisions, 0 interface resets
+     254 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+GigabitEthernet2 is up, line protocol is up
+  Hardware is CSR vNIC, address is 2cc2.6069.e08c (bia 2cc2.6069.e08c)
+  Description: CONNECTS_CSR3
+  Internet address is 10.254.13.1/24
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+  output omitted...
+```
+]]
+
+.right-column[
+```yaml
+---
+  - name: USING PARSER TEMPLATES
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+    roles:
+      - ansible-network.network-engine
+      
+    tasks:
+    
+      - name: SHOW INTERFACES
+        ios_command:
+          commands: show interfaces
+        register: interface_data
+```
+]
+
+
+---
+# Example 1: Template File
+
+.left-column[
+- show interfaces (Cisco IOS)
+- Filename: `show_interfaces.yml`
+
+.small-code[
+```yaml
+---
+- name: parser meta data
+  parser_metadata:
+    version: 1.0
+    command: show interfaces
+    network_os: ios
+
+- name: match sections
+  pattern_match:
+    regex: "^(\\S+) is up,"
+    match_all: true
+    match_greedy: true
+  register: section
+
+- name: match interface values
+  pattern_group:
+    - name: match name
+      pattern_match:
+        regex: "^(\\S+)"
+        content: "{{ item }}"
+      register: name
+
+    - name: match hardware
+      pattern_match:
+        regex: "\\s+Hardware is ([\\w ]+)"
+        content: "{{ item }}"
+      register: type
+```
+]]
+.right-column[
+Continued
+.small-code[
+```yaml
+    - name: match mtu
+      pattern_match:
+        regex: "MTU (\\d+)"
+        content: "{{ item }}"
+      register: mtu
+
+    - name: match description
+      pattern_match:
+        regex: "Description: (.*)"
+        content: "{{ item }}"
+      register: description
+  loop: "{{ section }}"
+  register: interfaces
+
+- name: generate json data structure
+  json_template:
+    template:
+      - key: "{{ item.name.matches.0 }}"
+        object:
+              - key: name
+                value: "{{ item.name.matches.0 }}"
+              - key: type
+                value: "{{ item.type.matches.0 }}"
+              - key: mtu
+                value: "{{ item.mtu.matches.0 }}"
+              - key: description
+                value: "{{ item.description.matches.0 }}"
+  loop: "{{ interfaces }}"
+  export: true
+  export_as: "dict"
+  register: interface_facts
+```
+]
+]
+
+
+---
+
+# Example 1: Playbook
+
+
+.small-code[
+.left-column[
+- The `command_parser` module has two parameters:
+  
+   - `file`: Define the path to YAML file
+   - `content`: Define the path to a raw file or the variable that contains the raw output
+   
+```yaml
+---
+
+  - name: USING PARSER TEMPLATES
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+    roles:
+      - ansible-network.network-engine
+      
+    tasks:
+    
+      - name: SHOW INTERFACES
+        ios_command:
+          commands: show interfaces
+        register: interface_data
+
+      - name: COMMAND PARSER
+        command_parser:
+          file: "./parsers/ios/show_interfaces.yml"
+          content: "{{ interface_data['stdout'][0] }}"
+        register: interfaces
+
+      - name: PARSED DATA
+        debug:
+          var: interfaces
+```
+]
+]
+
+.small-code[
+.right-column[
+```commandline
+TASK [PARSED DATA] *************************************************************************
+ok: [csr1] => {
+    "interfaces": {
+        "ansible_facts": {
+            "interface_facts": {
+                "GigabitEthernet1": {
+                    "description": null,
+                    "mtu": "1500",
+                    "name": "GigabitEthernet1",
+                    "type": "CSR vNIC"
+                },
+                "GigabitEthernet2": {
+                    "description": "CONNECTS_CSR3",
+                    "mtu": "1500",
+                    "name": "GigabitEthernet2",
+                    "type": "CSR vNIC"
+                },
+                "GigabitEthernet4": {
+                    "description": "CONNECTS_CSR2",
+                    "mtu": "1500",
+                    "name": "GigabitEthernet4",
+                    "type": "CSR vNIC"
+                },
+                "Loopback0": {
+                    "description": null,
+                    "mtu": "1514",
+                    "name": "Loopback0",
+                    "type": "Loopback"
+                },
+                "Loopback100": {
+                    "description": "OSPF ROUTER ID",
+                    "mtu": "1514",
+                    "name": "Loopback100",
+                    "type": "Loopback"
+                }, output omitted...
+
+
+
+
+```
+]
+]
+
+
+---
+
+# Example 2: Text Input
+
+- show interfaces (Cisco IOS)
+
+
+.left-column[.small-code[
+```commandline
+GigabitEthernet1 is up, line protocol is up
+  Hardware is CSR vNIC, address is 2cc2.6031.1341 (bia 2cc2.6031.1341)
+  Internet address is 10.0.0.51/24
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full Duplex, 1000Mbps, link type is auto, media type is RJ45
+  output flow-control is unsupported, input flow-control is unsupported
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:15, output 00:00:04, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 2000 bits/sec, 2 packets/sec
+  5 minute output rate 2000 bits/sec, 2 packets/sec
+     8063 packets input, 732260 bytes, 0 no buffer
+     Received 0 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     9171 packets output, 723414 bytes, 0 underruns
+     0 output errors, 0 collisions, 0 interface resets
+     254 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+GigabitEthernet2 is up, line protocol is up
+  Hardware is CSR vNIC, address is 2cc2.6069.e08c (bia 2cc2.6069.e08c)
+  Description: CONNECTS_CSR3
+  Internet address is 10.254.13.1/24
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+  output omitted...
+```
+]]
+
+.right-column[
+```yaml
+---
+  - name: USING PARSER TEMPLATES
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+    roles:
+      - ansible-network.network-engine
+      
+    tasks:
+    
+      - name: SHOW INTERFACES
+        ios_command:
+          commands: show interfaces
+        register: interface_data
+```
+]
+
+---
+# Example 2: Template File
+
+- show interfaces (Cisco IOS)
+- Order is important
+- Filename: `show_interfaces.template`
+
+```bash
+Value Required name (\S+)
+Value type ([\w ]+)
+Value description (.*)
+Value mtu (\d+)
+
+Start
+  ^${name} is up
+  ^\s+Hardware is ${type} -> Continue
+  ^\s+Description: ${description}
+  ^\s+MTU ${mtu} bytes, -> Record
+```
+
+---
+# Example 2: Playbook
+
+.small-code[
+.left-column[
+- The `textfsm_parser` module has two parameters:
+  - `file`: Define the path to YAML file
+  - `content`: Define the path to a raw file or the variable that contains the raw output
+
+```yaml
+---
+  - name: USING PARSER TEMPLATES
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+    roles:
+      - ansible-network.network-engine
+    tasks:
+    
+      - name: SHOW INTERFACES
+        ios_command:
+          commands: show interfaces
+        register: interface_data
+
+      - name: TEXTFSM PARSER
+        textfsm_parser:
+          file: "./parsers/{{ ansible_network_os }}/show_interfaces.template"
+          content: "{{ interface_data['stdout'][0] }}"
+          name: interface_facts
+        register: interface 
+        
+      - name: PARSED DATA
+        debug:
+          var: interface
+```
+]
+]
+
+.small-code[
+.right-column[
+```commandline
+TASK [PARSED DATA] ***********************************************************
+ok: [csr1] => {
+    "interface": {
+        "ansible_facts": {
+            "interface_facts": [
+                {
+                    "description": "",
+                    "mtu": "1500",
+                    "name": "GigabitEthernet1",
+                    "type": "CSR vNIC"
+                },
+                {
+                    "description": "CONNECTS_CSR3",
+                    "mtu": "1500",
+                    "name": "GigabitEthernet2",
+                    "type": "CSR vNIC"
+                },
+                {
+                    "description": "CONNECTS_CSR2",
+                    "mtu": "1500",
+                    "name": "GigabitEthernet4",
+                    "type": "CSR vNIC"
+                },
+                {
+                    "description": "",
+                    "mtu": "1514",
+                    "name": "Loopback0",
+                    "type": "Loopback"
+                },
+                output omitted...
+                ]
+
+```
+]
+]
+
+---
+class: center, middle 
+# NTC Parser Example
+
+
+
+---
+
+# Example 3: Text Input
+
+- show interfaces (Cisco IOS)
+
+
+.left-column[.small-code[
+```commandline
+GigabitEthernet1 is up, line protocol is up
+  Hardware is CSR vNIC, address is 2cc2.6031.1341 (bia 2cc2.6031.1341)
+  Internet address is 10.0.0.51/24
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+     reliability 255/255, txload 1/255, rxload 1/255
+  Encapsulation ARPA, loopback not set
+  Keepalive set (10 sec)
+  Full Duplex, 1000Mbps, link type is auto, media type is RJ45
+  output flow-control is unsupported, input flow-control is unsupported
+  ARP type: ARPA, ARP Timeout 04:00:00
+  Last input 00:00:15, output 00:00:04, output hang never
+  Last clearing of "show interface" counters never
+  Input queue: 0/375/0/0 (size/max/drops/flushes); Total output drops: 0
+  Queueing strategy: fifo
+  Output queue: 0/40 (size/max)
+  5 minute input rate 2000 bits/sec, 2 packets/sec
+  5 minute output rate 2000 bits/sec, 2 packets/sec
+     8063 packets input, 732260 bytes, 0 no buffer
+     Received 0 broadcasts (0 IP multicasts)
+     0 runts, 0 giants, 0 throttles
+     0 input errors, 0 CRC, 0 frame, 0 overrun, 0 ignored
+     0 watchdog, 0 multicast, 0 pause input
+     9171 packets output, 723414 bytes, 0 underruns
+     0 output errors, 0 collisions, 0 interface resets
+     254 unknown protocol drops
+     0 babbles, 0 late collision, 0 deferred
+     0 lost carrier, 0 no carrier, 0 pause output
+     0 output buffer failures, 0 output buffers swapped out
+GigabitEthernet2 is up, line protocol is up
+  Hardware is CSR vNIC, address is 2cc2.6069.e08c (bia 2cc2.6069.e08c)
+  Description: CONNECTS_CSR3
+  Internet address is 10.254.13.1/24
+  MTU 1500 bytes, BW 1000000 Kbit/sec, DLY 10 usec,
+  output omitted...
+```
+]]
+
+.right-column[
+```yaml
+---
+  - name: USING PARSER TEMPLATES
+    hosts: csr1
+    connection: local
+    gather_facts: no
+
+    vars:
+      template_path: "./parsers/{{ ansible_network_os }}/"
+      show_interfaces: "{{ template_path }}show_interfaces.template"
+      
+    tasks:
+    
+      - name: Using ntc_show_command and txt_fsm
+        ntc_show_command:
+          platform: "cisco_ios"
+          command: 'show interfaces'
+          provider: "{{ connection_details }}"
+          template_dir: "{{ template_path }}"
+```
+
+
+]
+
+---
+# Example 3: Template File
+
+- show interfaces (Cisco IOS)
+- Order is important
+- Filename: `show_interfaces.template`
+
+```bash
+Value Required name (\S+)
+Value type ([\w ]+)
+Value description (.*)
+Value mtu (\d+)
+
+Start
+  ^${name} is up
+  ^\s+Hardware is ${type} -> Continue
+  ^\s+Description: ${description}
+  ^\s+MTU ${mtu} bytes, -> Record
+```
+>Note: We are using the same TextFSM template used for Network Engine
+
+---
+# Example 3: Playbook
+
+.small-code[
+.left-column[
+- The `ntc_show_command` module sends the operational command and also parses the data.
+
+```yaml
+---
+
+  - name: USING PARSER TEMPLATES
+    hosts: csr1
+    connection: local
+    gather_facts: no
+
+    vars:
+      template_path: "./parsers/{{ ansible_network_os }}/"
+      show_interfaces: "{{ template_path }}show_interfaces.template"
+
+      
+    tasks:
+    
+      - name: Using ntc_show_command and txt_fsm
+        ntc_show_command:
+          platform: "cisco_ios"
+          command: 'show interfaces'
+          provider: "{{ connection_details }}"
+          template_dir: "{{ template_path }}"
+        register: interface
+
+
+      - name: PARSED DATA
+        debug:
+          var: interface
+```
+]
+]
+
+.small-code[
+.right-column[
+```commandline
+TASK [PARSED DATA] ***********************************************************
+ok: [csr1] => {
+    "interface": {
+        "ansible_facts": {
+            "interface_facts": [
+                {
+                    "description": "",
+                    "mtu": "1500",
+                    "name": "GigabitEthernet1",
+                    "type": "CSR vNIC"
+                },
+                {
+                    "description": "CONNECTS_CSR3",
+                    "mtu": "1500",
+                    "name": "GigabitEthernet2",
+                    "type": "CSR vNIC"
+                },
+                {
+                    "description": "CONNECTS_CSR2",
+                    "mtu": "1500",
+                    "name": "GigabitEthernet4",
+                    "type": "CSR vNIC"
+                },
+                {
+                    "description": "",
+                    "mtu": "1514",
+                    "name": "Loopback0",
+                    "type": "Loopback"
+                },
+                output omitted...
+                ]
+
+```
+]
+]
+
+
 
 ---
 # Lab Time
@@ -6631,6 +7182,42 @@ Add slides on Ansible Network_Eng
 class: middle, segue
 #Extra Bonus
 ##Device discovery, Dynamic Groups and Dynamic Inventory
+
+
+
+---
+
+
+# Creating Dynamic Groups
+
+You are able to create dynamic groups within Ansible using the `group_by` module.  Using the data collected by the `snmp_device_version` module we are able to dynamically group devices by vendor, os, or version.
+
+In this example we are grouping the devices by vendor.  This will create a group named `vendor_` followed by the vendor name.  This group can be used in subsequent plays within the playbook. Dont forget about `groups` builtin variable that will show a dictionary of keys that are all group names defined in the inventory file and values are list of host names that are members of the group.
+.s2-code[
+```yaml
+---
+
+  - name: DISCOVER VENDOR
+    hosts: iosxe,nxos,vmx
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+        tags: snmp
+
+      - group_by:
+          key: vendor_{{ ansible_device_vendor }}
+
+      - debug:
+          var: groups
+```
+]
 
 
 ---
