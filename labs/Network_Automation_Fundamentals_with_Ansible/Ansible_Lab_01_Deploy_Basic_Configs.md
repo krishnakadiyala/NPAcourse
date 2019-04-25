@@ -33,7 +33,7 @@ Open the file `inventory` in your text editor of choice.
 
 For now, this will just be a very basic inventory file.  It'll only have a handful devices.  We'll continue to build on this through the course.
 
-Based on your topology, you can add either three IOS devices to your inventory file or three IOS and Junos devices to your inventory for this lab.
+Based on your topology, you can add three IOS and Junos devices to your inventory for this lab.
 
 > It is based on your course topology.
 
@@ -121,7 +121,7 @@ Few notes about this command:
 * The `-i` flag maps to the inventory file to used when running this playbook - in our case, that's `inventory`
 * `snmp-config-01.yml` is the playbook we are executing
 * The `-u` flag maps to the username needed to login to the network devices
-* The `-k` flag states to prompt for the password needed to login to the network devices
+* The `-k` flag states to prompt for the password (ntc123) needed to login to the network devices
 
 Now execute the playbook:
 
@@ -187,7 +187,7 @@ This task is highlighting the fact that the **ios_config** module is idempotent.
 
 **This means you can now run the playbook 10000 times, but Ansible will only ever make the change once.**
 
-> Note: Ansible itself is not idempotent--the modules are.  Therefore, there can be modules that are NOT idempotent.  Be sure to understand how each module works before running them in production.
+> Note: Ansible itself is not idempotent the modules are.  Therefore, there can be modules that are NOT idempotent.  Be sure to understand how each module works before running them in production.
 
 
 ### Task 3 - Managing SNMP Configuration Commands for Junos

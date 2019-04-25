@@ -98,9 +98,9 @@ Using /etc/ansible/ansible.cfg as config file
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
 
 TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] *******************************************
-ok: [csr1] => {"changed": false, "failed": false}
-ok: [csr3] => {"changed": false, "failed": false}
-ok: [csr2] => {"changed": false, "failed": false}
+ok: [csr2] => {"changed": false}
+ok: [csr3] => {"changed": false}
+ok: [csr1] => {"changed": false}
 
 PLAY [PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS] ********************************************************
 
@@ -218,11 +218,8 @@ Verify the "old" configuration is still there by SSH'ing into CSR1 and VMX1:
 
 ```commandline
 csr1#
-csr1#show run | inc snmp-server
-snmp-server community ntc-course RO
-snmp-server community supersecret RW
+csr1#show run | inc snmp-server location
 snmp-server location NYC_HQ
-snmp-server contact JOHN_SMITH
 csr1#
 ```
 

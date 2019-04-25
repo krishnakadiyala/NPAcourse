@@ -564,7 +564,7 @@ Add a new task to the existing playbook to see the difference between `inventory
 
   - name: DEBUG AND PRINT INVENTORY_HOSTNAME VS ANSIBLE_HOST
     debug: 
-      msg: "Devices defined in inventory_hostname: {{ inventory_hostname }} and ansible_host: {{ ansible_host }}
+      msg: "Devices defined in inventory_hostname: {{ inventory_hostname }} and ansible_host: {{ ansible_host }}"
 ```
 
 ##### Step 3
