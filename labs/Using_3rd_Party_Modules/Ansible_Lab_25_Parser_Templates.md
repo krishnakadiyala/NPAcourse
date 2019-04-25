@@ -30,22 +30,73 @@ Create a playbook file called `parsers.yml` Inside the playbook add the followin
 ```
 
 
-
-
 ##### Step 2
+
+Add the two tasks to the playbook. One with `snmp_device_version` and the other a `debug` task to display the data. The `snmp_device_version` module can be used to discover the device vendor, os and version. 
+
+These variables are then returned as variables that can be re-used for other modules or data collection. The variables returned are `ansible_device_vendor`, `ansible_device_os`, and `ansible_device_version`.
+
+
+```yaml
+
+      - name: QUERY DEVICE VIA SNMP
+        snmp_device_version:
+          community: networktocode
+          version: 2c
+          host: "{{ inventory_hostname }}"
+        register: snmp
+
+      - name: DISPLAY SNMP
+        debug:
+          var: snmp
+```
+
+##### Step 3
+
+Save the playbook and execute it. You should see the following output:
+
+```commandline
+
+ntc@jump-host:~/ansible$ ansible-playbook -i inventory parsers.yml
+PLAY [USING PARSER TEMPLATES] *******************************************************
+
+TASK [QUERY DEVICE VIA SNMP] ********************************************************
+ok: [csr1]
+
+TASK [DISPLAY SNMP] *****************************************************************
+ok: [csr1] => {
+    "snmp": {
+        "ansible_facts": {
+            "ansible_device_os": "ios",
+            "ansible_device_vendor": "cisco",
+            "ansible_device_version": "16.08.01a"
+        },
+        "changed": false,
+        "failed": false
+    }
+}
+
+PLAY RECAP ***************************************************************************
+csr1                       : ok=2    changed=0    unreachable=0    failed=0
+
+```
+
+
+##### Step 4
 
 Add two more tasks, one with the `ntc_show_command` and the other with a `debug` statement to view the parsed data.
 The `ntc_show_command` module is a multi-vendor Ansible module designed for converting raw text into JSON key/value pairs. 
 
 This module leverages TextFSM as the templating tool to parse the unstructured data. Netmiko is also used for transport to enalbe support for all devices. 
 
+>Note: We are reusing variables like `ansible_device_vendor` and `ansible_device_os` in the `platform` parameter from what was returned using `snmp_device_vendor`
 
 ```yaml
 
       - name: Using ntc_show_command and txt_fsm
         ntc_show_command:
           connection: ssh
-          platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"
+          platform: "{{ ansible_device_vendor }}_{{ ansible_device_os }}"
           command: 'show version'
           provider: "{{ connection_details }}"
           template_dir: "{{ template_path }}"
@@ -55,17 +106,7 @@ This module leverages TextFSM as the templating tool to parse the unstructured d
         debug:
           var: ntc_version_data
 ```
-
->Note: `conection_details` variable should be coming from `group_vars/all.yml` if it's not there add:
-
-```yaml
-connection_details:
-  username: "{{ ansible_user }}"
-  password: "{{ ansible_ssh_pass }}"
-  host: "{{ inventory_hostname }}"
-```
-
-##### Step 3
+##### Step 5
 
 Save the playbook and execute it. You should see the following output:
 
@@ -111,9 +152,9 @@ csr1                       : ok=4    changed=0    unreachable=0    failed=0
 >Note: We sent the command and also parsed the data with a single task.
 
 
-##### Step 4
+##### Step 6
 
-Create two new directories locally called `parsers` and `ios` as a subdirectory of `parsers` add a new file called `show_version.yml`. Inside `ios` and add this template.
+Create two new directories locally one called `parsers` and another `ios` as a subdirectory of `parsers`, then add a new file called `show_version.yml` inside `ios` and copy/paste this template inside of it.
 
 ```yaml
 
@@ -169,7 +210,7 @@ Create two new directories locally called `parsers` and `ios` as a subdirectory 
 
 >Note: This template uses YAML syntax and regex to find the specified data from the rutured data from the show command. 
 
-##### Step 5
+##### Step 7
 
 Add three new tasks to your playbook. 
 
@@ -189,7 +230,7 @@ The third task will be a `debug` module that will show the parsed data performed
 
       - name: Generate JSON data structure usin command_parser
         command_parser:
-          file: "./parsers/{{ ansible_network_os }}/show_version.yml"
+          file: "./parsers/{{ ansible_device_os }}/show_version.yml"
           content: "{{ version_data['stdout'][0] }}"
         register: command_parser
 
@@ -197,7 +238,7 @@ The third task will be a `debug` module that will show the parsed data performed
         debug: 
           var: command_parser
 ```
-##### Step 6
+##### Step 8
 
 Save the playbook and execute it. You should see the following output:
 
@@ -239,7 +280,7 @@ csr1                       : ok=7    changed=0    unreachable=0    failed=0
 
 ```
 
-##### Step 7
+##### Step 9
 
 Add two more tasks to the playbook. This time we are using a different module called `textfsm_parser` from the network-engine. 
 
@@ -258,7 +299,7 @@ For this module we can reuse the same template that we used for the `ntc_show_co
           var: txt_fsm
 ```
 
-##### Step 8
+##### Step 10
 
 Save the playbook and execute it. You should see the following output:
 
@@ -303,7 +344,7 @@ csr1                       : ok=9    changed=0    unreachable=0    failed=0
 ```
 
 
-##### Step 9
+##### Step 11
 
 Add this last task using the `debug` module that will show the data from `snmp_device_version` and the device version from all the parsers that we just used.
 
@@ -315,9 +356,11 @@ Add this last task using the `debug` module that will show the data from `snmp_d
            - "{{ ntc_version_data['response'][0]['version'] }} using ntc_show_command" 
            - "{{ command_parser['ansible_facts']['system_facts']['version'] }} using network engine command_parser"
            - "{{ txt_fsm['ansible_facts']['system_facts'][0]['VERSION'] }} using network engine textfsm_parser"
+           - "{{ ansible_device_version }} using snmp_device_version"
+
 ```
 
-##### Step 10
+##### Step 12
 
 Save the playbook and execute it. You should see the following output:
 
@@ -334,9 +377,12 @@ ok: [csr1] => (item=16.08.01a using network engine command_parser) => {
 ok: [csr1] => (item=16.08.01a using network engine textfsm_parser) => {
     "msg": "The version for this cisco ios device is 16.08.01a using network engine textfsm_parser"
 }
+ok: [csr1] => (item=16.08.01a using snmp_device_version) => {
+    "msg": "The version for this cisco ios device is 16.08.01a using snmp_device_version"
+}
 
 PLAY RECAP ********************************************************************************************************
-csr1                       : ok=8   changed=0    unreachable=0    failed=0
+csr1                       : ok=10   changed=0    unreachable=0    failed=0
 
 ```
 
