@@ -112,7 +112,7 @@ You can also see that `stdout` is a dictionary key given it has a value after th
 
 Our goal is to save the show command output to a file.  We are going to do this using the `template` module.
 
-Create a new Jinja2 template called `basic-copy.j2` stored in the `templates` directory.  
+Modify and delete the content inside `basic-copy.j2` stored in the `templates` directory.  
 
 It should look like this:
 
@@ -122,20 +122,8 @@ It should look like this:
 
 Take a second to think about this object.  Remember the data type of `stdout`?
 
+
 ##### Step 9
-
-Add a task to create a directory using the *file* module where we can store the command outputs.  
-
-We'll use `command-outputs`.
-
-```yaml
- - name: GENERATE DIRECTORIES
-   file:
-     path: ./command-outputs/{{ ansible_network_os }}/
-     state: directory
-```
-
-##### Step 10
 
 Add the required task using `template` to the playbook.
 
@@ -143,14 +131,14 @@ Add the required task using `template` to the playbook.
       - name: SAVE SH VERSION TO FILE
         template:
           src: basic-copy.j2
-          dest: ./command-outputs/show_version.txt
+          dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
 ```
 
-##### Step 11
+##### Step 10
 
 Execute the playbook.
 
-##### Step 12
+##### Step 11
 
 Make the required changes to save command output for all 3 CSR and all 3 VMX devices.
 
@@ -180,17 +168,12 @@ Full and final playbook will look like this:
     tasks:
       - name: GET SHOW COMMANDS
         cli_command:
-          commands: show version
+          command: show version
         register: config_data
 
       - name: VIEW DATA STORED IN CONFIG_DATA
         debug:
           var: config_data
-
-      - name: GENERATE DIRECTORIES
-        file:
-         path: ./command-outputs/{{ ansible_network_os }}/
-         state: directory
 
       - name: SAVE SH VERSION TO FILE
         template:
@@ -198,7 +181,7 @@ Full and final playbook will look like this:
          dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt        
 ```
 
-##### Step 13
+##### Step 12
 
 Save and execute the playbook and check the new files created in the `command-outputs` directory. 
 
@@ -209,13 +192,15 @@ command-outputs
 ├── ios
 │   ├── csr1-show_version.txt
 │   ├── csr2-show_version.txt
-│   └── csr3-show_version.txt
+│   ├── csr3-show_version.txt
+│   └── show_version.txt
 └── junos
+    ├── show_version.txt
     ├── vmx1-show_version.txt
     ├── vmx2-show_version.txt
     └── vmx3-show_version.txt
 
-2 directories, 6 files
+2 directories, 8 files
 
 ntc@jump-host:ansible$
 ```

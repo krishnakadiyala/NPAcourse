@@ -89,10 +89,9 @@ set snmp contact {{ snmp_config.contact }}
 
 ##### Step 4
 
+Return to `deploy-snmp.yml` and update the `src` parameter in the template task to point to the new templates that were created in the previous step and also remove the `debug` tasks for now.
 
-Update the `src` parameter in the template task to point to the new templates that were created in the previous step and also remove the `debug` tasks for now.
-
-At this point, the playbook should look as follows:
+At this point, the playbook should look as follows: 
 
 ``` yaml
 

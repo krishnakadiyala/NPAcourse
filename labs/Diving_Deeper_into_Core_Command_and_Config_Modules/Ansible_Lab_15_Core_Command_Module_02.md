@@ -1,7 +1,7 @@
 ## Lab 15 Challenge - Issuing Ping Commands and Saving the Responses
 
 This lab will have you ping a certain amount of destinations from _each_ router.  
-Each of the reposes will then be stored in its own file within a device sub-directory
+Each of the responses will then be stored in its own file within a device sub-directory
 meaning we'll end up with a directory name of the hostname, e.g. "csr1" and "csr2" and
 in each directory will be files such as "to_8.8.8.8.txt" with the response from that router to that target IP.
 

@@ -13,7 +13,7 @@ Jinja2 ships with many filters already but in addition to those Ansible also shi
 Create a new playbook in the `ansible` directory called `jinja_filters.yml`.
 
 ```
-ntc@jump-host:ansible$ touch user_input.yml
+ntc@jump-host:ansible$ touch jinja_filters.yml
 ntc@jump-host:ansible$
 
 ```

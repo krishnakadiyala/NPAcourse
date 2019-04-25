@@ -319,7 +319,7 @@ ok: [vmx3] => {
 
 ##### Step 7
 
-Add a two tasks that will _assert_ the data returned from the stored variables and check the specified filesystems to make sure they are at a desired storage space and availability. 
+Add two tasks that will _assert_ the data returned from the stored variables and check the specified filesystems to make sure they are at a desired storage space and availability. 
 >Note: This task will run conditional logic to check that `if` data stored in `percent` is greater `>` than or equal `=` to the presented data which is integer of `50` then it will return either `True` or `False` in the form of `success_msg` or `fail_msg`. 
 
 ```yaml
