@@ -20,14 +20,28 @@ Create a playbook called `config-interfaces.yml` and insert the following into i
     gather_facts: no
 
     tasks:
+    
+       - name: BACKUP CONFIG
+         ios_config:
+           backup: True
+ 
+       - name: CLEAN UP IOS CONFIGS
+         lineinfile:
+           dest: ./backup/{{ inventory_hostname }}_config.*
+           regexp: "{{ item }}"
+           state: absent
+         loop: 
+           - "Building configuration..."
+           - "Current configuration .*" 
 
-    - name: CONFIGURING LOOPBACK
-      ios_config:
-        parents:
-          - interface Loopback200
-        commands:
-          - ip address 10.200.100.{{ inventory_hostname[-1] }} 255.255.255.255
+       - name: CONFIGURING LOOPBACK
+         ios_config:
+           parents:
+             - interface Loopback200
+           commands:
+             - ip address 10.200.100.{{ inventory_hostname[-1] }} 255.255.255.255
 ```
+>Note: We are backing up the configurations before making any changes to be able to see the differences later when we make changes.
 
 ##### Step 2
 
@@ -62,6 +76,9 @@ Create a new playbook called `aaa.yml`.
 Use the following playbook as the getting started point to manage a AAA server group of TACACS+ servers.
 
 ```yaml
+
+---
+
   - name: CONFIGURING AAA SERVER GROUPS
     hosts: csr1
     connection: network_cli
@@ -103,6 +120,9 @@ These servers should be defined in _priority_ order, or the order that they are 
 Take note of the new task using the tag of "append_server".
 
 ```yaml
+
+---
+
   - name: CONFIGURING AAA SERVER GROUPS
     hosts: csr1
     connection: network_cli
@@ -171,6 +191,9 @@ Our goal was to have `4.3.2.1` at the top of the list, but it's now showing at t
 Add one new task as shown below.
 
 ```yaml
+
+---
+
   - name: CONFIGURING AAA SERVER GROUPS
     hosts: csr1
     connection: network_cli
@@ -261,6 +284,9 @@ Create a new playbook called `verify-config.yml`.
 Save the following in the new playbook.
 
 ```yaml
+
+---
+
   - name: USING DIFF AGAINST WITH CONFIG
     hosts: csr1
     connection: network_cli
@@ -329,12 +355,19 @@ Add a new task to the playbook.  This task will compare the FULL config of one p
           diff_against: running
         tags: diff_me
 
+      - name: CREATE BACKUP FILE VARIABLE
+        set_fact:
+          backup_file: "{{ lookup('fileglob', 'backup/{{ inventory_hostname }}_config.*') }}"
+        tags: verify_config
+
       - name: VERIFY GOLDEN CONFIGURATION
         ios_config:
           diff_against: intended
-          intended_config: "{{ lookup('file', './backups/{{ inventory_hostname }}.cfg') }}"
+          intended_config: "{{ lookup('file', '{{ backup_file }}') }}"
         tags: verify_config
 ```
+
+>Note: The `set_fact` module is being used to parametrize the name of the backup file based on variable file names since the backup time will change. 
 
 ##### Step 5
 

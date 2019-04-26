@@ -16,10 +16,10 @@ You need to perform two steps to start using 3rd party modules.
    ntc@jump-host:~/ansible$ ansible --version
    ansible 2.7.9
       config file = /etc/ansible/ansible.cfg
-      configured module search path = [u'/etc/ansible/library']
-      ansible python module location = /Library/Python/2.7/site-packages/ansible
+      configured module search path = ['/etc/ntc/ansible/library']
+      ansible python module location = /home/ntc/.local/lib/python3.6/site-packages/ansible
       executable location = /usr/local/bin/ansible
-      python version = 2.7.10 (default, Aug 17 2018, 17:41:52)
+      python version = 3.6.7 (default, Oct 22 2018, 11:32:17) [GCC 8.2.0]
       
    ntc@jump-host:~/ansible$
   ```
@@ -56,10 +56,9 @@ library        = /home/ntc/projects/:/etc/ansible/library
    ansible 2.7.9
       config file = /etc/ansible/ansible.cfg
       configured module search path = [u'/etc/ansible/library', u'/home/ntc/projects']
-      ansible python module location = /Library/Python/2.7/site-packages/ansible
+      ansible python module location = /home/ntc/.local/lib/python3.6/site-packages/ansible
       executable location = /usr/local/bin/ansible
-      python version = 2.7.10 (default, Aug 17 2018, 17:41:52)
-    
+      python version = 3.6.7 (default, Oct 22 2018, 11:32:17) [GCC 8.2.0]
    ntc@jump-host:~/ansible$
 ```
 

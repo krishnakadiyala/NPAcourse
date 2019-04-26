@@ -615,7 +615,7 @@ ok: [eos-leaf2] => {
 }
 ```
 
->Note: Remove **ansible_host=10.1.1.1** from the inventory or it will cause problems later in later labs.
+**Remove ansible_host=10.1.1.1 from the inventory or it will cause problems later in later labs.**
 ##### Step 4
 
 
