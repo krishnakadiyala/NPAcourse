@@ -12,6 +12,7 @@ For these two labs, we're using two main modules to do this:  one that is used t
 Create a new playbook called `restore.yml`.  In this file, and for the first execution, limit it to the IOS devices:
 
 ```yaml
+
 ---
 
   - name: DEPLOY & RESTORE CONFIGS
@@ -28,6 +29,7 @@ Using `napalm_install_config`, push back these configurations. Since we didn't c
 
 
 ```yaml
+
 ---
 
   - name: DEPLOY & RESTORE CONFIGS

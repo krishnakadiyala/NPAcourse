@@ -269,7 +269,7 @@ The output for the new task will look like this:
 ```
 TASK [DEBUG OS VERSION] ********************************************************
 ok: [csr1] => {
-    "ntc_ios_facts['ansible_facts']['ansible_net_version']": "16.06.02"
+    "ntc_ios_facts['ansible_facts']['ansible_net_version']": "16.08.01a"
 }
 
 
@@ -297,12 +297,12 @@ The associated new output for the playbook is the following:
 ```
 TASK [DEBUG OS VERSION] ********************************************************
 ok: [csr1] => {
-    "ntc_ios_facts['ansible_facts']['ansible_net_version']": "16.06.02"
+    "ntc_ios_facts['ansible_facts']['ansible_net_version']": "16.08.01a"
 }
 
 TASK [DEBUG SHORTHAND OS VERSION] **********************************************
 ok: [csr1] => {
-    "ansible_net_version": "16.06.02"
+    "ansible_net_version": "16.08.01a"
 }
 
 ```
@@ -334,6 +334,7 @@ exit
 This is a sample playbook for running against all 4 device types (IOS, NXOS, JUNOS, EOS):
 
 ```yaml
+
 ---
 
   - name: GATHER IOS FACTS
@@ -441,6 +442,7 @@ In the previous task, you looked at exploring the core facts modules that specif
 Create a new playbook called `reports.yml`.  Create a play that requires the directories that are required to store the reports.  This will eliminate you from using `mkdir` on the command line.
 
 ```yaml
+
 ---
 
   - name: CREATE DIRECTORIES
@@ -460,6 +462,8 @@ Create a new playbook called `reports.yml`.  Create a play that requires the dir
           state: directory
 ```
 
+Save and execute the playbook
+
 ##### Step 2
 
 Our goal is to create the required Jinja2 templates to create reports that look like this for every device:
@@ -470,14 +474,14 @@ Text Report:
 Hostname:      csr3
 Vendor:        cisco
 Model:         UNKNOWN
-OS Version:    16.06.02
+OS Version:    16.08.01a
 Serial Number:  9KIBQAQ3OPE
 ```
 
 CSV Report:
 
 ```
-csr3,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE
+csr3,cisco,UNKNOWN,16.08.01a,9KIBQAQ3OPE
 ```
 
 Create two new templates and save them in the `templates` directory: `facts-text.j2` and `facts-csv.j2`.
@@ -569,6 +573,7 @@ View all files that have been created.
 There is still one thing missing from the CSV.  That is to inser the headers for the CSV.
 
 ```yaml
+
         - name: INSERT COLUMNS INTO CSV REPORT
           lineinfile:
             path: ./docs/master-csv.csv
@@ -598,6 +603,7 @@ Execute the playbook.
 The final playbook should look like this:
 
 ```yaml
+
 ---
 
   - name: CREATE DIRECTORIES
@@ -732,9 +738,9 @@ The master CSV report generated will look like this:
 ```
 ntc@jump-host:ansible$ cat docs/master-csv.csv
 Hostname,Vendor,Model,OS Version,Serial Number
-csr1,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE
-csr2,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE
-csr3,cisco,UNKNOWN,16.06.02,9KIBQAQ3OPE
+csr1,cisco,UNKNOWN,16.08.01a,9KIBQAQ3OPE
+csr2,cisco,UNKNOWN,16.08.01a,9KIBQAQ3OPE
+csr3,cisco,UNKNOWN,16.08.01a,9KIBQAQ3OPE
 eos-leaf1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
 eos-leaf2,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
 eos-spine1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
@@ -754,19 +760,19 @@ ntc@jump-host:ansible$ cat docs/master-text.md
 Hostname:      csr1
 Vendor:        cisco
 Model:         UNKNOWN
-OS Version:    16.06.02
+OS Version:    16.08.01a
 Serial Number:  9KIBQAQ3OPE
 ---
 Hostname:      csr2
 Vendor:        cisco
 Model:         UNKNOWN
-OS Version:    16.06.02
+OS Version:    16.08.01a
 Serial Number:  9KIBQAQ3OPE
 ---
 Hostname:      csr3
 Vendor:        cisco
 Model:         UNKNOWN
-OS Version:    16.06.02
+OS Version:    16.08.01a
 Serial Number:  9KIBQAQ3OPE
 ---
 Hostname:      eos-leaf1

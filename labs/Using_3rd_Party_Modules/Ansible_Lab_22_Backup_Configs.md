@@ -175,6 +175,8 @@ Add a variable to handle the login to the devices. Often referred to as a provid
 
 Add a task to backup the running configuration using the module called `ntc_show_command`.
 
+Create a `backups` directory.
+
 All backup files should be saved locally inside the `backups` directory.
 
 
@@ -206,6 +208,8 @@ All backup files should be saved locally inside the `backups` directory.
           command: "{{ backup_command[ansible_network_os] }}"
           local_file: "./backups/{{ inventory_hostname }}.cfg"
           platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"
+          template_dir: '/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/'
+          
 
 ```
 
@@ -306,11 +310,6 @@ ntc@jump-host:~/ansible$ $ ansible-playbook -i inventory backup.yml --tags=clean
 
 ```
 
-Full output:
-
-```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory backup.yml --tags=clean
-```
 
 Relevant output:
 
@@ -368,6 +367,7 @@ The final updated playbook should look like this:
           command: "{{ backup_command[ansible_network_os] }}"
           local_file: "./backups/{{ inventory_hostname }}.cfg"
           platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"
+          template_dir: '/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/'
 
       - name: CLEAN UP IOS CONFIGS - LINE 1
         lineinfile:

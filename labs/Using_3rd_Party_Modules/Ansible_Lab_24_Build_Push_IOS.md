@@ -1,4 +1,4 @@
-## Lab 24.2 - Building and Pushing Network Configuration Files
+## Lab 25.2 - Building and Pushing Network Configuration Files
 
 This lab will show how to use Ansible to automate the process of building network configuration files and pushing them to network devices.  
 
@@ -147,8 +147,6 @@ features:
     enabled: true
   - cmd: cdp run
     enabled: true
-
-
 ```
 
 You're starting to de-couple the inputs from the underlying CLI syntax.  You can now version control each and just make changes to your vars files going forward.
@@ -384,6 +382,7 @@ ospf_interfaces:
   - GigabitEthernet2
   - GigabitEthernet4
   - Loopback100
+
 ```
 
 
@@ -396,6 +395,7 @@ ospf_interfaces:
   - GigabitEthernet3
   - GigabitEthernet4
   - Loopback100
+
 ```
 
 
@@ -408,6 +408,7 @@ ospf_interfaces:
   - GigabitEthernet2
   - GigabitEthernet3
   - Loopback100
+
 ```
 
 
@@ -536,6 +537,7 @@ snmp:
   ro_comm: networktocode
   location: NYC_NY_DC1
   contact: NETWORK_ADMIN
+
 ```
 
 
@@ -575,6 +577,8 @@ ospf_interfaces:
   - GigabitEthernet2
   - GigabitEthernet4
   - Loopback100
+
+
 ```
 
 `host_vars/csr2.yml`
@@ -614,6 +618,7 @@ ospf_interfaces:
   - GigabitEthernet3
   - GigabitEthernet4
   - Loopback100
+
 ```
 
 `host_vars/csr3.yml`
@@ -652,6 +657,7 @@ ospf_interfaces:
   - GigabitEthernet2
   - GigabitEthernet3
   - Loopback100
+
 ```
 
 
@@ -695,7 +701,6 @@ This play should be limited to the `iosxe` group in the inventory file, so use t
           src: csr-ospf.j2
           dest: ./configs/{{ inventory_hostname }}.cfg
         tags: build
-
 ```
 
 > Note: we are using the variable `inventory_hostname` in the value for the `dest` parameter.  This will make a file with the name of the device as it is defined in the inventory file.

@@ -608,7 +608,7 @@ interface GigabitEthernet2
 
 ```
 
->Note: I would recomend to use https://td4a.now.sh to make things easier if needed.
+>Note: A recommendation to make building of the templates easier is to use https://td4a.now.sh to render data with the jinja2 templates on demand.
 
 Below is the **jinja2** template that needs to be added to `challenge_config.j2`
 

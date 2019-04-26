@@ -2457,7 +2457,7 @@ TASK [TEST REGISTERED OUTPUT] ********************************************
 ok: [csr1] => {
     "output": {
         "changed": false,
-        "stdout": ["Cisco IOS XE Software, Version 16.06.02\nCisco
+        "stdout": ["Cisco IOS XE Software, Version 16.08.01a\nCisco
             IOS Software [Everest], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M),
             Version 16.6.2, RELEASE SOFTWARE (fc2)\nTechnical Support:
             http://www.cisco.com/techsupport\nCopyright (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Wed 01-Nov-17 07:24 by mcpre\n\n\nCisco IOS-XE software, Copyright (c) 2005-2017
@@ -3384,7 +3384,7 @@ TASK [TEST REGISTERED OUTPUT] ********************************************
 ok: [csr1] => {
     "output": {
         "changed": false,
-        "stdout": ["Cisco IOS XE Software, Version 16.06.02\nCisco
+        "stdout": ["Cisco IOS XE Software, Version 16.08.01a\nCisco
             IOS Software [Everest], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M),
             Version 16.6.2, RELEASE SOFTWARE (fc2)\nTechnical Support:
             http://www.cisco.com/techsupport\nCopyright (c) 1986-2017 by Cisco Systems, Inc.\nCompiled Wed 01-Nov-17 07:24 by mcpre\n\n\nCisco IOS-XE software, Copyright (c) 2005-2017
