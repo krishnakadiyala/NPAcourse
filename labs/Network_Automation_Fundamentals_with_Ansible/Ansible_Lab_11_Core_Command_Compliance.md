@@ -268,10 +268,10 @@ Add a new task using the `set_fact` module that allows us to create new variable
 
  - name: CREATE NEW VARIABLES
    set_fact:
-       percent: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['used-percent'][0]['data'] }}"
-       filesystem: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['filesystem-name'][0]['data'] }}"
-       blocks: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['data'] }}"
-       storage: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['attributes']['junos:format'] }}"
+     percent: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['used-percent'][0]['data'] }}"
+     filesystem: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['filesystem-name'][0]['data'] }}"
+     blocks: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['data'] }}"
+     storage: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['attributes']['junos:format'] }}"
 
 ```
 
@@ -319,7 +319,7 @@ ok: [vmx3] => {
 
 ##### Step 7
 
-Add a two tasks that will _assert_ the data returned from the stored variables and check the specified filesystems to make sure they are at a desired storage space and availability. 
+Add two tasks that will _assert_ the data returned from the stored variables and check the specified filesystems to make sure they are at a desired storage space and availability. 
 >Note: This task will run conditional logic to check that `if` data stored in `percent` is greater `>` than or equal `=` to the presented data which is integer of `50` then it will return either `True` or `False` in the form of `success_msg` or `fail_msg`. 
 
 ```yaml

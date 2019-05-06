@@ -142,13 +142,22 @@ Type the command `tree` in the terminal to see the directory structure.
 ntc@jump-host:ansible$ tree
 .
 ├── auto-create.yml
+├── configs
+│   ├── ios-snmp.cfg
+│   └── junos-snmp.cfg
+├── debug.yml
 ├── eos
 ├── inventory
 ├── ios
 ├── junos
-└── nxos
+├── nxos
+├── snmp-config-01.yml
+├── snmp-config-02.yml
+├── snmp-config-03.yml
+├── snmp-config-04.yml
+└── user_input.yml
 
-4 directories, 2 files
+5 directories, 10 files
 ```
 
 ##### Step 7
@@ -247,6 +256,10 @@ Type the command `tree` in the terminal again to see the new files in the direct
 ntc@jump-host:ansible$ tree
 .
 ├── auto-create.yml
+├── configs
+│   ├── ios-snmp.cfg
+│   └── junos-snmp.cfg
+├── debug.yml
 ├── eos
 │   └── snmp.conf
 ├── inventory
@@ -254,10 +267,15 @@ ntc@jump-host:ansible$ tree
 │   └── snmp.conf
 ├── junos
 │   └── snmp.conf
-└── nxos
-    └── snmp.conf
+├── nxos
+│   └── snmp.conf
+├── snmp-config-01.yml
+├── snmp-config-02.yml
+├── snmp-config-03.yml
+├── snmp-config-04.yml
+└── user_input.yml
 
-4 directories, 6 files
+5 directories, 14 files
 
 ```
 
@@ -313,6 +331,10 @@ Type the tree command to see the final results.
 ntc@jump-host:ansible$ tree
 .
 ├── auto-create.yml
+├── configs
+│   ├── ios-snmp.cfg
+│   └── junos-snmp.cfg
+├── debug.yml
 ├── eos
 │   └── snmp.conf
 ├── inventory
@@ -322,12 +344,17 @@ ntc@jump-host:ansible$ tree
 │   └── snmp.conf
 ├── nxos
 │   └── snmp.conf
-└── templates
-    ├── eos-snmp.j2
-    ├── ios-snmp.j2
-    ├── junos-snmp.j2
-    └── nxos-snmp.j2
+├── snmp-config-01.yml
+├── snmp-config-02.yml
+├── snmp-config-03.yml
+├── snmp-config-04.yml
+├── templates
+│   ├── eos-snmp.j2
+│   ├── ios-snmp.j2
+│   ├── junos-snmp.j2
+│   └── nxos-snmp.j2
+└── user_input.yml
 
-5 directories, 10 files
+6 directories, 18 files
 
 ```

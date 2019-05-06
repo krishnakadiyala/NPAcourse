@@ -1,4 +1,4 @@
-## Lab 3 - Using Check Mode and Verbosity
+## Lab 4 - Using Check Mode and Verbosity
 
 This lab builds on the first lab you did with sending SNMP configurations to network devices.
 
@@ -6,10 +6,10 @@ This lab builds on the first lab you did with sending SNMP configurations to net
 
 ##### Step 1
 
-Copy your original playbook called `snmp-config-01.yml` to `snmp-config-03.yml`
+Copy your original playbook called `snmp-config-01.yml` to `snmp-config-04.yml`
 
 ```
-ntc@jump-host:ansible$ cp snmp-config-01.yml snmp-config-03.yml
+ntc@jump-host:ansible$ cp snmp-config-01.yml snmp-config-04.yml
 ntc@jump-host:ansible$
 ```
 
@@ -38,9 +38,6 @@ Add a new SNMP command to the `ios_config` `commands`  and `junos_config` `lines
             - set snmp community supersecret authorization read-write
             - set snmp location NYC_HQ
             - set snmp contact JOHN_SMITH
-  
-  
-  
 ```
 
 Save the playbook.
@@ -57,7 +54,7 @@ The core `<os>_config` modules will return the commands being sent to the device
 Let's take a look:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-04.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] ******************************************************************************************************************
@@ -95,15 +92,15 @@ This is telling us that Ansible is only sending ONE command to the device -- Ans
 Re-run the playbook once more verifying idempotency, e.g. no changes should be made.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-04.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
 
 TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] *******************************************
-ok: [csr1] => {"changed": false, "failed": false}
-ok: [csr3] => {"changed": false, "failed": false}
-ok: [csr2] => {"changed": false, "failed": false}
+ok: [csr2] => {"changed": false}
+ok: [csr3] => {"changed": false}
+ok: [csr1] => {"changed": false}
 
 PLAY [PLAY 2 - DEPLOYING SNMP CONFIGURATIONS ON JUNOS] ********************************************************
 
@@ -176,8 +173,7 @@ So that the complete playbook looks like this:
             - set snmp community public authorization read-only
             - set snmp community supersecret authorization read-write
             - set snmp location NYC_HQ_COLO
-            - set snmp contact JOHN_SMITH
-            
+            - set snmp contact JOHN_SMITH      
 ```
 
 
@@ -186,7 +182,7 @@ So that the complete playbook looks like this:
 Execute the playbook just with the "check mode" flag set:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml --check
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-04.yml --check
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
 
@@ -222,11 +218,8 @@ Verify the "old" configuration is still there by SSH'ing into CSR1 and VMX1:
 
 ```commandline
 csr1#
-csr1#show run | inc snmp-server
-snmp-server community ntc-course RO
-snmp-server community supersecret RW
+csr1#show run | inc snmp-server location
 snmp-server location NYC_HQ
-snmp-server contact JOHN_SMITH
 csr1#
 ```
 
@@ -255,7 +248,7 @@ Let's try it.
 Run the playbook with check mode and verbose mode.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml --check -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-04.yml --check -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -290,7 +283,7 @@ You now know which commands are going to get sent to the device.  This is super-
 Now that you, as a network engineer, "approved" the commands that will get sent to the device, you can remove check mode (feel free to keep verbose mode).
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-04.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -323,7 +316,7 @@ ntc@jump-host:ansible$
 Finally, run the playbook one more time for verifying idempotency.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml -v
+ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-04.yml -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************

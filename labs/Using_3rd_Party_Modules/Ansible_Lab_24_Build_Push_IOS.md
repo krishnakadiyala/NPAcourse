@@ -147,8 +147,6 @@ features:
     enabled: true
   - cmd: cdp run
     enabled: true
-
-
 ```
 
 You're starting to de-couple the inputs from the underlying CLI syntax.  You can now version control each and just make changes to your vars files going forward.
@@ -198,6 +196,7 @@ Now create three new files in the `host_vars` directory - one per device.  These
 File: `host_vars/csr1.yml`
 
 ```yaml
+
 ---
 
 interfaces:
@@ -227,6 +226,9 @@ interfaces:
 File: `host_vars/csr2.yml`
 
 ```yaml
+
+---
+
 interfaces:
   - name: Loopback100
     state: up
@@ -248,7 +250,6 @@ interfaces:
     mask: 255.255.255.0
     description: CONNECTS_CSR2
     cdp: true
-
 ```
 
 
@@ -257,6 +258,9 @@ File: `host_vars/csr3.yml`
 Notice the different syntax that can be used for a list of dictionaries.
 
 ```yaml
+
+---
+
 interfaces:
   - name: Loopback100
     state: up
@@ -507,6 +511,7 @@ VARS FILES:
 `group_vars/all.yml`:
 
 ```yaml
+
 ---
 
 # Possible other content from previous labs
@@ -539,6 +544,7 @@ snmp:
 `host_vars/csr1.yml`
 
 ```yaml
+
 ---
 
 # Possible other content from previous labs
@@ -578,6 +584,7 @@ ospf_interfaces:
 `host_vars/csr2.yml`
 
 ```yaml
+
 ---
 
 # Possible other content from previous labs
@@ -617,6 +624,7 @@ ospf_interfaces:
 `host_vars/csr3.yml`
 
 ```yaml
+
 ---
 
 # Possible other content from previous labs
@@ -678,6 +686,7 @@ Two parameters will be passed to the module:  `src` which is the source template
 This play should be limited to the `iosxe` group in the inventory file, so use the `hosts: iosxe` in the play definition.
 
 ```yaml
+
 ---
 
   - name: Build & Deploy IOS Configurations
@@ -692,7 +701,6 @@ This play should be limited to the `iosxe` group in the inventory file, so use t
           src: csr-ospf.j2
           dest: ./configs/{{ inventory_hostname }}.cfg
         tags: build
-
 ```
 
 > Note: we are using the variable `inventory_hostname` in the value for the `dest` parameter.  This will make a file with the name of the device as it is defined in the inventory file.
@@ -764,6 +772,7 @@ The following parameters will be used for the napalm_install_config module (as s
 Add the following task to the `build-push.yml` playbook:
 
 ```yaml
+
 ---
 
   - name: Build & Deploy IOS Configurations

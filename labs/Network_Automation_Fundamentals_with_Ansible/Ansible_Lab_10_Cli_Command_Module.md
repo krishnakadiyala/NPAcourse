@@ -8,12 +8,11 @@ In this task, you will use the cli_command module to issue show commands against
 
 Create a new playbook called `cli-command.yml` in the `ansible` directory.  You have your choice to automate EOS, or NXOS devices.  While all examples reflect IOS and JUNOS devices, it's the same workflow for any of them.
 
-
 ```yaml
 
 ---
 
-  - name: BACKUP SHOW VERSION FOR IOS
+  - name: BACKUP SHOW VERSION FOR IOS AND JUNOS
     hosts: csr1,vmx1
     connection: network_cli
     gather_facts: no
@@ -30,7 +29,7 @@ Add a task to issue the `show version` command.
 
 ---
 
-  - name: BACKUP SHOW VERSION ON IOS
+  - name: BACKUP SHOW VERSION FOR IOS AND JUNOS
     hosts: csr1,vmx1
     connection: network_cli
     gather_facts: no
@@ -41,7 +40,6 @@ Add a task to issue the `show version` command.
         cli_command:
           command: show version
         register: config_data
-
 ```
 
 ##### Step 3
@@ -102,7 +100,6 @@ ok: [vmx1] => {
         "stdout": "Hostname: vmx1\nModel: vmx\nJunos: 18.2R1.9\nJUNOS OS Kernel 64-bit  [20180614.6c3f819_builder_stable_11]\nJUNOS OS libs [20180614.6c3f819_builder_stable_11]\nJUNOS OS runtime [20180614.6c3f819_builder_stable_11]\nJUNOS
         
         output ommited ...
-
 ```
 
 `config_data` is a JSON object (think dictionary) that has several key value pairs, e.g. `changed`, `failed`, `stdout`, and `stdout_lines` (not shown).
@@ -115,7 +112,7 @@ You can also see that `stdout` is a dictionary key given it has a value after th
 
 Our goal is to save the show command output to a file.  We are going to do this using the `template` module.
 
-Create a new Jinja2 template called `basic-copy.j2` stored in the `templates` directory.  
+Modify and delete the content inside `basic-copy.j2` stored in the `templates` directory.  
 
 It should look like this:
 
@@ -125,20 +122,8 @@ It should look like this:
 
 Take a second to think about this object.  Remember the data type of `stdout`?
 
+
 ##### Step 9
-
-Add a task to create a directory using the *file* module where we can store the command outputs.  
-
-We'll use `command-outputs`.
-
-```yaml
- - name: GENERATE DIRECTORIES
-   file:
-     path: ./command-outputs/{{ ansible_network_os }}/
-     state: directory
-```
-
-##### Step 10
 
 Add the required task using `template` to the playbook.
 
@@ -146,14 +131,14 @@ Add the required task using `template` to the playbook.
       - name: SAVE SH VERSION TO FILE
         template:
           src: basic-copy.j2
-          dest: ./command-outputs/show_version.txt
+          dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
 ```
 
-##### Step 11
+##### Step 10
 
 Execute the playbook.
 
-##### Step 12
+##### Step 11
 
 Make the required changes to save command output for all 3 CSR and all 3 VMX devices.
 
@@ -175,7 +160,7 @@ Full and final playbook will look like this:
 
 ---
 
-  - name: BACKUP SHOW VERSION ON IOS
+  - name: BACKUP SHOW VERSION FOR IOS AND JUNOS
     hosts: iosxe,vmx
     connection: network_cli
     gather_facts: no
@@ -183,29 +168,22 @@ Full and final playbook will look like this:
     tasks:
       - name: GET SHOW COMMANDS
         cli_command:
-          commands: show version
+          command: show version
         register: config_data
 
       - name: VIEW DATA STORED IN CONFIG_DATA
         debug:
           var: config_data
 
-      - name: GENERATE DIRECTORIES
-        file:
-         path: ./command-outputs/{{ ansible_network_os }}/
-         state: directory
-
       - name: SAVE SH VERSION TO FILE
         template:
          src: basic-copy.j2
-         dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
-          
+         dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt        
 ```
 
-##### Step 13
+##### Step 12
 
 Save and execute the playbook and check the new files created in the `command-outputs` directory. 
-
 
 ```commandline
 
@@ -214,13 +192,15 @@ command-outputs
 ├── ios
 │   ├── csr1-show_version.txt
 │   ├── csr2-show_version.txt
-│   └── csr3-show_version.txt
+│   ├── csr3-show_version.txt
+│   └── show_version.txt
 └── junos
+    ├── show_version.txt
     ├── vmx1-show_version.txt
     ├── vmx2-show_version.txt
     └── vmx3-show_version.txt
 
-2 directories, 6 files
+2 directories, 8 files
 
 ntc@jump-host:ansible$
 ```

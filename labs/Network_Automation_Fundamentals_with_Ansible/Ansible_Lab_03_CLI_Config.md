@@ -1,43 +1,26 @@
-## Lab 4 - Deploying Configs From a File Using cli_config
+## Lab 3 - Deploying Configs From a File Using cli_config
 
-In the last lab, you deployed configurations while hard-coding commands in a playbook.  In this lab, you will deploy from a pre-built configuration file.
+
+In the last lab, you deployed from a pre-built configuration file using the vendor specific core modules with two different plays to separate the vendors.
+In this lab we are going to do the same but in a single play and a single module.
+
 
 ##### Step 1
 
-Create a sub-directory called `configs` **inside** the `ansible` directory.  After creating it, navigate inside it:
+We are going to use the same configuration files from the previous lab. This time we are just going to replace them with new configurations.
 
-```
-ntc@jump-host:ansible$ mkdir junos
-ntc@jump-host:ansible$ mkdir ios
-ntc@jump-host:ansible$
-
-```
-
-##### Step 2
-
-Create two files that will contain the SNMP configuration - one for Cisco and one for Juniper respectively.
-
-```
-ntc@jump-host:ansible$ touch junos/snmp.cfg
-ntc@jump-host:ansible$ touch ios/snmp.cfg
-ntc@jump-host:ansible$
-```
-
-##### Step 3
-
-Open the `ios-snmp.cfg` file in your text editor and copy the following configuration into it:
+Open the `ios-snmp.cfg` inside the `configs` directory file in your text editor delete the old configs and copy the following configuration into it:
 
 ```
 snmp-server community ntc-team RO
 snmp-server location FL_HQ        
 snmp-server contact JAMES_CHARLES 
-
 ``` 
 
 Save this file.
 
 
-##### Step 4
+##### Step 2
 
 Now open `junos-snmp.cfg` in a text editor and copy the following `junos` snmp configuration commands into it.
 
@@ -49,7 +32,7 @@ set snmp community public authorization read-only
 
 Save this file.
 
-##### Step 5
+##### Step 3
 
 Navigate back to the `ansible` directory and create a new playbook file.
 
@@ -58,10 +41,10 @@ ntc@jump-host:ansible$ touch snmp-config-03.yml
 ntc@jump-host:ansible$
 ```
 
-##### Step 6
+##### Step 4
 
-Open this file with a text editor and create two plays similar to **Lab 1** to deploy the changes.
-This time, however, we will use the source file to deploy the configuration instead of using commands inside the playbook.
+Open this file with a text editor and create a single play to deploy the changes.
+This time, we will use the source file to deploy the configuration instead of using commands inside the playbook.
 
 
 ```yaml
@@ -78,12 +61,11 @@ This time, however, we will use the source file to deploy the configuration inst
 
       - name: TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS and JUNOS DEVICES
         cli_config:
-          config: "{{ lookup('file', './{{ ansible_network_os }}/snmp.cfg') }}"
-
-
+          config: "{{ lookup('file', './configs/{{ ansible_network_os }}-snmp.cfg') }}"
 ```
+>Note: We are using a `lookup` plugin that will read the specified file as raw text and `cli_config` will push the configuration to the device.
 
-##### Step 7
+##### Step 5
 
 Run the playbook.
 

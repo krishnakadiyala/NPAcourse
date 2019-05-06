@@ -189,7 +189,7 @@ Full and final playbook will look like this:
           dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
           
 ```
-
+Save and execute the playbook
 
 ##### Step 13 
 
@@ -397,6 +397,7 @@ Full and final playbook will look like this:
       - name: SAVE SH VERSION TO FILE
         template:
           src: basic-copy.j2
-          dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
-          
+          dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt        
 ```
+
+Save and execute the playbook
