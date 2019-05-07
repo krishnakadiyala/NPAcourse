@@ -149,7 +149,7 @@ In the last task, you built configurations for all `AMER` devices (all CSRs) and
 
 Create a new directory called `host_vars`.  
 
-The name of the directory called `host_vars` is an important name within Ansible, just like you've seen with `group_vars`.  This directory will store "host based variables" - these map directly to a host that is found in the inventory file.  For example, the variables that end up in `host_vars/nxos-spine1.yml` will only be used and available to **nxos-spine1**.
+The name of the directory called `host_vars` is an important and reserved directory name within Ansible, just like you've seen with `group_vars`.  This directory will store "host based variables" - these map directly to a host that is found in the inventory file.  For example, the variables that end up in `host_vars/nxos-spine1.yml` will only be used and available to **nxos-spine1**.
 
 ##### Step 2
 
