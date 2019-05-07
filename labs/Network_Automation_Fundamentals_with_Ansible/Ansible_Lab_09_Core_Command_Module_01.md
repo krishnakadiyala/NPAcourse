@@ -120,10 +120,10 @@ Add a task to create a directory using the *file* module where we can store the 
 We'll use `command-outputs`.
 
 ```yaml
- - name: GENERATE DIRECTORIES
-   file:
-     path: ./command-outputs/{{ ansible_network_os }}/
-     state: directory
+      - name: GENERATE DIRECTORIES
+        file:
+          path: ./command-outputs/{{ ansible_network_os }}/
+           state: directory
 ```
 
 ##### Step 10
@@ -131,10 +131,10 @@ We'll use `command-outputs`.
 Add the required task using `template` to the playbook.
 
 ```yaml
-- name: SAVE SH VERSION TO FILE
-  template:
-    src: basic-copy.j2
-    dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
+      - name: SAVE SH VERSION TO FILE
+        template:
+          src: basic-copy.j2
+          dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
 ```
 
 ##### Step 11
@@ -305,10 +305,10 @@ Add a task to create a directory using the *file* module where we can store the 
 We'll use `command-outputs`.
 
 ```yaml
- - name: GENERATE DIRECTORIES
-   file:
-     path: ./command-outputs/{{ ansible_network_os }}/
-     state: directory
+      - name: GENERATE DIRECTORIES
+        file:
+          path: ./command-outputs/{{ ansible_network_os }}/
+          state: directory
 ```
 
 ##### Step 22
@@ -316,10 +316,10 @@ We'll use `command-outputs`.
 Add the required task using `template` to the playbook.
 
 ```yaml
-  - name: SAVE SH VERSION TO FILE
-    template:
-      src: basic-copy.j2
-      dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
+      - name: SAVE SH VERSION TO FILE
+        template:
+          src: basic-copy.j2
+          dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
 ```
 
 ##### Step 23

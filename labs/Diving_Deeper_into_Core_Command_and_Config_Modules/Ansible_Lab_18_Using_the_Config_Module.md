@@ -24,15 +24,6 @@ Create a playbook called `config-interfaces.yml` and insert the following into i
        - name: BACKUP CONFIG
          ios_config:
            backup: True
- 
-       - name: CLEAN UP IOS CONFIGS
-         lineinfile:
-           dest: ./backup/{{ inventory_hostname }}_config.*
-           regexp: "{{ item }}"
-           state: absent
-         loop: 
-           - "Building configuration..."
-           - "Current configuration .*" 
 
        - name: CONFIGURING LOOPBACK
          ios_config:

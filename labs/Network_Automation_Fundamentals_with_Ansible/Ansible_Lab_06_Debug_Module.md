@@ -562,9 +562,9 @@ Add a new task to the existing playbook to see the difference between `inventory
 
 ```yaml
 
-  - name: DEBUG AND PRINT INVENTORY_HOSTNAME VS ANSIBLE_HOST
-    debug: 
-      msg: "Devices defined in inventory_hostname: {{ inventory_hostname }} and ansible_host: {{ ansible_host }}"
+      - name: DEBUG AND PRINT INVENTORY_HOSTNAME VS ANSIBLE_HOST
+        debug: 
+           msg: "Devices defined in inventory_hostname: {{ inventory_hostname }} and ansible_host: {{ ansible_host }}"
 ```
 
 ##### Step 3
@@ -819,9 +819,9 @@ In the play definition change the `hosts: all` to `hosts: csr1` so we only targe
 Add a new task to the existing playbook. To debug `groups` which will return dictionary- keys that are all group names defined in the inventory file and values are list of host names that are members of the group.
 
 ```yaml
-  - name: DEBUG AND PRINT GROUPS
-    debug: 
-      var: groups
+      - name: DEBUG AND PRINT GROUPS
+        debug: 
+          var: groups
 ```
 
 ##### Step 10
@@ -902,9 +902,9 @@ Add a new task to the existing playbook. To debug `ansible_version` which will r
 
 ```yaml
 
-  - name: DEBUG AND PRINT ANSIBLE_VERSION
-    debug: 
-       msg: "Ansible Version: '{{ ansible_version }}'"
+      - name: DEBUG AND PRINT ANSIBLE_VERSION
+        debug: 
+           msg: "Ansible Version: '{{ ansible_version }}'"
 ```
 
 ##### Step 12
