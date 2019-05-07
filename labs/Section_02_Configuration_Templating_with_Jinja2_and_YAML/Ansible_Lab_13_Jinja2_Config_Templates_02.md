@@ -149,7 +149,7 @@ In the last task, you built configurations for all `AMER` devices (all CSRs) and
 
 Create a new directory called `host_vars`.  
 
-The name of the directory called `host_vars` is an important name within Ansible, just like you've seen with `group_vars`.  This directory will store "host based variables" - these map directly to a host that is found in the inventory file.  For example, the variables that end up in `host_vars/nxos-spine1.yml` will only be used and available to **nxos-spine1**.
+The name of the directory called `host_vars` is an important and reserved directory name within Ansible, just like you've seen with `group_vars`.  This directory will store "host based variables" - these map directly to a host that is found in the inventory file.  For example, the variables that end up in `host_vars/nxos-spine1.yml` will only be used and available to **nxos-spine1**.
 
 ##### Step 2
 
@@ -203,3 +203,36 @@ Execute the playbook.
 What do you see?  
 
 What kind of data type is `snmp_config`?  
+
+##### Step 8
+
+Ansible allows us to parameterize not only the file names of the config files being generated, such as using `inventory_hostname` 
+to dynamically make unique filenames, but also to parameterize the template file name. Since Ansible is aware of each inventory device's
+network operating system, and our templates adhere to that naming convention, we can consolidate both template tasks into one task, using 
+the `ansible_network_os` magic variable. 
+
+The new source filename Ansible looks for would be `"{{ ansible_network_os }}-snmpv2.j2"`, where the first part of the filename would be replaced
+with `ios` or `junos` depending on the `ansible_network_os`. 
+
+The new playbook is as follows:
+```yaml
+---
+
+- name: GENERATE SNMP CONFIGS USING JINJA2
+  hosts: AMER, EMEA
+  connection: local
+  gather_facts: no
+
+  tasks:
+ 
+    - name: GENERATE SNMP CONFIGURATIONS
+      template:
+         src: "{{ ansible_network_os }}-snmpv2.j2"
+         dest: "./configs/{{ inventory_hostname }}-snmp.cfg"
+
+```
+
+The new playbook has both the AMER and EMEA groups in one play. Change your playbook to be the same as the above playbook, updating both the `hosts`
+and `tasks`.
+
+Re-run your playbook and observe the output, which should result in the same config file outputs. 

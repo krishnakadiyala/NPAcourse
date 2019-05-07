@@ -124,7 +124,7 @@ In Ansible 2.7 two new parameters were added to this module, `fail_msg` and `suc
 
 Add a new play and task to the existing playbook. 
 
-Normaly on the CLI of the newer versions of JUNOS OS you can run ` command | display json`  or ` command | display xml` to get a structured response on the terminal. For this playbook we are going to use that parameter to collect structured data and access values inside. 
+Normally on the CLI of the newer versions of JUNOS OS you can run ` command | display json`  or ` command | display xml` to get a structured response on the terminal. For this playbook we are going to use that parameter to collect structured data and access values inside. 
 
 ```yaml
 
@@ -169,11 +169,11 @@ Normaly on the CLI of the newer versions of JUNOS OS you can run ` command | dis
         register: output
 ```
 
->Note: This time we added a new paramater called `display:` with a value of `json`
+>Note: This time we added a new parameter called `display:` with a value of `json`
 
 ##### Step 2
 
-Add a task that will display the response data from the variable stored in the `resgister` parameter.
+Add a task that will display the response data from the variable stored in the `register` parameter.
 
 ```yaml
 
@@ -262,7 +262,7 @@ ok: [vmx1] => {
 
 ##### Step 4
 
-Add a new task using the `set_fact` module that allows us to create new variables based on the output that we recieved and simplifies how to access the data when calling it. 
+Add a new task using the `set_fact` module that allows us to create new variables based on the output that we received and simplifies how to access the data when calling it. 
 
 ```yaml
 
@@ -317,12 +317,12 @@ ok: [vmx3] => {
 
 ##### Step 7
 
-Add two tasks that will _assert_ the data returned from the stored variables and check the specified filesystems to make sure they are at a desired storage space and availability. 
+Add two tasks that will _assert_ the data returned from the stored variables and check the specified file systems to make sure they are at a desired storage space and availability. 
 
 >Note: This task will run conditional logic to check that `if` data stored in `percent` is greater `>` than or equal `=` to the presented data which is integer of `50` then it will return either `True` or `False` in the form of `success_msg` or `fail_msg`. 
 
 
-The assertion is also using `| int` after the `percent` because you can see the percent value is actually a string.  So this is using something called a Jinja filter (more on this later!) to convert the string to an integer so mathmatical operations can be performed on the data.
+The assertion is also using `| int` after the `percent` because you can see the percent value is actually a string.  So this is using something called a Jinja filter (more on this later!) to convert the string to an integer so mathematical operations can be performed on the data.
 
 ```yaml
 
@@ -333,7 +333,7 @@ The assertion is also using `| int` after the `percent` because you can see the 
           fail_msg: "Warning!! filesystem {{ filesystem }} is at {{ percent }}%"
           success_msg: "Current filesystem  {{ filesystem }} is at {{ percent }}%"
         
-       - name: CHECK STORAGE FILESYSTEM AVAILABLITY
+       - name: CHECK STORAGE FILESYSTEM AVAILABILITY
         assert:
           that:
             - "blocks | int >= 4194304"
@@ -382,7 +382,7 @@ ok: [vmx3] => {
     "msg": "Current filesystem  /dev/gpt/junos is at   6%"
 }
 
-TASK [CHECK STORAGE FILESYSTEM AVAILABLITY] ****************************************************************************************************************************************************************
+TASK [CHECK STORAGE FILESYSTEM AVAILABILITY] ****************************************************************************************************************************************************************
 ok: [vmx1] => {
     "changed": false,
     "msg": "Current filesystem  /dev/gpt/junos is at 17G"
@@ -479,7 +479,7 @@ Add the `ignore_errors: true` argument to the end of the task.
         ignore_errors: true
         
 
-      - name: CHECK STORAGE FILESYSTEM AVAILABLITY
+      - name: CHECK STORAGE FILESYSTEM AVAILABILITY
         assert:
           that:
            - "blocks | int >= 4194304"
@@ -540,7 +540,7 @@ fatal: [vmx3]: FAILED! => {
 }
 ...ignoring
 
-TASK [CHECK STORAGE FILESYSTEM AVAILABLITY] ****************************************************************************************************************************************************************
+TASK [CHECK STORAGE FILESYSTEM AVAILABILITY] ****************************************************************************************************************************************************************
 ok: [vmx1] => {
     "changed": false,
     "msg": "Current filesystem  /dev/gpt/junos is at 17G"
@@ -636,7 +636,7 @@ Full and final playbook will look like this:
         ignore_errors: true
         
 
-      - name: CHECK STORAGE FILESYSTEM AVAILABLITY
+      - name: CHECK STORAGE FILESYSTEM AVAILABILITY
         assert:
           that:
            - "blocks | int >= 4194304"

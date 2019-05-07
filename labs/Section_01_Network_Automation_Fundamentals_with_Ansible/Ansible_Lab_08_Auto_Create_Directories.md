@@ -88,7 +88,7 @@ Add the first task using the `file` module and call it `CREATE DIRECTORIES BASED
 
       - name: CREATE DIRECTORIES BASED ON OS
         file:
-          path: ./{{ ansible_network_os }}/
+          path: ./tmp/{{ ansible_network_os }}/
           state: directory
           
           
@@ -138,7 +138,7 @@ vmx3                       : ok=1    changed=0    unreachable=0    failed=0
 ntc@jump-host:ansible$
 ```
 
-You'll also note that not every device has a _changed_ task.  This is because the OS name is being used as a directory name and only the first device in that group actually makes the change.  The subsequent devices have only "changed ok" without a "change" becauset the module is idempotent.
+You'll also note that not every device has a _changed_ task.  This is because the OS name is being used as a directory name and only the first device in that group actually makes the change.  The subsequent devices have only "changed ok" without a "change" because the module is idempotent.
 
 ##### Step 6
 
@@ -152,26 +152,29 @@ ntc@jump-host:ansible$ tree
 │   ├── ios-snmp.cfg
 │   └── junos-snmp.cfg
 ├── debug.yml
-├── eos
 ├── inventory
-├── ios
-├── junos
-├── nxos
 ├── snmp-config-01.yml
 ├── snmp-config-02.yml
 ├── snmp-config-03.yml
 ├── snmp-config-04.yml
+├── tmp
+│   ├── eos
+│   ├── ios
+│   ├── junos
+│   └── nxos
 └── user_input.yml
 
-5 directories, 10 files
+6 directories, 10 files
 ```
 
 ##### Step 7
 
-Add a new task to create a config file inside the new diretories
+Add a new task to create a config file inside the new directories
 
 
 > **Note:** The difference in the parameter here is that we are using `touch` to create an empty file. 
+We are also using the Ansible magic variable of `inventory_hostname` to create unique files based on each device name.
+
 
 
 ```yaml
@@ -187,12 +190,12 @@ Add a new task to create a config file inside the new diretories
 
       - name: CREATE DIRECTORIES BASED ON OS
         file:
-          path: ./{{ ansible_network_os }}/
+          path: ./tmp/{{ ansible_network_os }}/
           state: directory
 
       - name: CREATE SNMP.CONF FILE
         file:
-          path: ./{{ ansible_network_os }}/snmp.conf
+          path: ./tmp/{{ ansible_network_os }}/{{ inventory_hostname }}-snmp.conf
           state: touch 
             
 ```
@@ -267,22 +270,131 @@ ntc@jump-host:ansible$ tree
 │   ├── ios-snmp.cfg
 │   └── junos-snmp.cfg
 ├── debug.yml
-├── eos
-│   └── snmp.conf
 ├── inventory
-├── ios
-│   └── snmp.conf
-├── junos
-│   └── snmp.conf
-├── nxos
-│   └── snmp.conf
+├── snmp-config-01.yml
+├── snmp-config-02.yml
+├── snmp-config-03.yml
+├── snmp-config-04.yml
+├── tmp
+│   ├── eos
+│   │   ├── eos-leaf1-snmp.conf
+│   │   ├── eos-leaf2-snmp.conf
+│   │   ├── eos-spine1-snmp.conf
+│   │   └── eos-spine2-snmp.conf
+│   ├── ios
+│   │   ├── csr1-snmp.conf
+│   │   ├── csr2-snmp.conf
+│   │   └── csr3-snmp.conf
+│   ├── junos
+│   │   ├── vmx1-snmp.conf
+│   │   ├── vmx2-snmp.conf
+│   │   └── vmx3-snmp.conf
+│   └── nxos
+│       ├── nxos-spine1-snmp.conf
+│       └── nxos-spine2-snmp.conf
+└── user_input.yml
+
+6 directories, 22 files
+
+```
+
+
+
+##### Step 10
+
+Delete the first two tasks and replace the first task with one that deletes the `tmp` directory, cleaning up all the files.
+
+##### Step 7
+
+Add a new task to create a config file inside the new directories
+
+
+> **Note:** The difference in the parameter here is that we are using `touch` to create an empty file. 
+We are also using the Ansible magic variable of `inventory_hostname` to create unique files based on each device name.
+The `file` module with the parameter `state: absent` will delete the directory and all the sub-directories and files in an idempotent fashion.
+
+
+```yaml
+
+---
+
+  - name: Auto Generate Files and Directories
+    hosts: all
+    connection: local
+    gather_facts: no
+
+    tasks:
+
+      - name: DELETE DIRECTORIES PREVIOUSLY CREATED BASED ON OS
+        file:
+          path: ./tmp
+          state: absent
+            
+```
+
+##### Step 11
+
+Save and execute the playbook. 
+
+You should see the following output. 
+
+
+```commandline
+
+ntc@jump-host:ansible$ ansible-playbook -i inventory auto-create.yml
+
+
+PLAY [Auto Generate Files and Directories] ***********************************************************************************************
+
+TASK [DELETE DIRECTORIES PREVIOUSLY CREATED BASED ON OS] *********************************************************************************
+changed: [csr1]
+ok: [eos-leaf1]
+ok: [nxos-spine2]
+ok: [nxos-spine1]
+ok: [eos-leaf2]
+ok: [csr2]
+ok: [csr3]
+ok: [vmx1]
+ok: [vmx2]
+ok: [vmx3]
+ok: [eos-spine2]
+ok: [eos-spine1]
+
+PLAY RECAP *******************************************************************************************************************************
+csr1                       : ok=1    changed=1    unreachable=0    failed=0
+csr2                       : ok=1    changed=0    unreachable=0    failed=0
+csr3                       : ok=1    changed=0    unreachable=0    failed=0
+eos-leaf1                  : ok=1    changed=0    unreachable=0    failed=0
+eos-leaf2                  : ok=1    changed=0    unreachable=0    failed=0
+eos-spine1                 : ok=1    changed=0    unreachable=0    failed=0
+eos-spine2                 : ok=1    changed=0    unreachable=0    failed=0
+nxos-spine1                : ok=1    changed=0    unreachable=0    failed=0
+nxos-spine2                : ok=1    changed=0    unreachable=0    failed=0
+vmx1                       : ok=1    changed=0    unreachable=0    failed=0
+vmx2                       : ok=1    changed=0    unreachable=0    failed=0
+vmx3                       : ok=1    changed=0    unreachable=0    failed=0
+
+
+```
+
+##### Step 12
+
+Type the command `tree` in the terminal again to see the new files in the directories.
+
+```commandline
+.
+├── auto-create.yml
+├── configs
+│   ├── ios-snmp.cfg
+│   └── junos-snmp.cfg
+├── debug.yml
+├── inventory
 ├── snmp-config-01.yml
 ├── snmp-config-02.yml
 ├── snmp-config-03.yml
 ├── snmp-config-04.yml
 └── user_input.yml
 
-5 directories, 14 files
+1 directory, 10 files
 
 ```
-

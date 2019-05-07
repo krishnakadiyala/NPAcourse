@@ -1,0 +1,28 @@
+---
+
+  - name: NXOS COMPLIANCE
+    hosts: nxos
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: NXOS SHOW COMMANDS
+        nxos_command:
+          commands:
+            - command: show version
+              output: json
+            - command: dir
+              output: json
+        register: output
+      - name: VIEW SHOW VERSION KEYS
+        debug:
+          var: output.stdout[0].keys()
+      - name: VIEW DIR KEYS
+        debug:
+          var: output.stdout[1].keys()
+      - name: CHECK OS AND DIR FREE BYTES
+        assert:
+          that:
+           - "'7.0(3)I7(4)' in output['stdout'][0]['kickstart_ver_str']"
+           - "0 <  output['stdout'][1]['bytesfree'] | int"
