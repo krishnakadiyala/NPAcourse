@@ -449,3 +449,6 @@ Validate that the configurations have been created in the `configs` directory:
 ntc@jump-host:ansible$ ls configs/
 # output omitted
 ```
+
+Based on what you've learned so far, you should realize that you can simply add another task or play in this playbook and use the `ios_config` and `junos_config` modules or the `cli_config` module for a complete process of building and deploying the configurations.
+
