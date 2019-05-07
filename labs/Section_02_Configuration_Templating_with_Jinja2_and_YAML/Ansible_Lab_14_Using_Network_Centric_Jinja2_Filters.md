@@ -1,11 +1,10 @@
-## Lab 14 - Using Network Centric Jija2 Filters
+## Lab 14 - Jinja2 Filters
 
+This lab introduces and explores several common Jinja filters.  Jinja filters provide ways to manipulate and work with data in a clean and consumable way.  Remember you already saw one filter in the Compliance lab when we converted a string to an integer.  Now we'll take a look at several more filters.
 
 ### Task 1 - Using Jinja2 Filters
 
-Filters in Asible are from Jinja2, and some are used for transforming data inside a template expression. Building Jinja2 templates happens in the Ansible control host not in the targeted remote device, so filters execute on the control host as theey manipulate local data.
-
-Jinja2 ships with many filters already but in addition to those Ansible also ships with it's own and allow users to add their own custom filters.
+The Jinja2 library ships with many filters already, but in addition to those Ansible also ships with it's own that are only available in Ansible. It is even possible to add custom filters with knowing a little bit of Python.
 
 
 ##### Step 1
@@ -93,10 +92,15 @@ ntc@jump-host:ansible$
 
 ```
 
+
+You can see already the filter simplify manipulated a string by "upper-casing" it here.
+
 ##### Step 5
 
 
-Lets add another variable under `vars` called `vlans` and make a list of vlans and it's name for each. Also add a new `debug` task using the `lenght` filter which will return the number of items of a sequence (list) or mapping (dictionary). 
+Lets add another variable under `vars` called `vlans` and make a list of vlans and it's name for each.  We will represent VLANs as a list of dictionaries. 
+
+Also add a new `debug` task using the `length` filter which will return the number of items of a sequence (list) or mapping (dictionary). 
 
 ```yaml
 
@@ -133,6 +137,8 @@ Lets add another variable under `vars` called `vlans` and make a list of vlans a
           msg: "There are {{ vlans | length }} VLANs on the switch."
 
 ```
+
+Many of these filters make sense after you see the result.  Again, `length` is just returning a value of how many elements are in the list.
 
 ##### Step 6
 
@@ -175,6 +181,7 @@ Add a new variable under `vars` called `interfaces_config` and a new `debug` tas
 
 The `selectattr` filter reads through a sequence of objects by applying a test to the specified attribute of each object, and only selecting the objects with the test succeeding. If no test is specified, the attribute’s value will be evaluated as a boolean.
 
+Our test is checking to see which interfaces have a `status` key that is equal to `true`:
 
 ```yaml
 
@@ -229,6 +236,11 @@ The `selectattr` filter reads through a sequence of objects by applying a test t
           var: interfaces_config | selectattr("status") | list
 
 ```
+
+> Note: technically, the `selectattr` filter returns an advanced Python object, so we need to use `| list` to convert that object to a list.
+
+> This is also show that it is possible _chain_ filters together too.
+
 
 ##### Step 8
 
@@ -285,7 +297,7 @@ ntc@jump-host:ansible$
 
 Add two more `debug` tasks to the playbook using the `map` filter that is applied on a sequence of objects or looks up an attribute. This filter can be useful when dealing with lists of objects but you are only really interested in a certain value of it.
 
-The basic usage is mapping on an attribute. Imagine you have a list of  `interfaces` or `vlans` but you are only interested in a list of __names__ of the interfaces or vlans.
+The basic usage is mapping on an attribute, e.g. key. Imagine you have a list of  `interfaces` or `vlans` but you are only interested in a list of __names__ of the interfaces or vlans.
 
 
 
@@ -513,140 +525,5 @@ Check the final playbook
           
 ```
 
-
-### Task 2 - Challenge:  Build Configuration using filters we just used
-
-##### Step 1
-
-Create a new playbook in the `ansible` directory called `jinja_challenge.yml`  and a new jinja2 template in the templates directory called `challenge_config.j2`.
-
-
-```commandline
-
-ntc@jump-host:ansible$ touch jinja_challenge.yml
-ntc@jump-host:ansible$
-ntc@jump-host:ansible$ touch templates/challenge_config.j2
-ntc@jump-host:ansible$
-
-```
-##### Step 2
-
-We are going to use the same variables as the previous task, so add them to the new playbook and add a single task using the `template` module. Like before we are going to use this module to render data from our variables and our `jinja2` template.
-
-````yaml
-
----
-
-  - name: JINJA CHALLENGE
-    hosts: localhost
-    connection: local
-    gather_facts: no
-
-    vars:
-
-        hostname: nycr1
-
-      vlans:
-        - id: 10
-          name: web_vlan
-        - id: 20
-          name: app_vlan
-        - id: 30
-          name: db_vlan
-          
-      interfaces_config:
-        - name: GigabitEthernet1
-          speed: 1000
-          duplex: full
-          status: true
-        - name: GigabitEthernet2
-          speed: 1000
-          duplex: full
-          status: true
-        - name: GigabitEthernet3
-          speed: 1000
-          duplex: full
-          status: false
-
-    tasks:
-
-
-      - name: GENERATE CONFIGURATION
-        template:
-          src: challenge_config.j2
-          dest: ./configs/challenge_config.cfg
-````
-
-
-##### Step 3
-
-In the `challenge_config.j2` add the required filters that will give us this output:
-
-
-```
-
-hostname NYCR1
-interface GigabitEthernet1
-  vlan-id dot1q 10
-  description WEB_VLAN
-
-  vlan-id dot1q 20
-  description APP_VLAN
-
-  vlan-id dot1q 30
-  description DB_VLAN
-
-interface GigabitEthernet2
-  vlan-id dot1q 10
-  description WEB_VLAN
-
-  vlan-id dot1q 20
-  description APP_VLAN
-
-  vlan-id dot1q 30
-  description DB_VLAN
-
-```
-
->Note: A recommendation to make building of the templates easier is to use https://td4a.now.sh to render data with the jinja2 templates on demand.
-
-Below is the **jinja2** template that needs to be added to `challenge_config.j2`
-
-```
-
-
-hostname {{ hostname | filter }}
-{% for interface in interfaces_config | filter | filter | filter %}
-interface {{ interface }}
-{% for vlan in vlans %}
-  vlan-id dot1q {{ vlan['id'] }}
-  description {{ vlan['name'] | filter }}
-
-{% endfor %}
-{% endfor %}
-
-```
-
-##### Step 4
-
-After adding the required filters to the template. Save the `challenge_config.j2` and run the playbook. You should be able to see the following output:
-
-```commandline
-
-ntc@jump-host:ansible$ ansible-playbook jinja_challenge.j2
-PLAY [JINJA CHALLENGE] ******************************************************
-
-TASK [GENERATE CONFIGURATION] ***************************************************
-changed: [localhost]
-
-PLAY RECAP *******************************************************************
-localhost                  : ok=1    changed=1    unreachable=0    failed=0
-
-ntc@jump-host:ansible$
-
-```
-
-After running the playbook look inside the `./configs/` directory to find the built config file. 
-
-
+Continue to explore Jinaja Filters in [Ansible's Docs](https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html)
 

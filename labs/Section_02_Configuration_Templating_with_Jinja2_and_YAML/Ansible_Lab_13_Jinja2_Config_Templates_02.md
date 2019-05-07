@@ -3,6 +3,7 @@
 ### Task 1 - Updating the SNMP Data Model
 
 In the previous lab, the SNMP data was modeled as a set of invdividual key-value pairs.
+
 This works for a simple use case, but what if we had to configure multiple read-only and read-write strings?
 
 This task will expand the data structure currently being used by the `AMER` and `EMEA` groups.
