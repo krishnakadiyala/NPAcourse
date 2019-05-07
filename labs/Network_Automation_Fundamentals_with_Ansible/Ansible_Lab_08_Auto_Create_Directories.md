@@ -1,10 +1,14 @@
 ## Lab 8 - Auto-Create Directories using the file module
 
-This lab introduces the `file` module to help us auto-create files and directories.
+This lab introduces the `file` module to help us auto-create files and directories. This is helpful because as you'll eventually see, you may need to dynamically create directories based on group name or even hostname of the device.  One use-case is you want to issue 10 show commands per device and have a directory that is the hostname and files per command in that directory.  This is something that would be impossible to do manually (or at least, it would be very silly to do manually).
 
 ##### Step 1
 
-Type in the command `ansible-doc file`, this will open up a description of the module and available parameters. The two main parameters we are going to focus on are `path` and `state`. 
+Let's use `ansible-doc` to learn more about `file` module.
+
+Type in the command `ansible-doc file`, this will open up a description of the module and available parameters
+
+The two main parameters we are going to focus on are `path` and `state`. 
 
 ```
 
@@ -134,6 +138,8 @@ vmx3                       : ok=1    changed=0    unreachable=0    failed=0
 ntc@jump-host:ansible$
 ```
 
+You'll also note that not every device has a _changed_ task.  This is because the OS name is being used as a directory name and only the first device in that group actually makes the change.  The subsequent devices have only "changed ok" without a "change" becauset the module is idempotent.
+
 ##### Step 6
 
 Type the command `tree` in the terminal to see the directory structure.
@@ -162,7 +168,8 @@ ntc@jump-host:ansible$ tree
 
 ##### Step 7
 
-Add a new task to create the config file inside the new diretories
+Add a new task to create a config file inside the new diretories
+
 
 > **Note:** The difference in the parameter here is that we are using `touch` to create an empty file. 
 
@@ -279,82 +286,3 @@ ntc@jump-host:ansible$ tree
 
 ```
 
-
-##### Step 10
-
-We can run the same exercise with `templates` directories and empty `jinja2` files. 
-
-Add two more tasks to create these.
-
-```yaml
-
----
-
-  - name: Auto Generate Files and Directories
-    hosts: all
-    connection: local
-    gather_facts: no
-
-    tasks:
-
-      - name: CREATE DIRECTORIES BASED ON OS
-        file:
-          path: ./{{ ansible_network_os }}/
-          state: directory
-
-      - name: CREATE SNMP.CONF FILE
-        file:
-          path: ./{{ ansible_network_os }}/snmp.conf
-          state: touch 
-          
-      - name: CREATE TEMPLATES DIRECTORIES
-        file:
-          path: ./templates/
-          state: directory
-
-      - name: CREATE JINJA2 FILES
-        file:
-          path: ./templates/{{ ansible_network_os }}-snmp.j2
-          state: touch
-          
-```
-
-##### Step 11
-
-
-Save and execute the playbook. 
-
-Type the tree command to see the final results. 
-
-
-```
-ntc@jump-host:ansible$ tree
-.
-├── auto-create.yml
-├── configs
-│   ├── ios-snmp.cfg
-│   └── junos-snmp.cfg
-├── debug.yml
-├── eos
-│   └── snmp.conf
-├── inventory
-├── ios
-│   └── snmp.conf
-├── junos
-│   └── snmp.conf
-├── nxos
-│   └── snmp.conf
-├── snmp-config-01.yml
-├── snmp-config-02.yml
-├── snmp-config-03.yml
-├── snmp-config-04.yml
-├── templates
-│   ├── eos-snmp.j2
-│   ├── ios-snmp.j2
-│   ├── junos-snmp.j2
-│   └── nxos-snmp.j2
-└── user_input.yml
-
-6 directories, 18 files
-
-```

@@ -101,61 +101,55 @@ You can also see that `stdout` is a list given it has square brackets next to it
 
 ##### Step 8
 
-Our goal is to save the show command output to a file.  We are going to do this using the `template` module.
-
-Create a new Jinja2 template called `basic-copy.j2` stored in the `templates` directory.  
-
-It should look like this:
-
-```
-{{ config_data['stdout'][0] }}
-```
-
-Take a second to think about this object.  Remember the data type of `stdout`?
-
-##### Step 9
+Our goal is to save the show command output to a file.  We are going to do this using the `copy` module.
 
 Add a task to create a directory using the *file* module where we can store the command outputs.  
 
-We'll use `command-outputs`.
+We'll use `command-outputs` with a sub-directory equal to the OS name:
 
 ```yaml
       - name: GENERATE DIRECTORIES
         file:
-          path: ./command-outputs/{{ ansible_network_os }}/
+          path: ./command-outputs/{{ ansible_network_os }}
            state: directory
+  
+```
+
+##### Step 9
+
+Add a task using the `copy` module that will copy the variable's content into a file called `show_version.txt`
+
+```yaml
+      - name: SAVE SH VERSION TO FILE
+        copy :
+          content: "{{ config_data['stdout'][0] }}"
+          dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
 ```
 
 ##### Step 10
 
-Add the required task using `template` to the playbook.
+Execute the playbook.
 
-```yaml
-      - name: SAVE SH VERSION TO FILE
-        template:
-          src: basic-copy.j2
-          dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
-```
+This would work fine for a single device, but given that many devices exist, the name of the file cannot be static.  It needs to have some variable in the path.
 
 ##### Step 11
 
-Execute the playbook.
-
-##### Step 12
-
 Make the required changes to save command output for all 3 CSR devices.
 
-(1) Change `hosts: csr1` to `hosts: iosxe`
+(a) Change `hosts: csr1` to `hosts: iosxe`
 
 
-(2) Add a variable to the `dest` filename in the `template` module task:
+(b) Add a variable to the `dest` filename in the `copy` module task:
 
 ```yaml
-
-dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
+      - name: SAVE SH VERSION TO FILE
+        copy :
+          content: "{{ config_data['stdout'][0] }}"
+          dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
 ```
 
-##### Check
+
+##### Step 12 - Status Check
 
 Full and final playbook will look like this:
 
@@ -180,12 +174,12 @@ Full and final playbook will look like this:
 
       - name: GENERATE DIRECTORIES
         file:
-          path: ./command-outputs/{{ ansible_network_os }}/
+          path: ./command-outputs
           state: directory
 
       - name: SAVE SH VERSION TO FILE
-        template:
-          src: basic-copy.j2
+        copy :
+          content: "{{ config_data['stdout'][0] }}"
           dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
           
 ```
@@ -286,23 +280,11 @@ You can also see that `stdout` is a list given it has square brackets next to it
 
 ##### Step 20
 
-Our goal is to save the show command output to a file.  We are going to do this using the `template` module.
-
-Create a new Jinja2 template called `basic-copy.j2` stored in the `templates` directory.  
-
-It should look like this:
-
-```
-{{ config_data['stdout'][0] }}
-```
-
-Take a second to think about this object.  Remember the data type of `stdout`?
-
-##### Step 21
+Our goal is to save the show command output to a file.  We are going to do this using the `copy` module.
 
 Add a task to create a directory using the *file* module where we can store the command outputs.  
 
-We'll use `command-outputs`.
+We'll use `command-outputs` and a sub-directory equal to the OS name:
 
 ```yaml
       - name: GENERATE DIRECTORIES
@@ -311,36 +293,40 @@ We'll use `command-outputs`.
           state: directory
 ```
 
-##### Step 22
+##### Step 21
 
-Add the required task using `template` to the playbook.
+Add the required task using `copy` to the playbook.
 
 ```yaml
       - name: SAVE SH VERSION TO FILE
-        template:
-          src: basic-copy.j2
+        copy :
+          content: "{{ config_data['stdout'][0] }}"
           dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
 ```
 
-##### Step 23
+##### Step 22
 
 Execute the playbook.
 
-##### Step 24
+##### Step 23
 
 Make the required changes to save command output for all 3 VMX devices.
 
 (1) Change `hosts: vmx1` to `hosts: vmx`
 
 
-(2) Add a variable to the `dest` filename in the `template` module task:
+(2) Add a variable to the `dest` filename in the `copy` module task:
 
 ```yaml
 
-dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
+      - name: SAVE SH VERSION TO FILE
+        copy :
+          content: "{{ config_data['stdout'][0] }}"
+          dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
+
 ```
 
-##### Check
+##### Status Check
 
 Full and final playbook will look like this:
 
@@ -369,8 +355,8 @@ Full and final playbook will look like this:
           state: directory
 
       - name: SAVE SH VERSION TO FILE
-        template:
-          src: basic-copy.j2
+        copy :
+          content: "{{ config_data['stdout'][0] }}"
           dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
           
 
@@ -395,9 +381,9 @@ Full and final playbook will look like this:
           state: directory
 
       - name: SAVE SH VERSION TO FILE
-        template:
-          src: basic-copy.j2
-          dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt        
+        copy :
+          content: "{{ config_data['stdout'][0] }}"
+          dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt       
 ```
 
-Save and execute the playbook
+Save and execute the playbook.

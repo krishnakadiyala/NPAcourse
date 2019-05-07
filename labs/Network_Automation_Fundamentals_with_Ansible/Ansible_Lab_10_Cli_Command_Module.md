@@ -2,7 +2,7 @@
 
 ### Task 1 - Using the cli_command module
 
-In this task, you will use the cli_command module to issue show commands against network devices and save the command outputs to a file.
+In this task, you will use the `cli_command` module to issue show commands against network devices and save the command outputs to a file.  This is showing exactly what you did in Lab 3, but now for issuing show commands in a single task.
 
 ##### Step 1
 
@@ -13,7 +13,7 @@ Create a new playbook called `cli-command.yml` in the `ansible` directory.  You 
 ---
 
   - name: BACKUP SHOW VERSION FOR IOS AND JUNOS
-    hosts: csr1,vmx1
+    hosts: all
     connection: network_cli
     gather_facts: no
 
@@ -30,7 +30,7 @@ Add a task to issue the `show version` command.
 ---
 
   - name: BACKUP SHOW VERSION FOR IOS AND JUNOS
-    hosts: csr1,vmx1
+    hosts: all
     connection: network_cli
     gather_facts: no
 
@@ -46,17 +46,15 @@ Add a task to issue the `show version` command.
 
 Execute the playbook.
 
-Did you see the output anywhere?
-
 ##### Step 4
 
 Execute the playbook using the `-v` verbose flag.
 
-Did you see the output anywhere?
-
 ##### Step 5
 
 In order to clean up the output, use `register` task attribute and debug the new variable to the terminal.
+
+This is the same exact process you did in the last lab so it should look very familiar already.
 
 ```yaml
       - name: GET SHOW COMMANDS
@@ -70,14 +68,6 @@ In order to clean up the output, use `register` task attribute and debug the new
 ```
 
 ##### Step 6
-
-Execute the playbook.  Do **not** use the `-v` flag.
-
-The output seen is much cleaner and easier to read than using the `-v` flag.
-
-> Note that when you use `register`, it's creating a new variable and storing the JSON return data from the module into the variable name defined.  In this case, it's `config_data`.
-
-##### Step 7
 
 Take note of the data being debugged:
 
@@ -108,100 +98,7 @@ You can also see that `stdout` is a dictionary key given it has a value after th
 
 `stdout` is **ALWAYS** a dictionary when you're using the "cli_command" modules.  Notice the difference from the previous lab using the `core_command` module which returns a list.
 
-##### Step 8
+##### Step 7
 
-Our goal is to save the show command output to a file.  We are going to do this using the `template` module.
-
-Modify and delete the content inside `basic-copy.j2` stored in the `templates` directory.  
-
-It should look like this:
-
-```
-{{ config_data['stdout'] }}
-```
-
-Take a second to think about this object.  Remember the data type of `stdout`?
-
-
-##### Step 9
-
-Add the required task using `template` to the playbook.
-
-```yaml
-      - name: SAVE SH VERSION TO FILE
-        template:
-          src: basic-copy.j2
-          dest: ./command-outputs/{{ ansible_network_os }}/show_version.txt
-```
-
-##### Step 10
-
-Execute the playbook.
-
-##### Step 11
-
-Make the required changes to save command output for all 3 CSR and all 3 VMX devices.
-
-(1) Change `hosts: csr1,vmx1` to `hosts: iosxe,vmx`
-
-
-(2) Add a variable to the `dest` filename in the `template` module task:
-
-```yaml
-
-dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt
-```
-
-##### Check
-
-Full and final playbook will look like this:
-
-```yaml
-
----
-
-  - name: BACKUP SHOW VERSION FOR IOS AND JUNOS
-    hosts: iosxe,vmx
-    connection: network_cli
-    gather_facts: no
-
-    tasks:
-      - name: GET SHOW COMMANDS
-        cli_command:
-          command: show version
-        register: config_data
-
-      - name: VIEW DATA STORED IN CONFIG_DATA
-        debug:
-          var: config_data
-
-      - name: SAVE SH VERSION TO FILE
-        template:
-         src: basic-copy.j2
-         dest: ./command-outputs/{{ ansible_network_os }}/{{ inventory_hostname}}-show_version.txt        
-```
-
-##### Step 12
-
-Save and execute the playbook and check the new files created in the `command-outputs` directory. 
-
-```commandline
-
-ntc@jump-host:ansible$ tree command-outputs
-command-outputs
-├── ios
-│   ├── csr1-show_version.txt
-│   ├── csr2-show_version.txt
-│   ├── csr3-show_version.txt
-│   └── show_version.txt
-└── junos
-    ├── show_version.txt
-    ├── vmx1-show_version.txt
-    ├── vmx2-show_version.txt
-    └── vmx3-show_version.txt
-
-2 directories, 8 files
-
-ntc@jump-host:ansible$
-```
+Add the required task(s) to save the output from the "show interfaces" command to a file using the `copy` module just like you did in the last lab.
 

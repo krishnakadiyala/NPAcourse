@@ -118,13 +118,11 @@ Full and final playbook will look like this:
 
 ### Task 2
 
-On Ansible 2.7 two new parameters were added to this module, `fail_msg` and `success_msg`. These new parameters allow us to customize what the user will see on the output of the result of a fail message or success message. 
+In Ansible 2.7 two new parameters were added to this module, `fail_msg` and `success_msg`. These new parameters allow us to customize what the user will see on the output of the result of a fail message or success message. 
 
 ##### Step 1
 
 Add a new play and task to the existing playbook. 
-
->Note: This time we added a new paramater called `display:` with a value of `json`
 
 Normaly on the CLI of the newer versions of JUNOS OS you can run ` command | display json`  or ` command | display xml` to get a structured response on the terminal. For this playbook we are going to use that parameter to collect structured data and access values inside. 
 
@@ -170,6 +168,8 @@ Normaly on the CLI of the newer versions of JUNOS OS you can run ` command | dis
           display: json
         register: output
 ```
+
+>Note: This time we added a new paramater called `display:` with a value of `json`
 
 ##### Step 2
 
@@ -318,7 +318,11 @@ ok: [vmx3] => {
 ##### Step 7
 
 Add two tasks that will _assert_ the data returned from the stored variables and check the specified filesystems to make sure they are at a desired storage space and availability. 
+
 >Note: This task will run conditional logic to check that `if` data stored in `percent` is greater `>` than or equal `=` to the presented data which is integer of `50` then it will return either `True` or `False` in the form of `success_msg` or `fail_msg`. 
+
+
+The assertion is also using `| int` after the `percent` because you can see the percent value is actually a string.  So this is using something called a Jinja filter (more on this later!) to convert the string to an integer so mathmatical operations can be performed on the data.
 
 ```yaml
 
@@ -398,6 +402,7 @@ vmx2                       : ok=6    changed=0    unreachable=0    failed=0
 vmx3                       : ok=6    changed=0    unreachable=0    failed=0
 
 ```
+
 Looks like everything passed and is in a good state, but what if the file system reaches a level above the specified amount?
 
 ##### Step 9
@@ -454,7 +459,9 @@ vmx3                       : ok=4    changed=0    unreachable=0    failed=1
 
 ```
 
-Another thing to point out is that it stopped at the first task and did not run the second task because the module returned with an error. To prevent that from happening you can add the argument `ignore_error: true` and it will ignore any errors and move on to the next task. 
+Another thing to point out is that the assertions stopped being analyzed after the first task and and did not run the second task because the module returned with an error. 
+
+To prevent that from happening you can add the argument `ignore_error: true` and it will ignore any errors and move on to the next task. 
 
 ##### Step 10
 
@@ -555,7 +562,8 @@ vmx2                       : ok=6    changed=0    unreachable=0    failed=0
 vmx3                       : ok=6    changed=0    unreachable=0    failed=0
 ```
 
-##### Check
+##### Status Check
+
 Full and final playbook will look like this:
 
 ```yaml
@@ -635,12 +643,6 @@ Full and final playbook will look like this:
           fail_msg: "Warning!! filesystem {{ filesystem }} is at {{ storage }}"
           success_msg: "Current filesystem  {{ filesystem }} is at {{ storage }}"
         ignore_errors: true
-
-
-
-
-
-
 
 
 

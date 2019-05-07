@@ -1,21 +1,21 @@
-## Lab 3 - Deploying Configs From a File Using cli_config
+## Lab 3 - Deploying Configs Using a Multi-Vendor Module
 
+In the last lab, you deployed from a pre-built configuration file using the vendor specific core modules with two different plays to separate the vendors.  This would make it such that you need a play for every vendor (OS type) being used.
 
-In the last lab, you deployed from a pre-built configuration file using the vendor specific core modules with two different plays to separate the vendors.
-In this lab we are going to do the same but in a single play and a single module.
+In this lab we are going to accomplish the same outcome, but in a single play using a single task and single module.
 
 
 ##### Step 1
 
-We are going to use the same configuration files from the previous lab. This time we are just going to replace them with new configurations.
+We are going to use the same configuration files from the previous lab. This time we are just going to slighly modify the SNMP commands.
 
-Open the `ios-snmp.cfg` inside the `configs` directory file in your text editor delete the old configs and copy the following configuration into it:
+Open the `ios-snmp.cfg` file inside the `configs` directory file in your text editor and update it with the following configuration snippet:
 
 ```
 snmp-server community ntc-team RO
 snmp-server location FL_HQ        
 snmp-server contact JAMES_CHARLES 
-``` 
+```
 
 Save this file.
 
@@ -44,6 +44,7 @@ ntc@jump-host:ansible$
 ##### Step 4
 
 Open this file with a text editor and create a single play to deploy the changes.
+
 This time, we will use the source file to deploy the configuration instead of using commands inside the playbook.
 
 
@@ -51,8 +52,8 @@ This time, we will use the source file to deploy the configuration instead of us
 
 ---
 
-  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS
-    hosts: iosxe, vmx
+  - name: PLAY 1 - DEPLOYING SNMP CONFIGURATIONS 
+    hosts: all
     connection: network_cli
     gather_facts: no
   
@@ -63,7 +64,9 @@ This time, we will use the source file to deploy the configuration instead of us
         cli_config:
           config: "{{ lookup('file', './configs/{{ ansible_network_os }}-snmp.cfg') }}"
 ```
+
 >Note: We are using a `lookup` plugin that will read the specified file as raw text and `cli_config` will push the configuration to the device.
+
 
 ##### Step 5
 
@@ -94,4 +97,6 @@ vmx3                       : ok=1    changed=1    unreachable=0    failed=0
 ntc@jump-host:ansible$
 ```
 
-You should see changes as these configs are new.  Feel free to re-run the playbook and check again.
+You should see changes as these configs are new.  Feel free to re-run the playbook and check again to ensure the module is idempotent.
+
+
