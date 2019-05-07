@@ -266,13 +266,12 @@ Add a new task using the `set_fact` module that allows us to create new variable
 
 ```yaml
 
- - name: CREATE NEW VARIABLES
-   set_fact:
-     percent: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['used-percent'][0]['data'] }}"
-     filesystem: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['filesystem-name'][0]['data'] }}"
-     blocks: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['data'] }}"
-     storage: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['attributes']['junos:format'] }}"
-
+      - name: CREATE NEW VARIABLES
+        set_fact:
+          percent: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['used-percent'][0]['data'] }}"
+          filesystem: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['filesystem-name'][0]['data'] }}"
+          blocks: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['data'] }}"
+          storage: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['attributes']['junos:format'] }}"
 ```
 
 ##### Step 5
@@ -281,10 +280,9 @@ Add a task that will display the new variables created with `set_fact`.
 
 ```yaml
 
-   - name: VIEW DATA STORED IN NEW VARIABLES
-     debug:
-       msg: "Percent: {{ percent }}%,  filesystem: {{ filesystem }}, Blocks: {{ blocks }}, Storage: {{ storage }}"
-
+      - name: VIEW DATA STORED IN NEW VARIABLES
+        debug:
+          msg: "Percent: {{ percent }}%,  filesystem: {{ filesystem }}, Blocks: {{ blocks }}, Storage: {{ storage }}"
 ```
 
 ##### Step 6
@@ -324,19 +322,19 @@ Add two tasks that will _assert_ the data returned from the stored variables and
 
 ```yaml
 
-    - name: CHECK STORAGE FILESYSTEM PERCENT
-      assert:
-        that:
-          - "percent | int  <= 50"
-        fail_msg: "Warning!! filesystem {{ filesystem }} is at {{ percent }}%"
-        success_msg: "Current filesystem  {{ filesystem }} is at {{ percent }}%"
-      
-     - name: CHECK STORAGE FILESYSTEM AVAILABLITY
-      assert:
-        that:
-          - "blocks | int >= 4194304"
-        fail_msg: "Warning!! filesystem {{ filesystem }} is at {{ storage }}"
-        success_msg: "Current filesystem  {{ filesystem }} is at {{ storage }}"
+      - name: CHECK STORAGE FILESYSTEM PERCENT
+        assert:
+          that:
+            - "percent | int  <= 50"
+          fail_msg: "Warning!! filesystem {{ filesystem }} is at {{ percent }}%"
+          success_msg: "Current filesystem  {{ filesystem }} is at {{ percent }}%"
+        
+       - name: CHECK STORAGE FILESYSTEM AVAILABLITY
+        assert:
+          that:
+            - "blocks | int >= 4194304"
+          fail_msg: "Warning!! filesystem {{ filesystem }} is at {{ storage }}"
+          success_msg: "Current filesystem  {{ filesystem }} is at {{ storage }}"
 
 ```
 
@@ -408,13 +406,13 @@ Lets make a change on the `set_fact` module and change the variable `percent` to
 
 ```yaml
 
-  - name: CREATE NEW VARIABLES
-    set_fact:
-      #percent: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['used-percent'][0]['data'] }}"
-      percent: "60"
-      filesystem: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['filesystem-name'][0]['data'] }}"
-      blocks: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['data'] }}"
-      storage: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['attributes']['junos:format'] }}"
+      - name: CREATE NEW VARIABLES
+        set_fact:
+          #percent: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['used-percent'][0]['data'] }}"
+          percent: "60"
+          filesystem: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['filesystem-name'][0]['data'] }}"
+          blocks: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['data'] }}"
+          storage: "{{ output['stdout'][0]['system-storage-information'][0]['filesystem'][0]['available-blocks'][0]['attributes']['junos:format'] }}"
 ```
 
 

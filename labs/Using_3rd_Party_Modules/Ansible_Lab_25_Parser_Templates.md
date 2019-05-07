@@ -7,7 +7,7 @@ In this lab we are going to use different modules to collect data, reuse it and 
 
 ##### Step 1
 
-Create a playbook file called `parsers.yml` Inside the playbook add the following play definition and vars to define template path. Feel free to look inside the template path to view all the exisiting templates and how they are built.
+Create a playbook file called `parsers.yml` Inside the playbook add the following play definition and vars to define template path. Feel free to look inside the template path to view all the existing templates and how they are built.
 
 >Note: Later in this lab we are going to use a role called network-engine so for now it's been added to the play definition so Ansible can find the roles we've installed.
 
@@ -228,7 +228,7 @@ The third task will be a `debug` module that will show the parsed data performed
           commands: show version
         register: version_data
 
-      - name: Generate JSON data structure usin command_parser
+      - name: Generate JSON data structure using command_parser
         command_parser:
           file: "./parsers/{{ ansible_device_os }}/show_version.yml"
           content: "{{ version_data['stdout'][0] }}"
@@ -249,7 +249,7 @@ Save the playbook and execute it. You should see the following output:
 TASK [SHOW VERSION] *******************************************************************
 ok: [csr1]
 
-TASK [Generate JSON data structure usin command_parser] *************************************
+TASK [Generate JSON data structure using command_parser] *************************************
 ok: [csr1]
 
 TASK [View command_parsed data] **************************************************
@@ -287,7 +287,7 @@ Add two more tasks to the playbook. This time we are using a different module ca
 For this module we can reuse the same template that we used for the `ntc_show_command` module since it parses data with textfsm. The second task is the `debug` module which will allow us to view the parsed data.
 
 ```yaml
-      - name: Generate JSON data structure usin textfsm_parser
+      - name: Generate JSON data structure using textfsm_parser
         textfsm_parser:
           file: "{{ show_version_path }}"
           content: "{{ version_data['stdout'][0] }}"
@@ -307,7 +307,7 @@ Save the playbook and execute it. You should see the following output:
 
 ...output omitted
 
-TASK [Generate JSON data structure usin textfsm_parser] *********************************************
+TASK [Generate JSON data structure using textfsm_parser] *********************************************
 ok: [csr1]
 
 TASK [using textfsm_parser] *************************************************************************

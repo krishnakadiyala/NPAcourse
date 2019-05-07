@@ -797,8 +797,6 @@ Add the following task to the `build-push.yml` playbook:
           commit_changes: true
           dev_os: "{{ ansible_network_os }}"
         tags: push
-
-
 ```
 
 ##### Step 3
