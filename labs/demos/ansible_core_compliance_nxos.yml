@@ -21,7 +21,7 @@
       - name: VIEW DIR KEYS
         debug:
           var: output.stdout[1].keys()
-      - name: CHECK OS AND CONFIG REGISTER
+      - name: CHECK OS AND DIR FREE BYTES
         assert:
           that:
            - "'7.0(3)I7(4)' in output['stdout'][0]['kickstart_ver_str']"
