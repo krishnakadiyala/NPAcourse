@@ -3,7 +3,7 @@
 In the next few labs, we'll introduce a few different methodologies for parsing show commands with Ansible looking at several different built-in Jinja2 filters.  They are `regex_search`, `regex_findall` and `parse_cli_textfsm`.
 
 
-### Task 1
+### Task 1 - Using the `parse_cli_textfsm` Filter
 
 In the first task, we'll parse show data on IOS using a pre-built TextFSM template for the "show version" and "show interfaces"command called `parse_cli_textfsm`.
 
@@ -51,10 +51,10 @@ Add two new tasks:
   * One that will debug the new variables.
 
 ```yaml
-      - name: PARSE CLI TXFSM SHOW INTERFACE
+      - name: PARSE CLI TextFSM SHOW INTERFACE
         set_fact:
-          show_version: "{{ config_data.stdout.0 | parse_cli_textfsm(show_version_path) }}"
-          show_interface: "{{ config_data.stdout.1 | parse_cli_textfsm(show_interface_path) }}"
+          show_version: "{{ config_data.stdout[0] | parse_cli_textfsm(show_version_path) }}"
+          show_interface: "{{ config_data.stdout[1] | parse_cli_textfsm(show_interface_path) }}"
 
       - name: DISPLAY PARSED DATA
         debug:
@@ -157,12 +157,13 @@ ok: [csr1] => (item=show_interface) => {
 ```
 
 
+### Task 2 - Using the `regex_` Filters
 
-##### Step 5
+##### Step 1
 
 Add two new tasks:
 
-  * One that will _parse_ the "show version" using the `regex_search` and "show interfaces" using the `regex_findall` jinja2 filters.
+  * One that will _parse_ the "show version" using the `regex_search` and "show interfaces" using the `regex_findall` Jinja2 filters.
   * One that will debug the new variables.
   
   The `regex_search` will allow us to find the specified string applied on the regular expression and `regex_findall` will do the same but return as a list. 
@@ -184,7 +185,7 @@ Add two new tasks:
 
 Save and execute the playbook.
 
-##### Step 6
+##### Step 2
 
 Looking at the relevant debug output, you should see the following:
 
@@ -213,7 +214,7 @@ ok: [csr1] => (item=[u'GigabitEthernet1', u'GigabitEthernet2', u'GigabitEthernet
 .......Output omitted
 ```
 
-##### CHECK
+##### Step 3 - Status Check
 
 
 The full playbook should look like the following: 
@@ -244,8 +245,8 @@ The full playbook should look like the following:
 
       - name: PARSE CLI TXFSM SHOW INTERFACE
         set_fact:
-          show_version: "{{ config_data.stdout.0 | parse_cli_textfsm(show_version_path) }}"
-          show_interface: "{{ config_data.stdout.1 | parse_cli_textfsm(show_interface_path) }}"
+          show_version: "{{ config_data.stdout[0] | parse_cli_textfsm(show_version_path) }}"
+          show_interface: "{{ config_data.stdout[1] | parse_cli_textfsm(show_interface_path) }}"
 
       - name: DISPLAY PARSED DATA
         debug:
@@ -256,8 +257,8 @@ The full playbook should look like the following:
 
       - name: PARSING WITH REGEX_SEARCH AND REGEX_FINDALL
         set_fact:
-          show_version_search: "{{ config_data.stdout.0 | regex_search('(\\d+\\.\\S+)') }}"
-          show_interface_find_all: "{{ config_data.stdout.1 | regex_findall('G\\w+|Loopback\\w+') }}"
+          show_version_search: "{{ config_data.stdout[0] | regex_search('(\\d+\\.\\S+)') }}"
+          show_interface_find_all: "{{ config_data.stdout[1] | regex_findall('G\\w+|Loopback\\w+') }}"
           
       - name: DISPLAY REGEX_SEARCH AND REGEX_FINDALL
         debug:
@@ -266,3 +267,4 @@ The full playbook should look like the following:
           - "The device version is {{ show_version_search }}"
           - "{{ show_interface_find_all }}"
 ```
+
