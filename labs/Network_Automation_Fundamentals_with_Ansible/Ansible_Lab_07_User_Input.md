@@ -1,7 +1,7 @@
 ## Lab 7 - Prompting the User for Input
 
 
-### Task 2 - Using vars_prompt
+### Task 1 - Using vars_prompt
 
 In Ansible, you have the ability to prompt for user input while running a playbook using the `vars_prompt` directive.
 

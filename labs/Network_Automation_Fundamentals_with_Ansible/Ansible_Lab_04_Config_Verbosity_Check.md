@@ -18,7 +18,7 @@ ntc@jump-host:ansible$
 
 ##### Step 2
 
-Add a new SNMP command to the `ios_config` `commands`  and `junos_config` `lines` parameter so that you have the following 4 commands in each list:
+Open the playbook, and add a new SNMP command to the `ios_config` `commands`  and `junos_config` `lines` parameter so that you have the following 4 commands in each list:
 
 ```yaml
 
@@ -84,7 +84,9 @@ ntc@jump-host:ansible$
 ```
 
 This is telling us that Ansible is only sending ONE command to the device -- Ansible is NOT sending every command in the playbook because, by default, the _config modules are comparing the commands against a "show run" on the device.
->Note: Notice the __junos_config__  module does not return the one command that is being changed on the device. Not all modules are built the same, that's is not necessarily a bad thing but it's always good to be aware of it and make sure to test all available modules for specific features based on a particular use case.  
+
+
+>Note: Notice the __junos_config__  module does not return the one command that is being changed on the device. Not all modules are built the same, that's is not necessarily a bad thing but it's always good to be aware of it and make sure to test all available modules for specific features based on a particular use case.  You will see that the modules that do not use network_cli may not return commands being sent in the JSON return data.
 
 
 ##### Step 7

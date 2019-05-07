@@ -55,15 +55,16 @@ vmx3 ansible_network_os=junos
 ```
 
 This inventory file has **TWO** groups: **iosxe** and **vmx**.  Each group has THREE devices. 
-Each iosxe device has a host variable set to `ansible_network_os=ios` and each vmx device has a host
-variable set to `ansible_network_os=junos`.
+
+Each iosxe device has a host variable set to `ansible_network_os=ios` and each vmx device has a host variable set to `ansible_network_os=junos`.
+
 For the course, each of these devices are reachable by name, but you can also use an IP address if you didn't have devices in DNS or `/etc/hosts`.
 
 
 > Note: you should be able to ping each device by name
 
 
-We now have a basic inventory file that we can use to get started.
+You now have a basic inventory file that can be used to get started.
 
 ##### Step 5
 
@@ -121,9 +122,9 @@ Few notes about this command:
 * The `-i` flag maps to the inventory file to used when running this playbook - in our case, that's `inventory`
 * `snmp-config-01.yml` is the playbook we are executing
 * The `-u` flag maps to the username needed to login to the network devices
-* The `-k` flag states to prompt for the password (ntc123) needed to login to the network devices
+* The `-k` flag states to prompt for the password ("ntc123") needed to login to the network devices
 
-Now execute the playbook:
+Upon executing the playbook:
 
 ```
 ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
@@ -321,9 +322,9 @@ ntc@jump-host:ansible$
 ```
 
 
-### Task 3 - Using Inventory Parameters (Variables)
+### Task 4 - Using Inventory Parameters (Variables)
 
-In this task, we're going to introduce two inventory parameters that are helpful to be aware of when using Ansible.  They are `ansible_host`, `ansible_pass` and will be used to simplify passing in credentials when executing playbooks.
+In this task, we're going to introduce two inventory parameters that are helpful to be aware of when using Ansible.  They are `ansible_user` and `ansible_ssh_pass` and will be used to simplify passing in credentials when executing playbooks.
 
 
 ##### Step 1
@@ -422,9 +423,10 @@ The updated playbook should look like this:
 
 ##### Step 5
 
-Re-run the playbook ensuring everything is correct from a syntax perspective and still works.
+Re-run the playbook ensuring everything is correct from a syntax perspective and that the playbook still works.
 
 ```
 ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml
 
 ```
+
