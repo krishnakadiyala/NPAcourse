@@ -111,8 +111,7 @@ We'll use `command-outputs` with a sub-directory equal to the OS name:
       - name: GENERATE DIRECTORIES
         file:
           path: ./command-outputs/{{ ansible_network_os }}
-           state: directory
-  
+          state: directory
 ```
 
 ##### Step 9

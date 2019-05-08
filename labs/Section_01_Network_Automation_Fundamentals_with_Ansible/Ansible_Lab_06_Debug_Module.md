@@ -47,7 +47,7 @@ The task will simply print the variable `ntc_vendor` for each device in the grou
 
     tasks:
       - name: DEBUG AND PRINT TO TERMINAL
-        debug:var=ntc_vendor
+        debug: var=ntc_vendor
 ```
 
 Remember the `ntc_vendor` variable is simply a variable we created in the last lab for each group of devices and now we are going to print it for the **iosxe** group.
