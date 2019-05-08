@@ -1,10 +1,95 @@
 ## Lab 23 - Backup and Restore Network Configurations Part 1
 
-This lab will show how to use Ansible to manage network device configurations and focuses on the process of backing up and re-storing and deploying full configuration files.
+Before Starting the lab we are going to go over how to add 3rd party modules to your Ansible environment.  This could include open source modules or custom modules you decide to write over time. 
 
-We'll use two main modules to do this:  one that is used to backup the configurations (ntc_show_command) and another that is used to deploy the configurations (NAPALM).
+Below are some tips on how to do it, but for this lab environment it has already been added so we don't have to apply any changes.   This first Task is read-only.
 
-### Task 1 - Backup Configurations
+## Task 1 - Adding 3rd Party Modules
+
+##### Step 1
+
+You need to perform two steps to start using 3rd party modules.
+
+* Ensure the modules you want to use (usually a repository that has been cloned) is in your Ansible module search path
+* Install any dependencies required by the modules (usually Python modules or packages installable via `pip`)
+
+Issue the command `ansible --version`.  This will give us a wealth of information about our Ansible environment.
+
+```commandline
+   ntc@jump-host:~/ansible$ ansible --version
+   ansible 2.7.9
+      config file = /etc/ansible/ansible.cfg
+      configured module search path = ['/etc/ntc/ansible/library']
+      ansible python module location = /home/ntc/.local/lib/python3.6/site-packages/ansible
+      executable location = /usr/local/bin/ansible
+      python version = 3.6.7 (default, Oct 22 2018, 11:32:17) [GCC 8.2.0]
+      
+   ntc@jump-host:~/ansible$
+```
+
+You can note our configured module search path as `/etc/ntc/ansible/library`.  Ansible will recursively search for modules in that path now.
+
+If you have a "default" or No search path shown, open the config file that is shown in the output above, in this example we have `/etc/ansible/ansible.cfg`.
+In that file, you'll see these first few lines:
+
+```commandline
+  [defaults]
+
+  # some basic default values...
+
+  inventory      = /etc/ansible/hosts
+  library        = ADD PATH HERE
+```
+
+
+##### Step 2
+
+Add a path for library - this will become your search path. Validate it with `ansible --version` after you make the change. If you would like to add an additional path use `:` to add another path to the list.
+
+```bash
+[defaults]
+
+# some basic default values...
+
+inventory      = /etc/ansible/hosts
+library        = /home/ntc/projects/:/etc/ansible/library
+```
+
+Save and exit the file.
+
+```commandline
+   ntc@jump-host:~/ansible$ ansible --version
+   ansible 2.7.9
+      config file = /etc/ansible/ansible.cfg
+      configured module search path = [u'/etc/ansible/library', u'/home/ntc/projects']
+      ansible python module location = /home/ntc/.local/lib/python3.6/site-packages/ansible
+      executable location = /usr/local/bin/ansible
+      python version = 3.6.7 (default, Oct 22 2018, 11:32:17) [GCC 8.2.0]
+   ntc@jump-host:~/ansible$
+```
+
+##### Step 3
+
+You can now just `git clone` any git project that has modules inside your configured search path.
+
+* It's recommend to follow the 3rd party module instructions to make sure it has met its dependencies requirements, what's important after the install is to make sure the libraries are in placed in where we have configured `configured module search path = [u'/etc/ansible/library', u'/home/ntc/projects']` of the `ansible.cfg` file.  Remember, you will need to ensure any Python dependencies are met too, e.g. `pip install $package`.
+
+
+For the course, we have a number of repositories cloned that contain 3rd party open source Ansible modules:
+
+```
+ntc@jump-host:~$ ls /etc/ntc/ansible/library/
+ansible-junos-stdlib  ansible-pan  ansible-snmp  napalm  napalm-ansible  ntc-ansible
+ntc@jump-host:~$
+```
+
+Each one of these also required Python packages to be installed via `pip` including: `pyntc`, `napalm`, `ntc_templates`, `nelsnmp` just to name a few.
+
+### Task 2 - Backup Configurations
+
+This lab will show how to use Ansible to manage network device configurations and focuses on the process of backing up and re-storing full configuration files.
+
+We'll use two main modules to do this:  one that is used to backup the configurations (ntc_show_command) in this lab and another that is used to deploy the configurations (NAPALM) in the next lab.
 
 In this task, you will save and backup the current running configuration of all of your devices.
 
@@ -16,6 +101,8 @@ Within the `ansible` directory, create a new directory called `backups`.
 ntc@jump-host:~/ansible$ mkdir backups
 ntc@jump-host:~/ansible$
 ```
+
+> Note: you could also do this with the `file` module if you'd like so it's fully automated!
 
 Additionally, in the same `ansible` directory, create a playbook called `backup.yml`
 
@@ -41,6 +128,8 @@ Create a play that'll be executed against **all** hosts defined in the inventory
 
 
 ```
+
+> Note: most 3rd party modules use `connection: local` because the actual connection setup happens in the Python code within the module or dependencies for that module.
 
 ##### Step 3
 
@@ -103,6 +192,8 @@ Add a variable to handle the login to the devices. Often referred to as a provid
 
 Add a task to backup the running configuration using the module called `ntc_show_command`.
 
+Create a `backups` directory.
+
 All backup files should be saved locally inside the `backups` directory.
 
 
@@ -134,12 +225,13 @@ All backup files should be saved locally inside the `backups` directory.
           command: "{{ backup_command[ansible_network_os] }}"
           local_file: "./backups/{{ inventory_hostname }}.cfg"
           platform: "{{ ntc_vendor }}_{{ ansible_network_os }}"
+          
 
 ```
 
-**Pay attention to how we are using variables for the `platform` parameter**.  It's similar to what we did for the `config` command.
+**Pay attention to how we are using variables for the `platform` parameter**.  
 
-Supported platforms for this module actually matches anything Netmiko supports, e.g. vendor_os like cisco_ios, cisco_nxos, juniper_junos, arista_eos, etc.  Since we have those variables pre-built in our inventory file, we can use them as defined in the output above.
+Supported platforms for this module actually matches anything Netmiko, a popular Python-based SSH library, supports, e.g. vendor_os like cisco_ios, cisco_nxos, juniper_junos, arista_eos, etc.  Since we have those variables pre-built in our inventory file, we can use them as defined in the output above.
 
 Save and Execute the playbook.
 
@@ -234,11 +326,6 @@ ntc@jump-host:~/ansible$ $ ansible-playbook -i inventory backup.yml --tags=clean
 
 ```
 
-Full output:
-
-```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory backup.yml --tags=clean
-```
 
 Relevant output:
 
@@ -333,4 +420,4 @@ connection_details:
 ```
 
 
-Note: in future labs, we'll see how you can also backup configurations using "core" modules.  We started with the 3rd party module because it's possible within a single task for more than one vendor.
+Note: in other labs, you've also seen how you can also backup configurations using "core" modules.  This is just another way while showing how to use 3rd party modules.

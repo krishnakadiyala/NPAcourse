@@ -1,9 +1,6 @@
 ## Lab 24 - Backup and Restore Network Configurations Part 2
 
-This lab will "restore" the configuration files you previously backed up.
-
-For these two labs, we're using two main modules to do this:  one that is used to backup the configurations (ntc_show_command) and another that is used to deploy the configurations (NAPALM).
-
+This lab will "restore" the configuration files you previously backed up using another 3rd party Ansible module called `napalm_install_config` that is based off of the popular NAPALM project.
 
 ### Task 1 - Restore Configuration
 
@@ -12,6 +9,7 @@ For these two labs, we're using two main modules to do this:  one that is used t
 Create a new playbook called `restore.yml`.  In this file, and for the first execution, limit it to the IOS devices:
 
 ```yaml
+
 ---
 
   - name: DEPLOY & RESTORE CONFIGS
@@ -28,6 +26,7 @@ Using `napalm_install_config`, push back these configurations. Since we didn't c
 
 
 ```yaml
+
 ---
 
   - name: DEPLOY & RESTORE CONFIGS

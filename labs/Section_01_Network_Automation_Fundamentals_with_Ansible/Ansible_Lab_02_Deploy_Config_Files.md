@@ -1,6 +1,6 @@
 ## Lab 2 - Deploying Configs From a File
 
-In the last lab, you deployed configurations while hard-coding commands in a playbook.  In this lab, you will deploy from a pre-built configuration file.
+In the last lab, you deployed configurations while hard-coding commands in a playbook.  In this lab, you will deploy networks configurations from a pre-built configuration file.
 
 ##### Step 1
 
@@ -61,6 +61,7 @@ ntc@jump-host:ansible$
 ##### Step 6
 
 Open this file with a text editor and create two plays similar to **Lab 1** to deploy the changes.
+
 This time, however, we will use the source file to deploy the configuration instead of using commands inside the playbook.
 
 
@@ -126,3 +127,4 @@ ntc@jump-host:ansible$
 ```
 
 You should see zero changes as these configs are the same configs that were deployed in the first lab.  Feel free to make a change to the config files and re-run the playbook.
+

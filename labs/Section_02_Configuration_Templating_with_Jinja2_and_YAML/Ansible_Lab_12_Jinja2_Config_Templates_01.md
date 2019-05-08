@@ -4,19 +4,9 @@
 
 In this task we will learn how to use Jinja2 templates in Ansible to dynamically build configuration files.
 
+
+
 ##### Step 1
-
-Since we're going to be generating configuration files, we need a place to store them.  
-
-Create a `configs` sub-directory in the `ansible` directory.
-
-```
-ntc@jump-host:ansible$ mkdir configs
-ntc@jump-host:ansible$
-```
-
-
-##### Step 2
 
 Create a new playbook within the `ansible` directory:
 
@@ -26,7 +16,7 @@ ntc@jump-host:ansible$
 ```
 
 
-##### Step 3
+##### Step 2
 
 Open this file using any text editor and add the following play definition:
 
@@ -41,7 +31,7 @@ Open this file using any text editor and add the following play definition:
 
 ```
 
-##### Step 4
+##### Step 3
 
 Define a SNMP RO string as a variable within the playbook:
 
@@ -59,7 +49,7 @@ Define a SNMP RO string as a variable within the playbook:
 
 ```
 
-##### Step 5
+##### Step 4
 
 Using the `debug` module, create a task that will display the variable `snmp_ro`.
 
@@ -81,10 +71,8 @@ Using the `debug` module, create a task that will display the variable `snmp_ro`
     - name: VIEW SNMP_RO VARIABLE
       debug: 
         var: snmp_ro
-
-
 ```
-##### Step 6
+##### Step 5
 
 Execute the playbook and view the results from the `debug` module.
 
@@ -115,7 +103,7 @@ ntc@jump-host:ansible$
 
 >Note: As we learned earlier we can define variables in different locations like inside our inventory, playbook, included files, roles, Ansible command line, local facts, host_vars and group_vars directories, which Ansible will find based on the module.
 
-##### Step 7
+##### Step 6
 
 
 Using the Ansible `template` module, lets add a new task that will take this variable and render it with a Jinja template (that is yet to be created):
@@ -142,26 +130,24 @@ Using the Ansible `template` module, lets add a new task that will take this var
       template:
         src: ios-snmp.j2
         dest: "./configs/{{ inventory_hostname }}-snmp.cfg"
-
 ```
 
 
 
-##### Step 8
+##### Step 7
 
 In the previous step, the source of the template was identified as a `j2` file. Ansible by default will look in the current directory and a directory named `templates` for these files. Let us create this if it's not there already.
 
-Create a `templates` directory within the `ansible` directory and navigate to that directory.
+Create a `templates` directory if it's not there already within the `ansible` directory and navigate to that directory.
 
 ```
 ntc@jump-host:ansible$
 ntc@jump-host:ansible$ mkdir templates
 ntc@jump-host:ansible$ cd templates
 ntc@jump-host:templates$
-
 ```
 
-##### Step 9
+##### Step 8
 
 In the `templates` directory, create the Jinja template we will be using to render the SNMP configuration, by using the `touch` command if it's not present already. 
 
@@ -173,21 +159,20 @@ ntc@jump-host:templates$
 ```
 
 
-##### Step 10
+##### Step 9
 
 Open the `ios-snmp.j2` file using a text editor and add the snmp configuration template for it. This is simply a text file with the values for the SNMP variable "parameterized".
 
 ```
 snmp-server community {{ snmp_ro }}  RO
-
 ```
 
-Keep in mind that the value for this variable was defined in **Step 4** within the playbook.  
+Keep in mind that the value for this variable was defined in **Step 3** within the playbook.  
 
 **Ansible auto-loads all variables it's aware of at run-time and makes those variables available to the playbook and any template similar to what we saw with the debug module.**
 
 
-##### Step 11
+##### Step 10
 
 Run the playbook as follows:
 
@@ -207,11 +192,9 @@ csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0   
 
 ntc@jump-host:ansible$
-
-
 ```
 
-##### Step 12
+##### Step 11
 
 Validate that the variables have been rendered correctly by checking the files created in the `configs` directory.
 
@@ -466,3 +449,6 @@ Validate that the configurations have been created in the `configs` directory:
 ntc@jump-host:ansible$ ls configs/
 # output omitted
 ```
+
+Based on what you've learned so far, you should realize that you can simply add another task or play in this playbook and use the `ios_config` and `junos_config` modules or the `cli_config` module for a complete process of building and deploying the configurations.
+

@@ -1,8 +1,8 @@
-## Lab 6 - Using the debug module
+## Lab 6 - Improving Troubleshooting with the debug module
 
 ### Task 1 - Debugging Variables
 
-This lab highlights the use of the `debug` modules.  It offers you the ability to "print" variables to the terminal often very helpful for verifying what a variable is set to.  As you can see from the last lab, you can see variables can be defined in many locations in the inventory file, e.g. same variable for different groups.
+This lab highlights the use of the `debug` module.  It offers you the ability to "print" variables to the terminal often very helpful for verifying what a variable is set to.  As you can see from the last lab, you can see variables can be defined in many locations in the inventory file, e.g. same variable for different groups.
 
 Let's review a few ways the `debug` module helps with troubleshooting.
 
@@ -32,7 +32,8 @@ The playbook will consist of a single play and a single task.
 ##### Step 3
 
 Use the following for the starting point of the playbook.  This will execute for all devices in the _iosxe_ group.
- The task will simply print the variable `ntc_vendor` for each device in the group.
+
+The task will simply print the variable `ntc_vendor` for each device in the group.
 
 ```yaml
 
@@ -46,9 +47,10 @@ Use the following for the starting point of the playbook.  This will execute for
 
     tasks:
       - name: DEBUG AND PRINT TO TERMINAL
-        debug: var=ntc_vendor
-
+        debug:var=ntc_vendor
 ```
+
+Remember the `ntc_vendor` variable is simply a variable we created in the last lab for each group of devices and now we are going to print it for the **iosxe** group.
 
 ##### Step 5
 
@@ -87,7 +89,6 @@ Note, this just printed the variable to the terminal.
 Change the `hosts:` in the play definition to automate "all" devices in the inventory file.
 
 ```
-
     hosts: all
 ```
 
@@ -195,8 +196,6 @@ Add a task to the playbook to debug the `device_type` variable so the playbook r
 
       - name: DEBUG AND PRINT DEVICE TYPE TO TERMINAL
         debug: var=ntc_device_type
-
-
 ```
 
 ##### Step 3
@@ -205,11 +204,9 @@ Save and execute the following:
 
 ```
 ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
-
 ```
 
 You should see the following output for the new task:
-
 
 ```
 TASK [DEBUG AND PRINT DEVICE TYPE TO TERMINAL] **********************************
@@ -249,7 +246,6 @@ ok: [nxos-spine1] => {
 ok: [nxos-spine2] => {
     "ntc_device_type": "unknown"
 }
-
 ```
 
 ##### Step 4
@@ -270,9 +266,7 @@ ntc_device_type=csr1000v
 ansible_network_os=nxos
 ntc_api=nxapi
 ntc_vendor=cisco
-ntc_device_type=n7kv
-
-
+ntc_device_type=n9kv
 ```
 
 ##### Step 5
@@ -281,7 +275,6 @@ Save and execute the following:
 
 ```
 ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
-
 ```
 
 You should see the following output for the new task:
@@ -319,13 +312,11 @@ ok: [csr3] => {
     "ntc_device_type": "csr1000v"
 }
 ok: [nxos-spine1] => {
-    "ntc_device_type": "n7kv"
+    "ntc_device_type": "n9kv"
 }
 ok: [nxos-spine2] => {
-    "ntc_device_type": "n7kv"
+    "ntc_device_type": "n9kv"
 }
-
-
 ```
 
 See how the more specific group variables are taking priority over the _all_ group?
@@ -349,7 +340,6 @@ csr3
 [nxos-spines]
 nxos-spine1  ntc_device_type=n9k
 nxos-spine2
-
 ```
 
 ##### Step 2
@@ -396,7 +386,7 @@ ok: [nxos-spine1] => {
     "ntc_device_type": "n9k"
 }
 ok: [nxos-spine2] => {
-    "ntc_device_type": "n7kv"
+    "ntc_device_type": "n9kv"
 }
 ```
 
@@ -413,10 +403,9 @@ When you just want to print a single variable, you use the `var` parameter.  If 
 
 Add a new task to the playbook to debug the `inventory_hostname` and `ansible_network_os` variables.
 
-The `inventory_hostname` variable is a built-in variable that's equal to the hostname of the device as you've defined it in the inventory file.
+**IMPORTANT**: The `inventory_hostname` variable is a built-in variable that's equal to the hostname of the device as you've defined it in the inventory file.
 
-
-```
+```yaml
 
 ---
 
@@ -435,7 +424,6 @@ The `inventory_hostname` variable is a built-in variable that's equal to the hos
 
       - name: DEBUG AND PRINT THE OS
         debug: msg="The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
-
 ```
 
 ##### Step 2
@@ -482,8 +470,6 @@ ok: [nxos-spine1] => {
 ok: [nxos-spine2] => {
     "msg": "The OS for nxos-spine2 is nxos."
 }
-
-
 ```
 
 
@@ -528,7 +514,6 @@ However, Ansible also supports a more native YAML syntax using colons in which i
 
 Convert this playbook to using the YAML syntax.
 
-
 ```yaml
 
 ---
@@ -557,14 +542,15 @@ Convert this playbook to using the YAML syntax.
 
 Re-run the playbook ensuring there are no indentation issues.
 
-### Task - 6 Exploring built-in variables
+### Task 6 - Exploring built-in Variables
 
 This task will introduce built-in variables or another way to call them are __magic__ variables. These variables are built-in to Ansible to reflect internal state. 
 
 
 ##### Step 1
 
-In the __inventory__ file add `ansible_host=10.1.1.1` as a host variable to `csr2`. The `ansible_host` variable is helpful if inventory hostname is not in DNS or /etc/hosts. Set to IP address of host and use instead of `inventory_hostname` to access IP/FQDN
+In the __inventory__ file add `ansible_host=10.1.1.1` as a host variable to `csr2`. The `ansible_host` variable is helpful if the inventory hostname is not in DNS or `/etc/hosts`. You can set it to the IP address of the host and use it instead of `inventory_hostname` to access IP/FQDN.  This was also covered briefly in the last lab.
+
 
 ```text
 [iosxe]
@@ -580,9 +566,9 @@ Add a new task to the existing playbook to see the difference between `inventory
 
 ```yaml
 
-  - name: DEBUG AND PRINT INVENTORY_HOSTNAME VS ANSIBLE_HOST
-    debug: 
-      msg: "Devices defined in inventory_hostname: {{ inventory_hostname }} and ansible_host: {{ ansible_host }}
+      - name: DEBUG AND PRINT INVENTORY_HOSTNAME VS ANSIBLE_HOST
+        debug: 
+           msg: "Devices defined in inventory_hostname: {{ inventory_hostname }} and ansible_host: {{ ansible_host }}"
 ```
 
 ##### Step 3
@@ -592,7 +578,7 @@ Save and execute the playbook.
 You'll see the relevant output for the 4th task in the playbook:
 
 
-```commandline
+```
 
 TASK [DEBUG AND PRINT INVENTORY_HOSTNAME VS ANSIBLE_HOST] *******************************************************
 ok: [eos-spine1] => {
@@ -631,15 +617,17 @@ ok: [eos-leaf1] => {
 ok: [eos-leaf2] => {
     "msg": "Devices defined in inventory_hostname: eos-leaf2 and ansible_host: eos-leaf2"
 }
-
-
 ```
+
+
+**IMPORTANT**
+
+**Remove ansible_host=10.1.1.1 from the inventory or it will cause problems later in later labs.**
 
 
 ##### Step 4
 
-
-Add a new task to the playbook to debug the `play_hosts` variable it will return a list of inventory hostnames that are in scope for the current play
+Add a new task to the playbook to debug a variable called `play_hosts`.  It will return a list of inventory hostnames that are in scope for the current play:
 
 ```yaml
       - name: DEBUG AND PRINT LIST OF PLAY_HOSTS
@@ -650,6 +638,7 @@ Add a new task to the playbook to debug the `play_hosts` variable it will return
 ##### Step 5
 
 Save and execute the playbook.
+
 You'll see the relevant output for the 5th task in the playbook:
 
 ```commandline
@@ -723,9 +712,11 @@ ok: [nxos-spine2] => {
 
 ```
 
+You'll also note that EVERY device actually has a `play_hosts` variable. 
+
 ##### Step 6
 
-Add a new task to the existing playbook. To debug `group_names` which will return a list of all groups that the current host is a member of.
+Add a new task to the existing playbook. To debug `group_names` which will return a list of all groups that the **current host** is a member of.
 
 ```yaml
       - name: DEBUG AND PRINT GROUP_NAMES
@@ -831,17 +822,17 @@ In the play definition change the `hosts: all` to `hosts: csr1` so we only targe
     connection: local
     gather_facts: no
 
-``` 
+```
 
 
 ##### Step 9
 
-Add a new task to the existing playbook. To debug `groups` which will return dictionary- keys that are all group names defined in the inventory file and values are list of host names that are members of the group.
+Add a new task to the existing playbook. Now we'll debug a variable called `groups` which will return a dictionary (or hash) in which all the keys are all group names defined in the inventory file and values are list of hosts that are members of the group.
 
 ```yaml
-  - name: DEBUG AND PRINT GROUPS
-    debug: 
-      var: groups
+      - name: DEBUG AND PRINT GROUPS
+        debug: 
+          var: groups
 ```
 
 ##### Step 10
@@ -918,13 +909,13 @@ ok: [csr1] => {
 
 ##### Step 11
 
-Add a new task to the existing playbook. To debug `ansible_version` which will return a dictionary representing Ansible major, minor, revision of the release.
+Add a new task to the existing playbook so we can verify and see what version of Ansible is being used to execute the playbook.  The variable `ansible_version` will return a dictionary representing Ansible major, minor, revision of the release.
 
 ```yaml
 
-  - name: DEBUG AND PRINT ANSIBLE_VERSION
-    debug: 
-       msg: "Ansible Version: '{{ ansible_version }}'"
+      - name: DEBUG AND PRINT ANSIBLE_VERSION
+        debug: 
+           msg: "Ansible Version: '{{ ansible_version }}'"
 ```
 
 ##### Step 12
@@ -939,3 +930,5 @@ ok: [csr1] => {
     "msg": "Ansible Version: '{'major': 2, 'full': '2.7.9', 'string': '2.7.9', 'minor': 7, 'revision': 9}'"
 }
 ```
+
+There are several more built-in variables, but this is a good start to understand what's possible while printing different variables with the `debug` module.

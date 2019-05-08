@@ -284,3 +284,30 @@ iosxe
 vmx
 
 ```
+
+**READ-ONLY TASK**
+
+Here is some extra information to be aware of:
+
+* Variables starting with `ansible_` are usually all built-in and specical variables within Ansible
+* Other variables such as `ntc_` are not special and just data we'll use in the course, but they are name-spaced with `ntc_` to make them easier to find and track.
+* It is possible to put IP addresses in an inventory file as well like this:
+
+```
+[lab-network]
+10.1.1.1
+router2
+```
+
+If you still want to reference them by name in inventory but don't have DNS setup, you could alternatively do this:
+
+```
+[lab-network]
+router1  ansible_host=10.1.1.1
+router2
+```
+
+`ansible_host` is a special variable in which allows you easily manage devices using names in your inventory file and playbooks without having formal DNS or IP to name mappings.  This example assumes `router2` is a DNS name.
+
+
+

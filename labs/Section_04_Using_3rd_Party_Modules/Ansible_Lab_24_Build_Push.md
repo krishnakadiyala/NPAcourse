@@ -1,7 +1,7 @@
 ## Lab 24 - Build / Push with Ansible
 
 
-![Lab Topology](images/lab-topology.png)
+![Lab Topology](../images/lab-topology.png)
 
 Do the lab(s) as directed by your instructor.  This is determined based on your lab topology.
 
