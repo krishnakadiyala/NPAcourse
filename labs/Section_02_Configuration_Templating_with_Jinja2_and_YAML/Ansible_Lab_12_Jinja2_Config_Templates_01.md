@@ -179,17 +179,27 @@ Run the playbook as follows:
 ```
 ntc@jump-host:ansible$ ansible-playbook -i inventory deploy-snmp.yml
 
-PLAY [GENERATE SNMP CONFIGS USING JINJA2] *********************************************************************************
+PLAY [GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS] *********************************************************************************
 
+TASK [VIEW SNMP_RO VARIABLE] ***********************************************************************************************************
+ok: [csr1] => {
+    "snmp_ro": "ntc_course"
+}
+ok: [csr2] => {
+    "snmp_ro": "ntc_course"
+}
+ok: [csr3] => {
+    "snmp_ro": "ntc_course"
+}
 TASK [GENERATE IOS SNMP CONFIGURATIONS] ***********************************************************************************
 changed: [csr1]
 changed: [csr2]
 changed: [csr3]
 
 PLAY RECAP **************************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-csr2                       : ok=1    changed=1    unreachable=0    failed=0   
-csr3                       : ok=1    changed=1    unreachable=0    failed=0   
+csr1                       : ok=2    changed=1    unreachable=0    failed=0   
+csr2                       : ok=2    changed=1    unreachable=0    failed=0   
+csr3                       : ok=2    changed=1    unreachable=0    failed=0   
 
 ntc@jump-host:ansible$
 ```
