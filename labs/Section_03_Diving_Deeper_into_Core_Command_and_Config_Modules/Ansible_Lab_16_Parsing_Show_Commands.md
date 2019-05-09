@@ -187,7 +187,7 @@ Add the following tasks to your playbook:
           
       - name: DISPLAY REGEX_SEARCH FOR IOS VERSION
         debug:
-          msg: ""The device version is {{ show_version_search }}""
+          msg: "The device version is {{ show_version_search }}"
 ```
 
 Save and execute the playbook.
@@ -387,7 +387,7 @@ The full playbook should look like the following:
           
       - name: DISPLAY REGEX_FINDALL
         debug:
-          msg: " An interface on this device is {{ item }}"
+          msg: "An interface on this device is {{ item }}"
         loop: "{{ show_interface_find_all }}"
 ```
 
