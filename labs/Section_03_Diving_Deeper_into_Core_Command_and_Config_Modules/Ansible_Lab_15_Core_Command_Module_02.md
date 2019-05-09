@@ -180,6 +180,7 @@ ntc@jump-host:ansible$
 ```
   - name: TEST REACHABILITY - SOLUTION 1
     hosts: iosxe
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -238,6 +239,7 @@ Playbook **ping.yml**
 
   - name: TEST REACHABILITY - SOLUTION 2
     hosts: iosxe
+    connection: network_cli
     gather_facts: no
 
     vars:
