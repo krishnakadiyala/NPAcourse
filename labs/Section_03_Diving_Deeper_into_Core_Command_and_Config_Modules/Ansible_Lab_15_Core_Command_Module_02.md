@@ -193,7 +193,7 @@ ntc@jump-host:ansible$
 
       - name: ENSURE DIRECTORY FOR EACH DEVICE EXISTS
         file:
-          path: ./ping-responses/{{ inventory_hostname }}/
+          path: ./ping-responses/
           state: directory
 
       - name: SEND PING COMMANDS TO DEVICES
