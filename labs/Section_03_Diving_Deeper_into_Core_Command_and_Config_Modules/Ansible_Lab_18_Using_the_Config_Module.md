@@ -325,7 +325,7 @@ TASK [ENSURE THAT LOOPBACK222 IS CONFIGURED] ***********************************
 changed: [csr1]
 ```
 
-###### Step 4
+##### Step 4
 
 Add a new task to the playbook.  This task will compare the FULL config of one previously backed up to one that is on the device.
 
