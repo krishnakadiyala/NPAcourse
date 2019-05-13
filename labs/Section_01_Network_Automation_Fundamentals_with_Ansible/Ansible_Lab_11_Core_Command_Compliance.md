@@ -334,7 +334,7 @@ The assertion is also using `| int` after the `percent` because you can see the 
           success_msg: "Current filesystem  {{ filesystem }} is at {{ percent }}%"
         
        - name: CHECK STORAGE FILESYSTEM AVAILABILITY
-        assert:
+         assert:
           that:
             - "blocks | int >= 4194304"
           fail_msg: "Warning!! filesystem {{ filesystem }} is at {{ storage }}"
