@@ -178,8 +178,11 @@ ntc@jump-host:ansible$
 
 
 ```
+---
+
   - name: TEST REACHABILITY - SOLUTION 1
     hosts: iosxe
+    connection: network_cli
     gather_facts: no
 
     vars:
@@ -192,7 +195,7 @@ ntc@jump-host:ansible$
 
       - name: ENSURE DIRECTORY FOR EACH DEVICE EXISTS
         file:
-          path: ./ping-responses/{{ inventory_hostname }}/
+          path: ./ping-responses/
           state: directory
 
       - name: SEND PING COMMANDS TO DEVICES
@@ -238,6 +241,7 @@ Playbook **ping.yml**
 
   - name: TEST REACHABILITY - SOLUTION 2
     hosts: iosxe
+    connection: network_cli
     gather_facts: no
 
     vars:

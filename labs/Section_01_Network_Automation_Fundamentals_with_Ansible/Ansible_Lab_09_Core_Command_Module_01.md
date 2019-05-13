@@ -111,8 +111,7 @@ We'll use `command-outputs` with a sub-directory equal to the OS name:
       - name: GENERATE DIRECTORIES
         file:
           path: ./command-outputs/{{ ansible_network_os }}
-           state: directory
-  
+          state: directory
 ```
 
 ##### Step 9
@@ -190,16 +189,12 @@ Save and execute the playbook
 Lets try the same thing but with JUNOS. Add another play below the first one.
 
 ```yaml
-
----
-
   - name: BACKUP SHOW VERSION FOR JUNOS
     hosts: vmx1
     connection: netconf
     gather_facts: no
 
     tasks:
-
 ```
 
 ##### Step 14
@@ -207,9 +202,6 @@ Lets try the same thing but with JUNOS. Add another play below the first one.
 Add a task to issue the `show version` command.
 
 ```yaml
-
----
-
   - name: BACKUP SHOW VERSION FOR JUNOS
     hosts: vmx1
     connection: netconf
@@ -219,7 +211,6 @@ Add a task to issue the `show version` command.
       - name: GET SHOW COMMANDS
         junos_command:
           commands: show version
-
 ```
 
 ##### Step 15
