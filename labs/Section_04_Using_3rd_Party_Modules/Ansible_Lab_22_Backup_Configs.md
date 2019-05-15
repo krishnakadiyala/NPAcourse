@@ -4,7 +4,7 @@ Before Starting the lab we are going to go over how to add 3rd party modules to 
 
 Below are some tips on how to do it, but for this lab environment it has already been added so we **don't** have to apply any changes.   This first Task is **read-only**.
 
-## Task 1 - Adding 3rd Party Modules -- READ-ONLY - NO CHANGES NEEDED
+## Task 1 - Adding 3rd Party Modules
 
 ##### Step 1
 
@@ -52,7 +52,7 @@ Add a path for library - this will become your search path. Validate it with `an
 # some basic default values...
 
 inventory      = /etc/ansible/hosts
-library        = /home/ntc/projects/:/etc/ansible/library
+library        = /home/ntc/projects/:/etc/ntc/ansible/library
 ```
 
 Save and exit the file.
@@ -61,7 +61,7 @@ Save and exit the file.
    ntc@jump-host:~/ansible$ ansible --version
    ansible 2.7.9
       config file = /etc/ansible/ansible.cfg
-      configured module search path = [u'/etc/ansible/library', u'/home/ntc/projects']
+      configured module search path = [u'/etc/ntc/ansible/library', u'/home/ntc/projects']
       ansible python module location = /home/ntc/.local/lib/python3.6/site-packages/ansible
       executable location = /usr/local/bin/ansible
       python version = 3.6.7 (default, Oct 22 2018, 11:32:17) [GCC 8.2.0]
