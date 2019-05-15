@@ -72,7 +72,7 @@ Save and exit the file.
 
 You can now just `git clone` any git project that has modules inside your configured search path.
 
-* It's recommend to follow the 3rd party module instructions to make sure it has met its dependencies requirements, what's important after the install is to make sure the libraries are in placed in where we have configured `configured module search path = [u'/etc/ansible/library', u'/home/ntc/projects']` of the `ansible.cfg` file.  Remember, you will need to ensure any Python dependencies are met too, e.g. `pip install $package`.
+* It's recommend to follow the 3rd party module instructions to make sure it has met its dependencies requirements, what's important after the install is to make sure the libraries are in placed in where we have configured `configured module search path = [u'/etc/ntc/ansible/library', u'/home/ntc/projects']` of the `ansible.cfg` file.  Remember, you will need to ensure any Python dependencies are met too, e.g. `pip install $package`.
 
 
 For the course, we have a number of repositories cloned that contain 3rd party open source Ansible modules:
