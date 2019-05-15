@@ -2,7 +2,7 @@
 
 Before Starting the lab we are going to go over how to add 3rd party modules to your Ansible environment.  This could include open source modules or custom modules you decide to write over time. 
 
-Below are some tips on how to do it, but for this lab environment it has already been added so we don't have to apply any changes.   This first Task is read-only.
+Below are some tips on how to do it, but for this lab environment it has already been added so we **don't** have to apply any changes.   This first Task is **read-only**.
 
 ## Task 1 - Adding 3rd Party Modules
 
