@@ -41,7 +41,7 @@ These variables are then returned as variables that can be re-used for other mod
 
       - name: QUERY DEVICE VIA SNMP
         snmp_device_version:
-          community: networktocode
+          community: ntc-course
           version: 2c
           host: "{{ inventory_hostname }}"
         register: snmp
