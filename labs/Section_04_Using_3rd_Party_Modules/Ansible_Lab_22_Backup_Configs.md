@@ -4,7 +4,7 @@ Before Starting the lab we are going to go over how to add 3rd party modules to 
 
 Below are some tips on how to do it, but for this lab environment it has already been added so we **don't** have to apply any changes.   This first Task is **read-only**.
 
-## Task 1 - Adding 3rd Party Modules
+## Task 1 - Adding 3rd Party Modules -- READ-ONLY - NO CHANGES NEEDED
 
 ##### Step 1
 
