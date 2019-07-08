@@ -1,5 +1,32 @@
 # Course Lab Guide
 
+## Python Labs
+
+- [Lab 1 - Accessing the Lab Environment](labs/Lab_01_Accessing_Lab_Environment.md)
+- [Lab 2 - Using the Python Interpreter](labs/Lab_02_Using_Python_Interpreter.md)
+- [Lab 3 - Working with Strings](labs/Lab_03_Working_with_Strings.md)
+- [Lab 4 - Working with Integers](labs/Lab_04_Working_with_Integers.md)
+- [Lab 5 - Storing Data in Lists](labs/Lab_05_Working_with_Lists.md)
+- [Lab 6 - Understanding Booleans](labs/Lab_06_Working_with_Booleans.md)
+- [Lab 7 - Working with Dictionaries](labs/Lab_07_Working_with_Dictionaries.md)
+- [Lab 8 - Using Python Modules](labs/Lab_08_Using_Python_Modules.md)
+- [Lab 9 - Exploring Nested Objects](labs/Lab_09_Exploring_Nested_Objects.md)
+- [Lab 10 - Basic File Operations](labs/Lab_10_Basic_File_Operations.md)
+- [Lab 11 - Writing Python Scripts](labs/Lab_11_Writing_Python_Scripts.md)
+- [Lab 12 - Getting Started with Netmiko](labs/Lab_12_Exploring_Netmiko.md)
+- [Lab 13 - Challenge](labs/Lab_13_Challenge_Save_And_Backup_Configs.md)
+- [Lab 14 - Deploying Configurations with Netmiko](labs/Lab_14_Deploying_Configs_Netmiko.md)
+- [Lab 15 - Using Conditionals](labs/Lab_15_Getting_Started_with_Conditionals.md)
+- [Lab 16 - Getting Started with Loops](labs/Lab_16_Getting_Started_with_Loops.md)
+- [Lab 17 - Re-factoring Code using Loops](labs/Lab_17_Refactor_with_Loops.md)
+- [Lab 18 - Using Python Functions](labs/Lab_18_Getting_Started_with_Functions.md)
+- [Lab 19 - Re-factoring Code with Functions](labs/Lab_19_Refactor_with_Functions.md)
+- [Lab 20 - Passing in User Input](labs/Lab_20_User_Input.md)
+- [Lab 21 - BONUS: Parsing show commands with TextFSM](labs/Lab_21_Show_Parsing_TextFSM.md)
+- [Lab 22 - Exploring NX-API & eAPI ](labs/Lab_22_Exploring_eAPI_NXAPI.md)
+- [Lab 23 - Using Postman to Interact with HTTP APIs](labs/Lab_23_Postman.md)
+- [Lab 24 - Using Python requests for HTTP APIs ](labs/Lab_24_Python_requests.md)
+- [Lab 25 - BONUS: Getting Started with NAPALM](labs/Lab_25_NAPALM.md)
 
 ## Ansible Labs
 
