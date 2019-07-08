@@ -4774,9 +4774,47 @@ NEIGHBOR INTERFACE: Ethernet2/1
 .right-column[
 - Markdown generated table
 .center[
-<img src="data/media/neighbor-table.png" alt="Neighbors Markdown Table" style="alight:middle;width:450px;height:280px;">
+<img src="data/media/neighbor-table.png" alt="Neighbors Markdown Table" style="alight:middle;width:450px;height:250px;">
 ]
 ]
+
+
+
+---
+
+# lineinfile
+
+- Add/Remove a line to a file
+- Use regexes to match for position
+- Insert before/after
+
+```yaml
+- name: Ensure a line does not exist
+  lineinfile:
+    line: "Building configuration..."
+    dest: "backups/{{ inventory_hostname }}.cfg"
+    state: "absent"
+```
+
+```yaml
+- name: Ensure the line that matches the regex does not exist
+  lineinfile:
+    dest: "backups/{{ inventory_hostname }}.cfg"
+    regexp: "Current configuration .*"
+    state: "absent"
+
+```
+.small-code[
+```bash
+!
+Building configuration...
+
+Current configuration 3942 Bytes
+!
+hostname nycr01
+```
+]
+
 
 ---
 
