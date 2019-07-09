@@ -1,0 +1,68 @@
+  
+  - name: BACKUP IOS CONFIGS
+    hosts: iosxe
+    gather_facts: no
+    tags: ios
+
+    tasks:
+
+      - name: BACKUP IOS CONFIGS
+        ios_command:
+          commands: "{{ backup_command[ansible_network_os] }}"
+        register: config_data
+
+      - name: SAVE CONFIG TO FILE
+        template: 
+          src: basic-copy.j2
+          dest: ./backups/{{ inventory_hostname }}.cfg
+
+  - name: BACKUP NXOS CONFIGS
+    hosts: nxos
+    gather_facts: no
+    tags: nxos
+
+    tasks:
+
+      - name: BACKUP NXOS CONFIGS
+        nxos_command:
+          commands: "{{ backup_command[ansible_network_os] }}"
+        register: config_data
+
+      - name: SAVE CONFIG TO FILE
+        template: 
+          src: basic-copy.j2
+          dest: ./backups/{{ inventory_hostname }}.cfg
+
+  - name: BACKUP VMX CONFIGS
+    hosts: vmx
+    connection: local
+    gather_facts: no
+    tags: vmx
+
+    tasks:
+
+      - name: BACKUP VMX CONFIGS
+        junos_command:
+          commands: "{{ backup_command[ansible_network_os] }}"
+        register: config_data
+
+      - name: SAVE CONFIG TO FILE
+        template: 
+          src: basic-copy.j2
+          dest: ./backups/{{ inventory_hostname }}.cfg
+
+  - name: BACKUP EOS CONFIGS 
+    hosts: eos
+    gather_facts: no
+    tags: eos
+
+    tasks:
+      - name: BACKUP EOS CONFIGS
+        eos_command:
+          commands: "{{ backup_command[ansible_network_os] }}"
+        register: config_data
+
+      - name: SAVE CONFIG TO FILE
+        template: 
+          src: basic-copy.j2
+          dest: ./backups/{{ inventory_hostname }}.cfg
