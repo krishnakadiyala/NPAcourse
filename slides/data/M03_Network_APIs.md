@@ -621,8 +621,8 @@ We are going to look at the IOS-XE RESTCONF API.
 * Uses XML or JSON for encoding
 * Uses standard HTTP verbs in REST APIs
 * Content-Type & Accept Headers:
-  * application/vnd.yang.data+json
-  * application/vnd.yang.data+xml
+  * application/yang-data+json
+  * application/yang-data+xml
 
 
 **Note: Must exit configuration mode after making a change for it to be readable via RESTCONF**
@@ -644,7 +644,6 @@ ip http secure-server
 
 ```
 
-Note:  not yet supported by TAC.
 
 ---
 
@@ -652,7 +651,7 @@ Note:  not yet supported by TAC.
 
 GET - Retrieves data from the specified object
 
-**PUT - Replaces full configuration object of tree specified**
+PUT - Replaces full configuration object of tree specified
 
 POST- Creates the object with the supplied information
 
@@ -670,84 +669,118 @@ Retrieve a full running configuration modeled as JSON.
 .left-column[
 ```bash
 Method: GET
-URL: 'http://csr1/restconf/api/config/native'
-Accept-Type: application/vnd.yang.data+json
+URL: 'http://csr1/restconf/data/Cisco-IOS-XE-native:native?content=config'
+Accept-Type: application/yang-data+json
 ```
 ]
 
-.right-column[
+.right-column[.small-code[
 
 ```json
 {
-    "ned:native": {
-         # output removed for example
-        "interface": {
+#output removed for example
+"interface": {
             "GigabitEthernet": [
                 {
-                    "name": "1"
+                    "name": "1",
+                    "description": "MANAGEMENT_INTEFACE__DO_NOT_CHANGE",
+                    "ip": {
+                        "address": {
+                            "dhcp": {}
+                        }
+                    },
+                    "mop": {
+                        "enabled": false,
+                        "sysid": false
+                    },
+                    "Cisco-IOS-XE-cdp:cdp": {
+                        "enable": true
+                    },
+                    "Cisco-IOS-XE-ethernet:negotiation": {
+                        "auto": true
+                    }
                 },
                 {
-                    "name": "2"
-                },
-                {
-                    "name": "3"
-                },
-                {
-                    "name": "4"
-                }
-            ]
-        },
-        # truncated for example
-}
+                    "name": "10",
+                    "shutdown": [
+                        null
+                    ],
+                    "ip": {
+                        "no-address": {
+                            "address": false,
+                            #output removed for example
+                        }
+                    }
+                 }
+               ]
+            }
+        }
+        
 ```
-]
+
+]]
+
+
 
 ---
 
 # RESTCONF Example 2
 
-Adding `?deep` adds the full configuration including all children elements.
+The depth-query parameter is used to limit the depth of subtrees returned by the server.
 
 .left-column[
 
 ```bash
 Method: GET
-URL: 'http://csr1/restconf/api/config/native?deep'
-Accept-Type: application/vnd.yang.data+json
+URL: 'http://csr1/restconf/data/Cisco-IOS-XE-native:native?content=config&depth=3'
+Accept-Type: application/yang-data+json
 ```
+* The value of the "depth" parameter is either an integer between 1 and 65535 or the string "unbounded"
+* If not present in URI, the default value is: “unbounded”
+* Only allowed for GET/HEAD method
+
+
 ]
 
-
-.right-column[
+.right-column[.small-code[
 
 ```json
 {
-    "ned:native": {
-        # output removed
-        "interface": {
+#output removed for example
+"interface": {
             "GigabitEthernet": [
                 {
-                    "negotiation": {
-                        "auto": true
-                    },
-                    "ip": {
-                        "access-group": {},
-                        "arp": {
-                            "inspection": {}
-                        },
-                        "nhrp": {
-                            "attribute": {},
-                            "nhs": {
-                                "dynamic": {}
-                        },
-                        "address": {
-                            "primary": {
-                                "mask": "255.255.255.0",
-                                "address": "10.0.0.51"
-                            }
-                        },] #output truncated
+                    "name": "1",
+                    "description": "MANAGEMENT_INTEFACE__DO_NOT_CHANGE",
+                    "ip": {},
+                    "mop": {},
+                    "Cisco-IOS-XE-cdp:cdp": {},
+                    "Cisco-IOS-XE-ethernet:negotiation": {}
+                },
+                {
+                    "name": "10",
+                    "shutdown": [
+                        null
+                    ],
+                    "ip": {},
+                    "mop": {},
+                    "Cisco-IOS-XE-ethernet:negotiation": {}
+                },
+                {
+                    "name": "11",
+                    "shutdown": [
+                        null
+                    ],
+                    "ip": {},
+                    "mop": {},
+                    "Cisco-IOS-XE-ethernet:negotiation": {}
+                }
+               ]
+             }
+           }
+
 ```
-]
+]]
 
 ---
 
@@ -757,23 +790,26 @@ Narrowing the scope and examining the hierarchy
 
 ```json
 {
-    "ned:native": {
-        "interface": {
-            "GigabitEthernet": [
-                    "name": "1",
-                    "ip": {
-                        "address": {
-                            "primary": {
-                                "mask": "255.255.255.0",
-                                "address": "10.0.0.51"
-                            }
-                        }]
-    # output removed
+    "Cisco-IOS-XE-native:GigabitEthernet": {
+        "GigabitEthernet": [
+           {
+            "name": "3",
+            "ip": {
+                "address": {
+                    "primary": {
+                        "address": "10.2.0.151",
+                        "mask": "255.255.255.0"
+                  }
+              }
+          }
+      }
+  ]
+#output ommited
 ```
 
 **Pattern**
 
-interface (dict) -> GigabitEthernet (list) -> ip (dict) -> address (dict)
+Cisco-IOS-XE-native:GigabitEthernet (dict) -> GigabitEthernet (list) -> ip (dict) -> address (dict) -> primary (dict)
 
 
 ---
@@ -785,17 +821,19 @@ Request:
 
 ```bash
 Method: GET
-URL: 'http://csr1/restconf/api/config/native/interface/GigabitEthernet/1/ip/address'
-Accept-Type: application/vnd.yang.data+json
+URL: 'http://csr1/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=3/ip'
+Accept-Type: application/yang-data+json
 ```
 
 Response:
 ```json
 {
-    "ned:address": {
-        "primary": {
-            "mask": "255.255.255.0",
-            "address": "10.0.0.51"
+    "Cisco-IOS-XE-native:ip": {
+        "address": {
+            "primary": {
+                "address": "10.2.0.151",
+                "mask": "255.255.255.0"
+            }
         }
     }
 }
@@ -818,19 +856,18 @@ BODY Used for POST, PATCH, PUT:
 
 ```json
 {
-   "ned:Loopback":{
-      "name":100,
-      "ip":{
-         "address":{
-            "primary":{
-               "address":"100.2.2.2",
-               "mask":"255.255.255.0"
+    "Cisco-IOS-XE-native:Loopback": {
+        "name": 100,
+        "ip": {
+            "address": {
+                "primary": {
+                    "address": "100.2.2.2",
+                    "mask": "255.255.255.0"
+                }
             }
-         }
-      }
-   }
+        }
+    }
 }
-
 ```
 
 ---
@@ -840,7 +877,7 @@ BODY Used for POST, PATCH, PUT:
 
 **Request 1**:
 
-POST   http://csr1/restconf/api/config/native/interface/
+POST   http://csr1/restconf/data/Cisco-IOS-XE-native:native/interface/
 
 **Response**: 409; Error: Object Already Exists; No change in config
 
@@ -848,7 +885,7 @@ POST   http://csr1/restconf/api/config/native/interface/
 
 **Request 2**:
 
-PATCH http://csr1/restconf/api/config/native/interface/Loopback
+PATCH http://csr1/restconf/data/Cisco-IOS-XE-native:native/interface/Loopback
 
 **Response** 204; No change in config
 
@@ -856,7 +893,7 @@ PATCH http://csr1/restconf/api/config/native/interface/Loopback
 
 **Request 3**:
 
-PUT     http://csr1/restconf/api/config/native/interface/Loopback/100
+PUT     http://csr1/restconf/data/Cisco-IOS-XE-native:native/interface/Loopback=100
 
 
 **Response** 204;
@@ -883,24 +920,23 @@ Using RESTCONF to manage static route configuration
 
 Starting Configuration:
 
-```bash
-csr1kv# show run | inc route
+```commandline
+csr1# show run | inc route
  ip route 0.0.0.0 0.0.0.0 10.0.0.2
 ```
-
 
 
 ---
 
 # RESTCONF Example 5 - PATCHing Routes
 
-PATCH  http://csr1/restconf/api/config/native/ip/route
+PATCH  http://csr1/restconf/data/Cisco-IOS-XE-native:native/ip/route
 
 Body:
 ```json
 {
-   "ned:route":{
-      "ip-route-interface-forwarding-list":[
+    "Cisco-IOS-XE-native:route": {
+        "ip-route-interface-forwarding-list":[
          {
             "prefix":"172.16.0.0",
             "mask":"255.255.0.0",
@@ -932,7 +968,7 @@ Body:
 Resulting New Configuration:
 
 ```bash
-csr1kv# show run | inc route
+csr1# show run | inc route
 ip route 0.0.0.0 0.0.0.0 10.0.0.2
 ip route 10.0.100.0 255.255.255.0 192.168.1.1
 ip route 172.16.0.0 255.255.0.0 192.168.1.1
@@ -946,7 +982,7 @@ Starting Configuration:
 
 ```bash
 
-csr1kv#show run | inc route
+csr1#show run | inc route
 ip route 0.0.0.0 0.0.0.0 10.0.0.51
 ip route 10.0.100.0 255.255.255.0 192.168.1.1
 ip route 172.16.0.0 255.255.0.0 192.168.1.1
@@ -957,13 +993,13 @@ ip route 172.16.0.0 255.255.0.0 192.168.1.1
 # RESTCONF Example 6 - PUTing Routes (cont'd)
 
 
-PUT http://csr1/restconf/api/config/native/ip/route
+PUT http://csr1/restconf/data/Cisco-IOS-XE-native:native/ip/route
 
 Body:
 
 ```json
 {
-   "ned:route":{
+   "Cisco-IOS-XE-native:route": {
       "ip-route-interface-forwarding-list":[
          {
             "prefix":"0.0.0.0",
@@ -987,7 +1023,7 @@ Body:
 Resulting New Configuration:
 
 ```bash
-csr1kv# show run | inc route
+csr1# show run | inc route
 ip route 0.0.0.0 0.0.0.0 10.0.0.2
 ```
 
