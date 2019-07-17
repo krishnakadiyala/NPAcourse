@@ -1051,7 +1051,7 @@ class: middle, segue
 
 # Postman
 
-* Google Chrome application that provides a user intuitive GUI application to interact with HTTP-based APIs.
+* User intuitive GUI application to interact with HTTP-based APIs.
 * Primarily Used for testing and learning
 * You can create a job collection
 
