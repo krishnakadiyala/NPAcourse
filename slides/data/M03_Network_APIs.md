@@ -1187,8 +1187,8 @@ if __name__ == "__main__":
 - The **text** attribute contains the response of a request as a JSON string
 - The **status_code** attribute contains the HTTP response code
 
-
-```python
+.small-code[
+```json
 Status Code: 200
 {
     "jsonrpc": "2.0",
@@ -1210,6 +1210,7 @@ Status Code: 200
     "id": "ntc"
 }
 ```
+]
 ]
 
 ---
