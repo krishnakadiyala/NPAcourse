@@ -590,6 +590,33 @@ Note: these are learning and testing tools.
 
 Choose either the eAPI Command Explorer or NX-API Developer Sandbox Lab
 
+---
+
+
+class: middle, segue
+
+# Learning how to use HTTP APIs with Postman
+### Network APIs
+
+
+---
+
+
+# Postman
+
+* User intuitive GUI application to interact with HTTP-based APIs.
+* Primarily Used for testing and learning
+* You can create a job collection
+
+
+---
+
+# Postman (cont'd)
+
+.center[
+<img src="data/media/apis/new/postman_intro.png" alt="Postman 101" style="alight:middle;width:900px;height:500px;">
+]
+
 
 ---
 
@@ -1033,39 +1060,9 @@ ip route 0.0.0.0 0.0.0.0 10.0.0.2
 * With great power comes great responsibility
 
 
----
 
 
-class: middle, segue
 
-# Learning how to use HTTP APIs with Postman
-### Network APIs
-
-
----
-
-
-# Postman
-
-* User intuitive GUI application to interact with HTTP-based APIs.
-* Primarily Used for testing and learning
-* You can create a job collection
-
-
----
-
-# Postman (cont'd)
-
-.center[
-<img src="data/media/apis/new/postman_intro.png" alt="Postman 101" style="alight:middle;width:900px;height:500px;">
-]
-
-
----
-
-# Demo
-
-* Postman 101
 
 ---
 
