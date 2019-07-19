@@ -813,20 +813,22 @@ Narrowing the scope and examining the hierarchy
 
 ```json
 {
-    "Cisco-IOS-XE-native:GigabitEthernet": {
-        "GigabitEthernet": [
-           {
-            "name": "3",
-            "ip": {
-                "address": {
-                    "primary": {
-                        "address": "10.2.0.151",
-                        "mask": "255.255.255.0"
-                  }
-              }
+  "Cisco-IOS-XE-native:GigabitEthernet": {
+    "GigabitEthernet": [
+      {
+        "name": "3",
+        "ip": {
+          "address": {
+            "primary": {
+              "address": "10.2.0.151",
+              "mask": "255.255.255.0"
+            }
           }
+        }
       }
-  ]
+    ]
+  }
+}
 #output ommited
 ```
 
