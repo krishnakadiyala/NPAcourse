@@ -80,7 +80,7 @@ This is a sample of what you'll see in Postman:
 ```json
 {
     "Cisco-IOS-XE-native:native": {
-        "version": "16.6",
+        "version": "16.8",
         "boot-start-marker": [
             null
         ],
@@ -88,6 +88,9 @@ This is a sample of what you'll see in Postman:
             null
         ],
         "service": {
+            "password-encryption": [
+                null
+            ],
             "timestamps": {
                 "debug": {
                     "datetime": {
@@ -102,10 +105,13 @@ This is a sample of what you'll see in Postman:
                     }
                 }
             }
-        }}}
-# output truncated
-
+        }
+     }
+ }
 ```
+**output truncated**
+
+
 
 ##### Step 10
 
@@ -131,7 +137,7 @@ You should see the following response:
 
 ```
 {
-    "Cisco-IOS-XE-native:version": "16.6"
+    "Cisco-IOS-XE-native:version": "16.8"
 }
 ```
 

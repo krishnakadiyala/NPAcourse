@@ -23,10 +23,6 @@ class: center, middle, title
   * Cisco IOS-XE RESTCONF
   * Using Postman
 * Consuming HTTP-Based APIs with Python requests
-* Vendor Libraries
-  * Juniper XML API (NETCONF) & PyEZ
-  * Arista pyeapi
-* Open Multi-Vendor Libraries
 
 ---
 
@@ -42,7 +38,7 @@ class: middle, segue
 **There are two main types of HTTP-Based APIs:**
 
 * RESTful HTTP-Based APIs
-* non-RESTful HTP-Based APIs
+* non-RESTful HTTP-Based APIs
 
 In other words, those that adhere to the principles of REST and those that do not.
 
@@ -594,6 +590,33 @@ Note: these are learning and testing tools.
 
 Choose either the eAPI Command Explorer or NX-API Developer Sandbox Lab
 
+---
+
+
+class: middle, segue
+
+# Learning how to use HTTP APIs with Postman
+### Network APIs
+
+
+---
+
+
+# Postman
+
+* User intuitive GUI application to interact with HTTP-based APIs.
+* Primarily Used for testing and learning
+* You can create a job collection
+
+
+---
+
+# Postman (cont'd)
+
+.center[
+<img src="data/media/apis/new/postman_intro.png" alt="Postman 101" style="alight:middle;width:900px;height:500px;">
+]
+
 
 ---
 
@@ -621,8 +644,8 @@ We are going to look at the IOS-XE RESTCONF API.
 * Uses XML or JSON for encoding
 * Uses standard HTTP verbs in REST APIs
 * Content-Type & Accept Headers:
-  * application/vnd.yang.data+json
-  * application/vnd.yang.data+xml
+  * application/yang-data+json
+  * application/yang-data+xml
 
 
 **Note: Must exit configuration mode after making a change for it to be readable via RESTCONF**
@@ -644,7 +667,6 @@ ip http secure-server
 
 ```
 
-Note:  not yet supported by TAC.
 
 ---
 
@@ -652,7 +674,7 @@ Note:  not yet supported by TAC.
 
 GET - Retrieves data from the specified object
 
-**PUT - Replaces full configuration object of tree specified**
+PUT - Replaces full configuration object of tree specified
 
 POST- Creates the object with the supplied information
 
@@ -670,84 +692,118 @@ Retrieve a full running configuration modeled as JSON.
 .left-column[
 ```bash
 Method: GET
-URL: 'http://csr1/restconf/api/config/native'
-Accept-Type: application/vnd.yang.data+json
+URL: 'http://csr1/restconf/data/Cisco-IOS-XE-native:native?content=config'
+Accept-Type: application/yang-data+json
 ```
 ]
 
-.right-column[
+.right-column[.small-code[
 
 ```json
 {
-    "ned:native": {
-         # output removed for example
-        "interface": {
+#output removed for example
+"interface": {
             "GigabitEthernet": [
                 {
-                    "name": "1"
+                    "name": "1",
+                    "description": "MANAGEMENT_INTEFACE__DO_NOT_CHANGE",
+                    "ip": {
+                        "address": {
+                            "dhcp": {}
+                        }
+                    },
+                    "mop": {
+                        "enabled": false,
+                        "sysid": false
+                    },
+                    "Cisco-IOS-XE-cdp:cdp": {
+                        "enable": true
+                    },
+                    "Cisco-IOS-XE-ethernet:negotiation": {
+                        "auto": true
+                    }
                 },
                 {
-                    "name": "2"
-                },
-                {
-                    "name": "3"
-                },
-                {
-                    "name": "4"
-                }
-            ]
-        },
-        # truncated for example
-}
+                    "name": "10",
+                    "shutdown": [
+                        null
+                    ],
+                    "ip": {
+                        "no-address": {
+                            "address": false,
+                            #output removed for example
+                        }
+                    }
+                 }
+               ]
+            }
+        }
+        
 ```
-]
+
+]]
+
+
 
 ---
 
 # RESTCONF Example 2
 
-Adding `?deep` adds the full configuration including all children elements.
+The depth-query parameter is used to limit the depth of subtrees returned by the server.
 
 .left-column[
 
 ```bash
 Method: GET
-URL: 'http://csr1/restconf/api/config/native?deep'
-Accept-Type: application/vnd.yang.data+json
+URL: 'http://csr1/restconf/data/Cisco-IOS-XE-native:native?content=config&depth=3'
+Accept-Type: application/yang-data+json
 ```
+* The value of the "depth" parameter is either an integer between 1 and 65535 or the string "unbounded"
+* If not present in URI, the default value is: “unbounded”
+* Only allowed for GET/HEAD method
+
+
 ]
 
-
-.right-column[
+.right-column[.small-code[
 
 ```json
 {
-    "ned:native": {
-        # output removed
-        "interface": {
+#output removed for example
+"interface": {
             "GigabitEthernet": [
                 {
-                    "negotiation": {
-                        "auto": true
-                    },
-                    "ip": {
-                        "access-group": {},
-                        "arp": {
-                            "inspection": {}
-                        },
-                        "nhrp": {
-                            "attribute": {},
-                            "nhs": {
-                                "dynamic": {}
-                        },
-                        "address": {
-                            "primary": {
-                                "mask": "255.255.255.0",
-                                "address": "10.0.0.51"
-                            }
-                        },] #output truncated
+                    "name": "1",
+                    "description": "MANAGEMENT_INTEFACE__DO_NOT_CHANGE",
+                    "ip": {},
+                    "mop": {},
+                    "Cisco-IOS-XE-cdp:cdp": {},
+                    "Cisco-IOS-XE-ethernet:negotiation": {}
+                },
+                {
+                    "name": "10",
+                    "shutdown": [
+                        null
+                    ],
+                    "ip": {},
+                    "mop": {},
+                    "Cisco-IOS-XE-ethernet:negotiation": {}
+                },
+                {
+                    "name": "11",
+                    "shutdown": [
+                        null
+                    ],
+                    "ip": {},
+                    "mop": {},
+                    "Cisco-IOS-XE-ethernet:negotiation": {}
+                }
+               ]
+             }
+           }
+
 ```
-]
+]]
 
 ---
 
@@ -757,23 +813,28 @@ Narrowing the scope and examining the hierarchy
 
 ```json
 {
-    "ned:native": {
-        "interface": {
-            "GigabitEthernet": [
-                    "name": "1",
-                    "ip": {
-                        "address": {
-                            "primary": {
-                                "mask": "255.255.255.0",
-                                "address": "10.0.0.51"
-                            }
-                        }]
-    # output removed
+  "Cisco-IOS-XE-native:GigabitEthernet": {
+    "GigabitEthernet": [
+      {
+        "name": "3",
+        "ip": {
+          "address": {
+            "primary": {
+              "address": "10.2.0.151",
+              "mask": "255.255.255.0"
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+#output ommited
 ```
 
 **Pattern**
 
-interface (dict) -> GigabitEthernet (list) -> ip (dict) -> address (dict)
+Cisco-IOS-XE-native:GigabitEthernet (dict) -> GigabitEthernet (list) -> ip (dict) -> address (dict) -> primary (dict)
 
 
 ---
@@ -785,17 +846,19 @@ Request:
 
 ```bash
 Method: GET
-URL: 'http://csr1/restconf/api/config/native/interface/GigabitEthernet/1/ip/address'
-Accept-Type: application/vnd.yang.data+json
+URL: 'http://csr1/restconf/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=3/ip'
+Accept-Type: application/yang-data+json
 ```
 
 Response:
 ```json
 {
-    "ned:address": {
-        "primary": {
-            "mask": "255.255.255.0",
-            "address": "10.0.0.51"
+    "Cisco-IOS-XE-native:ip": {
+        "address": {
+            "primary": {
+                "address": "10.2.0.151",
+                "mask": "255.255.255.0"
+            }
         }
     }
 }
@@ -818,19 +881,18 @@ BODY Used for POST, PATCH, PUT:
 
 ```json
 {
-   "ned:Loopback":{
-      "name":100,
-      "ip":{
-         "address":{
-            "primary":{
-               "address":"100.2.2.2",
-               "mask":"255.255.255.0"
+    "Cisco-IOS-XE-native:Loopback": {
+        "name": 100,
+        "ip": {
+            "address": {
+                "primary": {
+                    "address": "100.2.2.2",
+                    "mask": "255.255.255.0"
+                }
             }
-         }
-      }
-   }
+        }
+    }
 }
-
 ```
 
 ---
@@ -840,7 +902,7 @@ BODY Used for POST, PATCH, PUT:
 
 **Request 1**:
 
-POST   http://csr1/restconf/api/config/native/interface/
+POST   http://csr1/restconf/data/Cisco-IOS-XE-native:native/interface/
 
 **Response**: 409; Error: Object Already Exists; No change in config
 
@@ -848,7 +910,7 @@ POST   http://csr1/restconf/api/config/native/interface/
 
 **Request 2**:
 
-PATCH http://csr1/restconf/api/config/native/interface/Loopback
+PATCH http://csr1/restconf/data/Cisco-IOS-XE-native:native/interface/Loopback
 
 **Response** 204; No change in config
 
@@ -856,7 +918,7 @@ PATCH http://csr1/restconf/api/config/native/interface/Loopback
 
 **Request 3**:
 
-PUT     http://csr1/restconf/api/config/native/interface/Loopback/100
+PUT     http://csr1/restconf/data/Cisco-IOS-XE-native:native/interface/Loopback=100
 
 
 **Response** 204;
@@ -883,24 +945,23 @@ Using RESTCONF to manage static route configuration
 
 Starting Configuration:
 
-```bash
-csr1kv# show run | inc route
+```commandline
+csr1# show run | inc route
  ip route 0.0.0.0 0.0.0.0 10.0.0.2
 ```
-
 
 
 ---
 
 # RESTCONF Example 5 - PATCHing Routes
 
-PATCH  http://csr1/restconf/api/config/native/ip/route
+PATCH  http://csr1/restconf/data/Cisco-IOS-XE-native:native/ip/route
 
 Body:
 ```json
 {
-   "ned:route":{
-      "ip-route-interface-forwarding-list":[
+    "Cisco-IOS-XE-native:route": {
+        "ip-route-interface-forwarding-list":[
          {
             "prefix":"172.16.0.0",
             "mask":"255.255.0.0",
@@ -932,7 +993,7 @@ Body:
 Resulting New Configuration:
 
 ```bash
-csr1kv# show run | inc route
+csr1# show run | inc route
 ip route 0.0.0.0 0.0.0.0 10.0.0.2
 ip route 10.0.100.0 255.255.255.0 192.168.1.1
 ip route 172.16.0.0 255.255.0.0 192.168.1.1
@@ -946,7 +1007,7 @@ Starting Configuration:
 
 ```bash
 
-csr1kv#show run | inc route
+csr1#show run | inc route
 ip route 0.0.0.0 0.0.0.0 10.0.0.51
 ip route 10.0.100.0 255.255.255.0 192.168.1.1
 ip route 172.16.0.0 255.255.0.0 192.168.1.1
@@ -957,13 +1018,13 @@ ip route 172.16.0.0 255.255.0.0 192.168.1.1
 # RESTCONF Example 6 - PUTing Routes (cont'd)
 
 
-PUT http://csr1/restconf/api/config/native/ip/route
+PUT http://csr1/restconf/data/Cisco-IOS-XE-native:native/ip/route
 
 Body:
 
 ```json
 {
-   "ned:route":{
+   "Cisco-IOS-XE-native:route": {
       "ip-route-interface-forwarding-list":[
          {
             "prefix":"0.0.0.0",
@@ -987,7 +1048,7 @@ Body:
 Resulting New Configuration:
 
 ```bash
-csr1kv# show run | inc route
+csr1# show run | inc route
 ip route 0.0.0.0 0.0.0.0 10.0.0.2
 ```
 
@@ -1001,39 +1062,9 @@ ip route 0.0.0.0 0.0.0.0 10.0.0.2
 * With great power comes great responsibility
 
 
----
 
 
-class: middle, segue
 
-# Learning how to use HTTP APIs with Postman
-### Network APIs
-
-
----
-
-
-# Postman
-
-* Google Chrome application that provides a user intuitive GUI application to interact with HTTP-based APIs.
-* Primarily Used for testing and learning
-* You can create a job collection
-
-
----
-
-# Postman (cont'd)
-
-.center[
-<img src="data/media/apis/new/postman_intro.png" alt="Postman 101" style="alight:middle;width:900px;height:500px;">
-]
-
-
----
-
-# Demo
-
-* Postman 101
 
 ---
 
@@ -1156,8 +1187,8 @@ if __name__ == "__main__":
 - The **text** attribute contains the response of a request as a JSON string
 - The **status_code** attribute contains the HTTP response code
 
-
-```python
+.small-code[
+```json
 Status Code: 200
 {
     "jsonrpc": "2.0",
@@ -1179,6 +1210,7 @@ Status Code: 200
     "id": "ntc"
 }
 ```
+]
 ]
 
 ---
@@ -1947,274 +1979,3 @@ class: ubuntu
  -   Using the NAPALM Python Library to do basic config merge and getters for Cisco IOS
  -   Using the NAPALM Python Library to do declarative config merge, full config merge and getters for Juniper JUNOS
 
-
----
-
-
-class: middle, segue
-
-# pyntc
-### Network APIs
-
----
-
-
-# pyntc
-
-
-- Open source multi-vendor Python library
-- Freely provided to the open source community
-
-**The purposes of the library are the following:**
-
-- Simplify the execution of operational common tasks including
-  - Copying files
-  - Upgrading devices
-  - Rebooting devices
-  - Saving / Backing Up Configs
-  - Executing arbitrary commands
-
----
-
-# Supported Platforms
-
-* Cisco IOS platforms
-* Cisco NX-OS
-* Arista EOS
-* Juniper Junos
-
----
-
-class: ubuntu
-
-# Getting Started with pyntc
-
-**Using the `ntc_device` object** and supplying all parameters within your code
-
-Step 1. Import Device Object
-
-```
->>> from pyntc import ntc_device as NTC
->>>
-```
-
-Step 2. Create Device Object(s)
-  * Key parameter is `device_type`
-
-```
->>> # CREATE DEVICE OBJECT FOR AN IOS DEVICE
->>>
->>> csr1 = NTC(host='csr1', username='ntc', password='ntc123', device_type='cisco_ios_ssh')
->>>
-```
-
-```
->>> # CREATE DEVICE OBJECT FOR A NEXUS DEVICE
->>>
->>> nxs1 = NTC(host='nxos-spine1', username='ntc', password='ntc123', device_type='cisco_nxos_nxapi')
->>>
-```
-
-
----
-
-class: ubuntu
-
-# Viewing Running/Startup Configs
-
-- Use `running_config` and `start_up` device properties
-  - Only showing partial config (shortened for clarity)
-
-```
->>> run = csr1.running_config
->>>
->>> print(run)
-Building configuration...
-
-Current configuration : 2062 bytes
-!
-! Last configuration change at 18:26:59 UTC Wed Jan 6 2016 by ntc
-!
-version 15.5
-service timestamps debug datetime msec
-
-lldp run
-cdp run
-!
-ip scp server enable
-!
-interface GigabitEthernet1
- ip address 10.0.0.50 255.255.255.0
- cdp enable
-```
-
-
----
-
-class: ubuntu
-
-# Copying files
-
-- `file_copy` method
-- Copies file(s) from Python machine to target network devices
-
-```
->>> devices = [csr1, nxs1]
->>>
->>> for device in devices:
-...   device.file_copy('newconfig.cfg')
-...
->>>
-```
-
----
-
-class: ubuntu
-
-# Save Configs
-
-- `save` method
-- Perform a save on the network device
-
-`copy run start` for Cisco/Arista and `commit` for Juniper
-
-```
->>> csr1.save()
-True
->>>
-```
-
-`copy running-config <filename>`
-
-```
->>> csr1.save('mynewconfig.cfg')
-True
->>>
-```
-
----
-
-class: ubuntu
-
-# Backup Configs
-
-- `backup_running_config` method
-- Backup current running configuration and store it locally on Python machine
-
-```
->>> csr1.backup_running_config('csr1.cfg')
->>>
-```
-
----
-
-class: ubuntu
-# Reboot
-
-Reboot target device
-
-Parameters:
-  - `timer=0` by default
-  - `confirm=False` by default
-
-```
->>> csr1.reboot(confirm=True)
->>>
-```
-
----
-
-class: ubuntu
-
-# Installing Operating Systems
-
-* Sets boot loader accordingly
-* IOS still needs a reboot
-* NXOS - reboot happens automatically
-
-Note: not currently supported on Juniper
-
-```
->>> device.install_os('nxos.7.0.3.I2.1.bin')
->>>
-```
-
----
-
-class: ubuntu
-
-# Upgrade Workflow
-
-**Sample Workflow**
-
-```
->>> device.save('backup.cfg')
->>> device.backup_running_config('spine1.cfg')
->>> device.file_copy('nxos.7.0.3.I2.1.bin')
->>> device.install_os('nxos.7.0.3.I2.1.bin')
->>> device.reboot()          
->>>
-```
-
----
-
-class: ubuntu
-
-# Sending Show & Config Commands
-
-- `show` and `show_list` methods
-  - API enabled devices return JSON by default
-- `config` and `config_list methods`
-
-.left-column[
-
-```
->>> nxs1.show('show hostname')
-{'hostname': 'nxos-spine1'}
->>>
-```
-
-```
->>> nxs1.show('show hostname', raw_text=True)
-'nxos-spine1 \n'
->>>
-```
-
-```
->>> cmds = ['show hostname', 'show run int Eth2/1']
->>> data = nxs1.show_list(cmds, raw_text=True)
->>>
-```
-]
-
-.right-column[
-
-```
->>> csr1.config('hostname testname')
->>>
-```
-
-```
->>> csr1.config_list(['interface Gi3', 'shutdown'])
->>>
-```
-
-]
-
-
----
-
-# Summary
-
-**NAPALM**
-- Multi-vendor library that supports system level tasks
-- Simplifies configuration management across a wide number of network and security devices.
-  - Focus on desired state
-- There are other getters that are part of NAPALM too
-  + facts, interfaces, BGP neighbors, LLDP, NTP, etc.
-
-**pyntc**
-
-- Multi-vendor library that currently supports system level tasks
-  - Backing up configs, copying files, upgrading images
-  - Rebooting devices, issuing commands, saving configs
