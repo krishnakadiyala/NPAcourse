@@ -1,4 +1,4 @@
-## Lab 16 - Getting Started with For Loops
+## Lab 15 - Getting Started with For Loops
 
 This lab walks you through an introduction of using for loops iterating over a list of strings, a dictionaries, and finally, a list of dictionaries.
 
@@ -140,11 +140,11 @@ Print the Keys & Values:
 
 ```python
 >>> for key, value in interface.items():
-...     print(key, value)
+...     print(key, '--->', value)
 ...
-('duplex', 'full')
-('speed', '100')
-('description', 'Configured by Python')
+duplex ---> full
+speed ---> 100
+description ---> Configured by Python
 >>>
 ```
 
@@ -156,101 +156,13 @@ This also works just fine:
 
 ```python
 >>> for feature, configured_value in interface.items():
-...     print(feature, configured_value)
+...     print(feature, '--->', configured_value)
 ...
-('duplex', 'full')
-('speed', '100')
-('description', 'Configured by Python')
+duplex ---> full
+speed ---> 100
+description ---> Configured by Python
 >>>
 ```
-
-##### Step 5
-
-Let's make this a little more challenging.  Let's loop through a nested dictionary.
-
-We will re-use an object we used in an earlier lab.
-
-```
-INTERFACE_MAP = {
-    "csr1":
-        {
-            "interface": "GigabitEthernet4",
-            "ipaddr": "10.100.12.1",
-            "mask": "255.255.255.0",
-            "description": "Connect to csr2"
-        },
-    "csr2":
-        {
-            "interface": "GigabitEthernet4",
-            "ipaddr": "10.100.12.2",
-            "mask": "255.255.255.0",
-            "description": "Connect to csr1"
-        }
-  }
-```
-
-Copy this into the Python shell.
-
-```python
->>> INTERFACE_MAP = {
-...     "csr1":
-...         {
-...             "interface": "GigabitEthernet4",
-...             "ipaddr": "10.100.12.1",
-...             "mask": "255.255.255.0",
-...             "description": "Connect to csr2"
-...         },
-...     "csr2":
-...         {
-...             "interface": "GigabitEthernet4",
-...             "ipaddr": "10.100.12.2",
-...             "mask": "255.255.255.0",
-...             "description": "Connect to csr1"
-...         }
-...   }
->>>
-```
-
-##### Step 6
-
-Loop through first by just printing each key on one line, the value on the next, followed by `-----` as an "item" delimiter.
-
-```python
->>> for hostname, config in INTERFACE_MAP.items():
-...     print(hostname)
-...     print(config)
-...     print('-----')
-...
-csr1
-{'interface': 'GigabitEthernet4', 'mask': '255.255.255.0', 'ipaddr': '10.100.12.1', 'description': 'Connect to csr2'}
------
-csr2
-{'interface': 'GigabitEthernet4', 'mask': '255.255.255.0', 'ipaddr': '10.100.12.2', 'description': 'Connect to csr1'}
------
->>>
-```
-
-You can see that `hostname` is printing "csr1" and "csr2", e.g. they are keys and then you can see that `config` is printing the whole value, which happens to be a dictionary itself.
-
-##### Step 7
-
-Looping over `INTERFACES_MAP`, only print the hostname and IP address for each device using the following print messages:
-
-```
-The IP address of csr1 is 10.100.12.1.
-The IP address of csr2 is 10.100.12.2.
-```
-
-
-```python
->>> for hostname, config in INTERFACE_MAP.items():
-...     print("The IP address of {} is {}.".format(hostname, config['ipaddr']))
-...
-The IP address of csr1 is 10.100.12.1.
-The IP address of csr2 is 10.100.12.2.
->>>
-```
-
 
 
 ### Task 3 - Looping over a List of Dictionaries
@@ -258,6 +170,7 @@ The IP address of csr2 is 10.100.12.2.
 In this task, we will build a list of elements. Each element will represent a VLAN configuration, that consists of the `vlan id` and `vlan name`.
 
 ##### Step 1
+
 Create the vlan dictionaries:
 
 ``` python
@@ -269,7 +182,7 @@ Create the vlan dictionaries:
 
 ##### Step 2
 
-Create the list of VLANs.  Remember, this will be a list of dictionaries.
+Create the list of VLANs.  Remember, this will be a list of dictionaries since each VLAN is a dictionary.
 
 ``` python
 >>> vlans = [vlan10, vlan20, vlan30]

@@ -1,4 +1,4 @@
-## Lab 20 - Passing in User Input
+## Lab 19 - Passing in User Input
 
 ### Task 1 - Update the Modularized Script
 
@@ -7,6 +7,7 @@ In this lab, you will still deploy the generated configuration for SNMP to an en
 ##### Step 1
 
 > Ensure you have `/home/ntc/scripts/configs/snmp.cfg` as that will be deployed again in this lab.
+
 > If this file does not exist, create this file and add the following lines to it:
 
 ```
@@ -19,51 +20,9 @@ snmp-server contact jane_smith
 
 ```
 
-Use the following code and save it into a new script called `interactive.py` in your `scripts` directory:
-
-```python
-from netmiko import ConnectHandler
-
-
-def connect_to_device(hostname):
-    message = "Connecting to device"
-    print_logger(message, hostname)
-    net_d = ConnectHandler(host=hostname, username='ntc', password='ntc123', device_type='cisco_ios')
-
-    return net_d
-
-def deploy_commands(device, hostname, config_file):
-    print("Sending commands from file | {}".format(hostname))
-    device.send_config_from_file(config_file)
-
-def print_logger(message, hostname):
-    print("{} | {}".format(message, hostname))
-
-def main():
-    devices = ['csr1', 'csr2', 'csr3']
-
-    config_file = './configs/snmp.cfg'
-
-    for device in devices:
-        net_device = connect_to_device(device)
-
-        deploy_commands(net_device, device, config_file)
-
-        print_logger("Disconnecting from device", device)
-        net_device.disconnect()
-
-if __name__ == "__main__":
-    main()
-```
-
 ##### Step 2
 
-Make two main changes the script.
-
-* Remove the for loop
-* Define the device to automate, credentials, and device type under `if __name__ == "__main__":` and pass them into `main()`.  Once you're passing them into `main()`, continue to pass them into `connect_to_device()` and use those parameter to connect to a device.
-
-The updated script should look like this:
+Create a script called `interactive.py` and save it in your `scripts` directory:
 
 ```python
 from netmiko import ConnectHandler
@@ -102,6 +61,7 @@ if __name__ == "__main__":
     main(device, username, password, device_type)
 ```
 
+The goal will be to pass in the device, username, password, and device_type variables instead of hard-coding them in the script.
 
 ##### Step 3
 

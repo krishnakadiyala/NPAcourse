@@ -1,4 +1,4 @@
-## Lab 14 - Deploying Configurations with Netmiko
+## EXTRA LAB - Deploying Configurations with Netmiko
 
 In this lab, you will continue to build on what you learned in the Netmiko building more useful scripts.
 

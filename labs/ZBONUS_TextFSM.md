@@ -1,4 +1,4 @@
-## Lab 21 - Parsing Show Commands with TextFSM
+## Lab BONUS - Parsing Show Commands with TextFSM
 
 In this lab, we'll use TextFSM templates to simplify parsing unstructured text .  You can build TextFSM templates (parsers) without doing any Python which simplifies the parsing, and enables more people (that don't know Python) to help build parsers.
 

@@ -1,4 +1,4 @@
-## Lab 24.2 - Cisco NX-API
+## Lab 22.2 - Cisco NX-API
 
 ### Task 1 - Getting Started with the Python Requests Module
 
@@ -656,8 +656,10 @@ There are two ways we can go about mapping the current dictionary keys to the de
 
 As previously stated, Cisco returns a dictionary when there is a single element like when returning a single neighbor. We will introduce and use isinstance to check the data type of cdp_neighbors. If it is a dictionary, we'll make it a list of 1. If it's a list, it'll stay as-is.
 
+```
 >>> if isinstance(cdp_neighbors, dict):
 ...     cdp_neighbors = [cdp_neighbors]
+```
 
 
 ##### Step 4
