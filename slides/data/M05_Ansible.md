@@ -277,23 +277,21 @@ class: middle, segue
 ```yaml
 ---
 
-- name: vlan testing
+- name: BASIC testing
   hosts: dc1
   connection: network_cli
   gather_facts: no
 
   tasks:
 
-    - name: ensure VLAN 10 exists
+    - name: ENSURE VLAN 10 EXISTS # resource/feature module
       nxos_vlan:
         vlan_id: 10
         name: web_vlan
 
-    - name: ensure VLAN 10 does NOT exist
-      nxos_vlan:
-        vlan_id: 10
-        name: web_vlan
-        state: absent
+    - name: DEPLOY SNMP CONFIG FROM FILE
+      nxos_config:
+        src: "configs/snmp.cfg"
 ```
 ]]
 
@@ -688,376 +686,6 @@ Two files are required to get started:
 
 ---
 
-class: center, middle, title
-# Quick look at YAML and JSON
-
-
-
----
-
-# YAML
-
-- Human readable data serialization language
-- Heavily used for configuration files
-- Relies heavily on indentation
-- 2 space indent is common
-- Superset of JSON
-
-
----
-
-# YAML Basics
-
-**YAML documents start with 3 hyphens (`---`)**
-
-Basic Key-Value Pairs
-.left-column[
-YAML
-
-```yaml
----
-  hostname: switch1
-  snmp_ro: public
-  snmp_rw: private
-  snmp_location: "nyc"
-
-  # integer
-  vlan_id: 100
-
-  # string
-  vlan_id: "101"
-
-```
-]
-
-.right-column[
-JSON
-
-``` json
-{
-  hostname: switch1,
-  snmp_ro: public,
-  snmp_rw: private,
-  snmp_location: "nyc",
-  vlan_id: 100,
-  vlan_id: "101"
-}
-
-
-Note: You can comment YAML but not JSON
-
-```
-]
-
-
-
----
-
-# YAML Basics
-
-List of Strings / Numbers
-
-.left-column[
-YAML
-
-```yaml
----
-  snmp_ro_communities:
-    - public
-    - public123
-
-  vlans:
-    - 100
-    - 101
-    - 102
-    - 103
-    - 104
-
-```
-]
-
-.right-column[
-JSON
-
-``` json
-{
-    "snmp_ro_communities": [
-        "public",
-        "public123"
-    ],
-    "vlans": [
-        100,
-        101,
-        102,
-        103,
-        104
-    ]
-}
-
-
-```
-
-]
-
-
----
-
-# YAML Basics
-
-List of dictionaries
-
-.left-column[
-YAML
-
-``` yaml
----
-  - vlan_name: web
-    vlan_id: '10'
-    vlan_state: active
-  - vlan_name: app
-    vlan_id: '20'
-    vlan_state: active
-  - vlan_name: DB
-    vlan_id: '30'
-    vlan_state: active
-
-```
-]
-
-.right-column[
-JSON
-
-``` json
-[
-    {
-    "vlan_name": "web",
-    "vlan_id": "10",
-    "vlan_state": "active"
-    },
-    {
-    "vlan_name": "app",
-    "vlan_id": "20",
-    "vlan_state": "active"
-    },
-    {
-    "vlan_name": "DB",
-    "vlan_id": "30",
-    "vlan_state": "active"
-    }
-
-]
-
-```
-]
-
-
----
-
-# YAML Advanced Data Types
-
-Dictionaries
-
-.left-column[
-YAML
-
-```yaml
----
-
-snmp:
-  ro: public
-  rw: private
-  info:
-    location: nyc
-    contact: bob
-
-vlans:
-  10:
-    name: web
-  20:
-    name: app
-
-
-```
-
-]
-
-.right-column[
-JSON
-
-``` json
-{
-  "snmp": {
-    "ro": "public",
-    "rw": "private",
-    "info": {
-      "location": "nyc",
-      "contact": "bob"
-    }
-  },
-  "vlans": {
-    "10": {
-      "name": "web"
-    },
-    "20": {
-      "name": "app"
-    }
-  }
-}
-```
-
-]
-
-
----
-# YAML Advanced Data Types
-Dictionaries that are lists of dictionaries
-
-.left-column[
-YAML
-
-```yaml
----
-vlans:
-  - id: 10
-    name: web
-  - id: 20
-    name: app
-
-snmp_community_strings:
-  - type: ro
-    community: public
-  - type: ro
-    community: networktocode
-  - type: rw
-    community: private
-
-```
-
-]
-
-.right-column[
-JSON
-
-.small-code[
-``` json
-{
-  "vlans": [
-    {
-      "id": 10,
-      "name": "web"
-    },
-    {
-      "id": 20,
-      "name": "app"
-    }
-  ],
-  "snmp_community_strings": [
-    {
-      "type": "ro",
-      "community": "public"
-    },
-    {
-      "type": "ro",
-      "community": "networktocode"
-    },
-    {
-      "type": "rw",
-      "community": "private"
-    }
-  ]
-}
-
-```
-]
-]
-
----
-
-# YAML Advanced Data Types
-
-YAML is a superset of JSON
-
-.left-column[
-YAML
-
-``` yaml
----
-ned:Loopback:
-  #YAML supports comments
-  name: 200
-  ip:
-    address:
-      primary:
-        address: 100.200.2.2
-        mask: 255.255.255.0
-      secondary:
-      - address: 100.200.20.20
-      - address: 100.200.200.200
-
-```
-
-
-]
-
-.right-column[
-JSON
-
-``` json
-{
-  "ned:Loopback": {
-    "name": 200,
-      "ip": {
-      "address": {
-        "primary": {
-          "address": "100.200.2.2",
-          "mask": "255.255.255.0"
-        },
-        "secondary": [
-          {
-            "address": "100.200.20.20"
-          },
-          {
-            "address": "100.200.200.200"
-          }
-        ]
-      }
-      }
-  }
-}
-
-```
-
-]
-
----
-
-# Data Types - Summary
-
-- For most automation tasks YAML and JSON have 1-1 mapping
-- They both tie back to dictionaries
-- A lot of initial automation tasks revolve around parsing return
-  data, therefore it is important to understand:
-      - Lists of lists
-      - Lists of dictionaries
-      - Dictionaries with lists
-      - Complex nested objects
-- Always remember to traverse a complex object from left to right
----
-
-
-# Demo
-
-- Validate YAML
-- http://yamllint.com/
-- YAML to JSON Conversion
-- JSON to YAML Conversion
-- https://www.json2yaml.com
-- Understand how to model network configuration data in YAML (for use in Ansible)
-- Compare/Contrast Data Models on different platforms
-
-
----
-
 # Play(s)
 
 .left-column[
@@ -1068,7 +696,7 @@ JSON
 - `hosts`
   - one or more hosts or groups as defined in inventory file or _expression_
 - `connection: network_cli`
-  - does not use default SSH connection mechanism / use method as defined *inside* modules
+  - uses persistent SSH connection for network devices
 - Play contains one or more tasks
 ]
 
@@ -1106,12 +734,13 @@ JSON
 # Connection Types
 .left-column[
 - Theres are two different locations we can define our connection type.
-  - Inventory as `ansible_connection=local`
-  - Play definition `connection: local`
-- With ```connection: local```, each task passed the connection parameters, which had to be stored in your playbooks or inventory.
-- We will see this being used on Ansible versions before 2.5 and 3rd party modules or non ssh tasks using modules like:
-  - template
-  - debug
+  - Inventory file, e.g. `ansible_connection=local`
+  - Play definition, e.g. `connection: local`
+- `local` is often used on Ansible versions prior to 2.5 and 3rd party modules since 3rd party modules have their own connection mechanisms (APIs, etc.)
+- Common "core" connection types for networking:
+  - `network_cli`   (MOST COMMON)
+  - `netconf`
+  - `httpapi`
 
 ]
 .right-column[.big-code[
@@ -1240,24 +869,33 @@ ansible_connection=local
 ```
 ]]
 
-<br>.med-code[....]<br>
+---
 
-**Idempotency** in the context of Ansible
+
+# Idempotency 
+
+In the context of Ansible...
 
 - Modules that perform a change _should_ only make the change once (the first execution)
+
 - You can run the task a 1000 and it'll only occur once
+
+
+- If you see something different, the module is not idempotent or there is a bug in the module (or the API)
+
 
 ---
 
-# Modules, Parameters, and Variables (cont)
+# Introducing the CONFIG module
 
 .left-column[
-- Module name: `ios_config`
-- Parameters: `lines`, `commands`, and `src`
+- Module name: `ios_config`, e.g. *_config for main OSs
+- Basic Parameters: `commands`, and `src`
 - Technically `lines` is the parameter and `commands` is an alias since they are just "lines within a config file".
 - `src` and `lines/commands` are mutually exclusive for this module
-- Take note of the data type of `commands` - it is a list as can be inferred from the hyphens in YAML.
 - Each task can use, `name`, an optional task attribute that maps to arbitrary text that is displayed when you run the playbook providing context on where in the playbook execution you are.
+
+- **YOUR FIRST PLAYBOOK CAN BE ONE TASK!!**
 
 ]
 
@@ -1471,6 +1109,8 @@ class: center, middle
 
 **Vertical and/or Horizontal (key=value)**
 
+This is more common in older playbooks.
+
 ```yaml
 ---
 
@@ -1496,16 +1136,6 @@ class: center, middle
 
 ```
 ]
-
----
-
-# Module Documentation
-
-* Mini-demo
-* Understand the parameters each module supports
-  * Choices, defaults, and description
-* [docs.ansible.com](docs.ansible.com)
-* `ansible-doc nxos_vlan`
 
 
 ---
@@ -2185,6 +1815,20 @@ ntc@ntc:ansible$
 ```
 ]
 ]
+
+---
+
+# Module Documentation
+
+* Demo
+* Understand the parameters each module supports
+  * Choices, defaults, and description
+* [docs.ansible.com](docs.ansible.com)
+* `ansible-doc debug`
+* `ansible-doc ios_config`
+* `ansible-doc $any_module`
+
+
 
 ---
 
