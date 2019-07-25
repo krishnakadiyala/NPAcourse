@@ -2951,7 +2951,7 @@ class: center, middle, title
     tasks:
       - name: PRACTICE DEBUGGING WITH LOOPS
         debug:
-          msg: "The VLAN name is {{ item.name }} and the ID is {{ item.id }}"
+          msg: "The VLAN name is {{ item['name'] }} and the ID is {{ item['id'] }}"
         loop: "{{ vlans }}"
 ```
 
@@ -2976,7 +2976,7 @@ class: center, middle, title
     tasks:
       - name: PRINT ALL LOCATIONS
         debug:
-          msg: "Region is {{ item.key }} and Site is {{ item.value }}"
+          msg: "Region is {{ item['key'] }} and Site is {{ item['value'] }}"
         loop: "{{ locations|dict2items }}"
 ```
 
@@ -3134,7 +3134,7 @@ ok: [csr1] => {
       - name: TEST LOOPING OVER REGISTERED VARIABLE
         debug:
           var: "{{ item }}"    
-        loop: "{{ ping_responses.results }}"  
+        loop: "{{ ping_responses['results'] }}"  
 ```
 
 * The inside key `item` is the IP address for that iteration, e.g. 8.8.8.8
@@ -3143,8 +3143,8 @@ ok: [csr1] => {
 
       - name: TEST LOOPING OVER REGISTERED VARIABLE
         debug:
-          var: "{{ item['item'] }}"    
-        loop: "{{ ping_responses.results }}"  
+          msg: "{{ item['item'] }}"    
+        loop: "{{ ping_responses['results'] }}"  
 
 
 ```
