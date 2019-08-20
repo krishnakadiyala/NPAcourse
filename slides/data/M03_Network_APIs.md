@@ -584,9 +584,9 @@ Note: these are learning and testing tools.
 
 # Lab Time
 
-* Lab 22 - Exploring eAPI and NXAPI
- * Lab 22.1 - Exploring Arista eAPI
- * Lab 22.2 - Exploring Cisco NXAPI
+* Lab 20 - Exploring eAPI and NXAPI
+ * Lab 20.1 - Exploring Arista eAPI
+ * Lab 20.2 - Exploring Cisco NXAPI
 
 Choose either the eAPI Command Explorer or NX-API Developer Sandbox Lab
 
@@ -1070,9 +1070,9 @@ ip route 0.0.0.0 0.0.0.0 10.0.0.2
 
 # Lab Time
 
-* Lab 23 - Exploring Postman
-  * Lab 23.1 Exploring IOS-XE RESTCONF API
-  * Lab 23.2 Exploring Arista eAPI
+* Lab 21 - Exploring Postman
+  * Lab 21.1 Exploring IOS-XE RESTCONF API
+  * Lab 21.2 Exploring Arista eAPI
 
 
 Note: Feel free to test it with IOS-XE RESTCONF or eAPI.
@@ -1338,9 +1338,9 @@ Status Code: 200
 
 # Lab Time
 
-* Lab 24 - Using Python requests:
-  * 24.1 - requests using eAPI
-  * 24.2 - requests using NX-API
+* Lab 22 - Using Python requests:
+  * 22.1 - requests using eAPI
+  * 22.2 - requests using NX-API
 
 Pick one of the labs.
 
