@@ -48,7 +48,7 @@ Section 02 - Configuration Templating with Jinja2 and YAML
 
 - [Lab 12 - Getting Started with Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_12_Jinja2_Config_Templates_01.md)
 - [Lab 13 - Expanding the use of Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_13_Jinja2_Config_Templates_02.md)
-- [Lab 14 - Using Network Centric Jija2 Filters](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_14_Using_Network_Centric_Jinja2_Filters.md)
+- [Lab 14 - Using Network Centric Jinja2 Filters](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_14_Using_Network_Centric_Jinja2_Filters.md)
 
 Section 03 - Diving Deeper into Core Command and Config Modules 
 
