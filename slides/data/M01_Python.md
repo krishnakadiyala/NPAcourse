@@ -1538,7 +1538,7 @@ None
 >>>
 ```
 
-We will evenutally be able to do `if hw:` to see if it is not `None`.
+We will eventually be able to do `if hw:` to see if it is not `None`.
 
 ---
 
