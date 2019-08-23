@@ -4520,7 +4520,6 @@ class: middle, segue
 
 - name: GET FACTS FROM ARISTA DEVICES
   eos_facts:
-    connection: "{{ inventory_hostname }}"
 
   ...<more getter tasks>...
 ```
@@ -4553,12 +4552,10 @@ class: middle, segue
 
 - name: GET FACTS FROM ARISTA DEVICES
   eos_facts:
-    connection: "{{ inventory_hostname }}"
   when: vendor == "arista"
 
 - name: GET FACTS FROM CISCO NXOS DEVICES
   nxos_facts:
-    connection: "{{ inventory_hostname }}"
   when: vendor == "cisco"
 ```
 
@@ -4666,14 +4663,12 @@ roles/
 - name: ARISTA VLANs
   eos_vlan:
     vlanid: "{{ item.id }}"
-    connection: "{{ inventory_hostname }}"
   loop: "{{ vlans }}"
   when: vendor == "arista"
 
 - name: CISCO VLANs
   nxos_vlan:
     vlan_id: "{{ item.id }}"
-    host: "{{ inventory_hostname }}"
   loop: "{{ vlans }}"
   when: vendor == "cisco"
 ```
@@ -4686,8 +4681,8 @@ roles/
 
 ```bash
 [datacenter]
-spine1 vendor=arista
-n9k1 vendor=cisco
+spine1 ntc_vendor=arista
+n9k1 ntc_vendor=cisco
 ```
 
 
@@ -4738,7 +4733,6 @@ vlans:
 - name: ARISTA VLANs
   eos_vlan:
     vlanid: "{{ item.id }}"
-    connection: "{{ inventory_hostname }}"
   loop: "{{ vlans }}"
 ```
 ```yaml
@@ -4746,7 +4740,6 @@ vlans:
 - name: CISCO VLANs
   nxos_vlan:
     vlan_id: "{{ item.id }}"
-    host: "{{ inventory_hostname }}"
   loop: "{{ vlans }}"
 ```
 ]
