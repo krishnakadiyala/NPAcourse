@@ -210,7 +210,7 @@ Keep in mind, this lab is just showing how to get started with Python modules.  
 
 However, you can view the standard Python docs for a module like `os` here:
 
-https://docs.python.org/2/library/os.html
+https://docs.python.org/3.6/library/os.html
 
 
 **Note: we'll continue to use even more Python modules throughout the course.**

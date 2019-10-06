@@ -461,7 +461,7 @@ vmx3                       : ok=4    changed=0    unreachable=0    failed=1
 
 Another thing to point out is that the assertions stopped being analyzed after the first task and and did not run the second task because the module returned with an error. 
 
-To prevent that from happening you can add the argument `ignore_error: true` and it will ignore any errors and move on to the next task. 
+To prevent that from happening you can add the argument `ignore_errors: true` and it will ignore any errors and move on to the next task. 
 
 ##### Step 10
 
