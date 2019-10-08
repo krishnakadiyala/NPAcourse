@@ -216,7 +216,7 @@ def ez_cisco(hostname, show_command, username='ntc', password='ntc123'):
 
 response = ez_cisco('csr1', 'show version')
 
-print response
+print(response)
 ```
 
 When you don't use "keyword" arguments, the arguments are positional and are required.  In order to accomplish this, we also needed to re-locate `show_command` as the second argument.
@@ -229,13 +229,13 @@ Execute the following function calls in your script:
 
 ```python
 response = ez_cisco('csr1', 'show version')
-print response
+print(response)
 
 response = ez_cisco('csr2', 'show ip int brief')
-print response
+print(response)
 
 response = ez_cisco('csr3', 'show run | inc snmp')
-print response
+print(response)
 ```
 
 The final script looks like this:
@@ -253,11 +253,11 @@ def ez_cisco(hostname, show_command, username='ntc', password='ntc123'):
     return output
 
 response = ez_cisco('csr1', 'show version')
-print response
+print(response)
 
 response = ez_cisco('csr2', 'show ip int brief')
-print response
+print(response)
 
 response = ez_cisco('csr3', 'show run | inc snmp')
-print response
+print(response)
 ```
