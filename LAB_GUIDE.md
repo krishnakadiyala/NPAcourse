@@ -41,14 +41,12 @@ Section 01 - Network Automation Fundamentals with Ansible
 - [Lab 7 - Passing in Interactive User Input](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_07_User_Input.md)
 - [Lab 8 - Auto-Create Directories using the file module](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_08_Auto_Create_Directories.md)
 - [Lab 9 - Getting Started with the Command Module](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_09_Core_Command_Module_01.md)
-- [Lab 10 - Getting started with the cli_command Module](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_10_Cli_Command_Module.md)
 - [Lab 11 - Continuous Compliance with Ansible](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_11_Core_Command_Compliance.md)
 
 Section 02 - Configuration Templating with Jinja2 and YAML
 
 - [Lab 12 - Getting Started with Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_12_Jinja2_Config_Templates_01.md)
 - [Lab 13 - Expanding the use of Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_13_Jinja2_Config_Templates_02.md)
-- [Lab 14 - Using Network Centric Jinja2 Filters](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_14_Using_Network_Centric_Jinja2_Filters.md)
 
 Section 03 - Diving Deeper into Core Command and Config Modules 
 
@@ -69,5 +67,6 @@ Section 04 - Using 3rd Party Modules
 
 Bonus Labs 
 
+- [Lab 14 - Using Network Centric Jinja2 Filters](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_14_Using_Network_Centric_Jinja2_Filters.md)
 - [Lab 26 - Dynamic Device Discovery with Dynamic Groups](labs/Bonus_Labs/Ansible_Lab_26_Device_Discovery_Dynamic_Groups.md)
 - [Lab 27 - Exploring Dynamic Inventory](labs/Bonus_Labs/Ansible_Lab_27_Dynamic_Inventory.md)
