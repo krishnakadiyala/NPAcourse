@@ -41,7 +41,7 @@ Section 01 - Network Automation Fundamentals with Ansible
 - [Lab 7 - Passing in Interactive User Input](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_07_User_Input.md)
 - [Lab 8 - Auto-Create Directories using the file module](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_08_Auto_Create_Directories.md)
 - [Lab 9 - Getting Started with the Command Module](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_09_Core_Command_Module_01.md)
-- [Lab 11 - Continuous Compliance with Ansible](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_11_Core_Command_Compliance.md)
+- [Lab 10 - Continuous Compliance with Ansible](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_11_Core_Command_Compliance.md)
 
 Section 02 - Configuration Templating with Jinja2 and YAML
 
