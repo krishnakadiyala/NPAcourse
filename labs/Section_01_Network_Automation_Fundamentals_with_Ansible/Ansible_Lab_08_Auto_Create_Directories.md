@@ -304,14 +304,7 @@ ntc@jump-host:ansible$ tree
 
 Delete the first two tasks and replace the first task with one that deletes the `tmp` directory, cleaning up all the files.
 
-##### Step 7
-
-Add a new task to create a config file inside the new directories
-
-
-> **Note:** The difference in the parameter here is that we are using `touch` to create an empty file. 
-We are also using the Ansible magic variable of `inventory_hostname` to create unique files based on each device name.
-The `file` module with the parameter `state: absent` will delete the directory and all the sub-directories and files in an idempotent fashion.
+> **Note:** The `file` module with the parameter `state: absent` will delete the directory and all the sub-directories and files in an idempotent fashion.
 
 
 ```yaml

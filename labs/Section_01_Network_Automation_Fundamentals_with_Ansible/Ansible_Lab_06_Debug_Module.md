@@ -251,7 +251,7 @@ ok: [nxos-spine2] => {
 ##### Step 4
 
 Update the inventory file so it includes a group-based variable called `ntc_device_type`
- for the `nxos` group and for the `iosxe` group.  Set them to be "n7kv" and "csr1000v" respectively.
+ for the `nxos` group and for the `iosxe` group.  Set them to be "n9kv" and "csr1000v" respectively.
 
 Those two groups should now look like this:
 

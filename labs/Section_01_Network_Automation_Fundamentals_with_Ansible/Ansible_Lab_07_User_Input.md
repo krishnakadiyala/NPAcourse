@@ -143,7 +143,7 @@ Notice how the password is no longer echoed back on the screen.
 
 ##### Step 7
 
-Finally, the `var_prompt` directive can also be set up to take a default value that can be overridden. Update the playbook as follows:
+Finally, the `vars_prompt` directive can also be set up to take a default value that can be overridden. Update the playbook as follows:
 
 
 ``` yaml
