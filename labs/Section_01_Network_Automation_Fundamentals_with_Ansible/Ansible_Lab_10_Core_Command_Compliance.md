@@ -1,4 +1,4 @@
-## Lab 11 - Continuous Compliance with IOS
+## Lab 10 - Continuous Compliance with IOS
 
 This lab introduces a methodology to perform real-time validation and compliance of network configuration and operational state.
 
