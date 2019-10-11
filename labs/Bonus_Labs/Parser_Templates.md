@@ -1,4 +1,4 @@
-## Lab 25 - Using Parser Templates
+## Using Parser Templates
 
 
 In this lab we are going to use different modules to collect data, reuse it and also parse unstructured data that comes back from the operational command. The main important modules we are going to be using are `snmp_device_version`, `ntc_show_command`, `command_parser` and `textfsm_parser`. 
