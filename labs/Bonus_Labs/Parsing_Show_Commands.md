@@ -1,4 +1,4 @@
-## Lab 16 - Parsing Show Commands with Ansible
+## Parsing Show Commands with Ansible
 
 In the next few labs, we'll introduce a few different methodologies for parsing show commands with Ansible looking at several different built-in Jinja2 filters.  They are `regex_search`, `regex_findall` and `parse_cli_textfsm`.
 

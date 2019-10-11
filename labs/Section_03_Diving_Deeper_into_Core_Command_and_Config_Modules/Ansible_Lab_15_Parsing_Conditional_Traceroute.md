@@ -1,4 +1,4 @@
-## Lab 17 Challenge - Performing a Conditional Traceroute Based on Ping Failures
+## Lab 15 Challenge - Performing a Conditional Traceroute Based on Ping Failures
 
 In the previous lab, you learned how to use pre-built TextFSM templates and explored two built-in Ansible RegEx filters to parse data.
 

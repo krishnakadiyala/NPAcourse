@@ -1,4 +1,4 @@
-## Lab 26 - Discovering Device Types and Dynamically Creating Groups
+## Discovering Device Types and Dynamically Creating Groups
 
 Ansible is best known for issuing configuration commands, but as you've seen, you can also issue show commands to the device and collect data.  Because Ansible is extensible, it's possible to perform anything inside a module that you could write a script for.
 

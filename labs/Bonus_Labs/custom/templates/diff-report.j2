@@ -1,0 +1,15 @@
+## {{ inventory_hostname }}
+
+PRE CONFIG:
+
+{{ pre['stdout'][0] }}
+
+POST CONFIG:
+
+{{ post['stdout'][0] }}
+
+DIFF:
+
+{{ pre['stdout'][0] | diff(post['stdout'][0]) }}
+
+

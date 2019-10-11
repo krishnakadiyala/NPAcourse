@@ -1,4 +1,4 @@
-## Lab 24 - Backup and Restore Network Configurations Part 2
+## Lab 21 - Backup and Restore Network Configurations Part 2
 
 This lab will "restore" the configuration files you previously backed up using another 3rd party Ansible module called `napalm_install_config` that is based off of the popular NAPALM project.
 

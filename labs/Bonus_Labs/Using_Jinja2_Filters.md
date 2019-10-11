@@ -1,4 +1,4 @@
-## Lab 14 - Jinja2 Filters
+## Jinja2 Filters
 
 This lab introduces and explores several common Jinja filters.  Jinja filters provide ways to manipulate and work with data in a clean and consumable way.  Remember you already saw one filter in the Compliance lab when we converted a string to an integer.  Now we'll take a look at several more filters.
 

@@ -1,0 +1,32 @@
+---
+
+  - name: LONDON MEETUP
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: GET CONFIG BEFORE CHANGE
+        ios_command:
+          commands: "show run | inc snmp-server"
+        register: pre
+
+      - name: CONFIGURE SNMP COMM STRING
+        ios_config:
+          commands: "snmp-server community LONDOAAA RO"
+
+      - name: GET CONFIG AFTER CHANGE
+        ios_command:
+          commands: "show run | inc snmp-server"
+        register: post
+
+      - name: ENSURE DIRECTORY EXISTS
+        file:
+          path: ./outputs/reports
+          state: directory
+
+      - name: GENERATE REPORT
+        template:
+          src: diff-report.j2
+          dest: ./outputs/reports/{{ inventory_hostname }}.diff
