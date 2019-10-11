@@ -50,23 +50,19 @@ Section 02 - Configuration Templating with Jinja2 and YAML
 
 Section 03 - Diving Deeper into Core Command and Config Modules 
 
-- [Lab 15 - Validating Reachability with the Command Module](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_15_Core_Command_Module_02.md)
-- [Lab 16 - Parsing Show Commands](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_16_Parsing_Show_Commands.md)
-- [Lab 17 - Performing a Conditional Traceroute](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_17_Parsing_Conditional_Traceroute.md)
-- [Lab 18 - Exploring the Config Module](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_18_Using_the_Config_Module.md)
-- [Lab 19 - Making RESTful API Calls with Ansible](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_19_Making_REST_API_Calls.md)
-- [Lab 20 - Data Collection & Reporting](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_20_Data_Collection_Reporting.md)
-- [Lab 21 - Getting Started with Roles](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_21_Creating_Ansible_Role.md)
+- [Lab 14 - Validating Reachability with the Command Module](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_14_Core_Command_Module_02.md)
+- [Lab 15 - Performing a Conditional Traceroute](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_15_Parsing_Conditional_Traceroute.md)
+- [Lab 16 - Exploring the Config Module](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_16_Using_the_Config_Module.md)
+- [Lab 17 - Making RESTful API Calls with Ansible](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_17_Making_REST_API_Calls.md)
+- [Lab 18 - Data Collection & Reporting](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_18_Data_Collection_Reporting.md)
+- [Lab 19 - Getting Started with Roles](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_19_Creating_Ansible_Role.md)
 
 Section 04 - Using 3rd Party Modules 
 
-- [Lab 22 - Backing Up Configs with NTC (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_22_Backup_Configs.md)
-- [Lab 23 - Restoring Configs with NAPALM (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_23_Restore_Configs.md)
-- [Lab 24 - Build / Push with NAPALM ](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_24_Build_Push.md)
-- [Lab 25 - Using Parser Templates ](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_25_Parser_Templates.md)
+- [Lab 20 - Backing Up Configs with NTC (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_20_Backup_Configs.md)
+- [Lab 21 - Restoring Configs with NAPALM (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_21_Restore_Configs.md)
 
-Bonus Labs 
 
-- [Lab 14 - Using Network Centric Jinja2 Filters](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_14_Using_Network_Centric_Jinja2_Filters.md)
-- [Lab 26 - Dynamic Device Discovery with Dynamic Groups](labs/Bonus_Labs/Ansible_Lab_26_Device_Discovery_Dynamic_Groups.md)
-- [Lab 27 - Exploring Dynamic Inventory](labs/Bonus_Labs/Ansible_Lab_27_Dynamic_Inventory.md)
+[Ansible Bonus Labs](labs/Bonus_Labs/main.md)
+
+
