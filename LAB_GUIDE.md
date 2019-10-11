@@ -30,7 +30,7 @@
 ## Ansible Labs
 
 
-Section 01 - Network Automation Fundamentals with Ansible 
+### Section 01 - Network Automation Fundamentals with Ansible 
 
 - [Lab 1 - Deploying Basic Configuration Commands](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_01_Deploy_Basic_Configs.md)
 - [Lab 2 - Deploying Configurations From Files](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_02_Deploy_Config_Files.md)
@@ -43,12 +43,12 @@ Section 01 - Network Automation Fundamentals with Ansible
 - [Lab 9 - Getting Started with the Command Module](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_09_Core_Command_Module_01.md)
 - [Lab 10 - Continuous Compliance with Ansible](labs/Section_01_Network_Automation_Fundamentals_with_Ansible/Ansible_Lab_10_Core_Command_Compliance.md)
 
-Section 02 - Configuration Templating with Jinja2 and YAML
+### Section 02 - Configuration Templating with Jinja2 and YAML
 
 - [Lab 12 - Getting Started with Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_12_Jinja2_Config_Templates_01.md)
 - [Lab 13 - Expanding the use of Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_13_Jinja2_Config_Templates_02.md)
 
-Section 03 - Diving Deeper into Core Command and Config Modules 
+### Section 03 - Diving Deeper into Core Command and Config Modules 
 
 - [Lab 14 - Validating Reachability with the Command Module](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_14_Core_Command_Module_02.md)
 - [Lab 15 - Performing a Conditional Traceroute](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_15_Parsing_Conditional_Traceroute.md)
@@ -57,11 +57,13 @@ Section 03 - Diving Deeper into Core Command and Config Modules
 - [Lab 18 - Data Collection & Reporting](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_18_Data_Collection_Reporting.md)
 - [Lab 19 - Getting Started with Roles](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_19_Creating_Ansible_Role.md)
 
-Section 04 - Using 3rd Party Modules 
+###  Section 04 - Using 3rd Party Modules 
 
 - [Lab 20 - Backing Up Configs with NTC (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_20_Backup_Configs.md)
 - [Lab 21 - Restoring Configs with NAPALM (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_21_Restore_Configs.md)
 
+
+### Extra
 
 [Ansible Bonus Labs](labs/Bonus_Labs/main.md)
 

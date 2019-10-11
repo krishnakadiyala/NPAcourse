@@ -1,0 +1,7 @@
+--- ./outputs/chg-101/pre.txt
++++ ./outputs/chg-101/post.txt
+@@ -10,3 +10,4 @@
+ snmp-server community sgsgsg RO
+ snmp-server community NTC-LAM-LAM RO
+ snmp-server community LONDOAAA RO
++snmp-server community NTC-LAM RO

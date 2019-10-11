@@ -1,0 +1,56 @@
+---
+
+  - name: LONDON MEETUP
+    hosts: csr1
+    connection: network_cli
+    gather_facts: no
+
+    vars:
+      ticket_id: 101
+
+    tasks:
+
+      - name: GET CONFIG BEFORE CHANGE
+        ios_command:
+          commands: "show run | inc snmp-server"
+        register: snmp_config
+
+      - name: ENSURE DIRECTORY EXISTS
+        file:
+          path: ./outputs/chg-{{ ticket_id }}
+          state: directory
+
+      - name: COPY CONFIG TO FILE
+        copy:
+          content: "{{ snmp_config['stdout'][0] }}\n"
+          dest: "./outputs/chg-{{ ticket_id }}/pre.txt"
+
+      - name: CONFIGURE SNMP COMM STRING
+        ios_config:
+          commands: "snmp-server community NTC-LAM RO"
+
+      - name: GET CONFIG AFTER CHANGE
+        ios_command:
+          commands: "show run | inc snmp-server"
+        register: snmp_config
+
+      - name: COPY CONFIG TO FILE
+        copy:
+          content: "{{ snmp_config['stdout'][0] }}\n"
+          dest: "./outputs/chg-{{ ticket_id }}/post.txt"
+
+      - name: DIFF FILES
+        ntc_differ:
+          pre_change: "./outputs/chg-{{ ticket_id }}/pre.txt"
+          post_change: "./outputs/chg-{{ ticket_id }}/post.txt"
+          dest: "./outputs/chg-{{ ticket_id }}/diff.txt"
+        register: diff
+        tags: diff
+
+      - name: SHOW DIFF
+        debug:
+          msg: >
+            The diff for chg-{{ ticket_id }} is located at:
+            {{ diff['dest'] }}
+        tags: diff
+          

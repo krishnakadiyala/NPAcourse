@@ -1,0 +1,10 @@
+
+[all:vars]
+ansible_user=ntc
+ansible_password=ntc123
+ansible_network_os=ios
+
+[ios]
+csr1
+csr2
+csr3
