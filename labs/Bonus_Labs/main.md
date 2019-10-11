@@ -25,7 +25,7 @@ Walks through ways to parse text ("show commands") into structured data.
 
 Walks through more ways to parse text ("show commands") into structured data.  
 
-Create Custom Modules and Jinja Filters
+**Create Custom Modules and Jinja Filters**
 
 This is an advanced topic and there is no associated lab guide.  There is a playbook that uses a custom module and one that uses a custom filter.  They can be found in the `./custom/library` and `./customer/filter_plugins` sub-directories respectively.
 
