@@ -4,9 +4,9 @@
 
 When getting started with Ansible, it's quite common to use an inventory file like you've been using in the labs.
 
-However, in larger or more dynamic environments, there may already be a single _source of truth_.  This is quite common in cloud environments.  For example, the number of VMs may change by the hour (maybe with AWS auto-scaling).  You could then use an AWS dynamic inventory script to always have required inventory information rather than trying to keep the inventory file up to date.  
+However, in larger or more dynamic environments, there may already be a single _source of truth_.  This is quite common in cloud environments.  For example, the number of VMs may change by the hour (maybe with AWS auto-scaling).  You could then use an AWS dynamic inventory script to always have required inventory information rather than trying to keep the inventory file up to date.
 
-If you already had a network management system or CMDB, then a dynamic inventory script could be used.  This way you aren't managing two inventories, one for the NMS/CMDB and one for Ansible.  
+If you already had a network management system or CMDB, then a dynamic inventory script could be used.  This way you aren't managing two inventories, one for the NMS/CMDB and one for Ansible.
 
 In this lab, you will explore and use a dynamic inventory script that simulates making an API to a NMS or CMDB.
 
@@ -108,7 +108,7 @@ You can see here the keys are group names.  It's values has a key called hosts a
 
 Exit from the Python shell.
 
-In this directory there is also a sample playbook called `site.yml`  
+In this directory there is also a sample playbook called `site.yml`
 
 ```yaml
 
@@ -130,6 +130,8 @@ In this directory there is also a sample playbook called `site.yml`
 ##### Step 6
 
 Run the playbook using the dynamic inventory script.
+
+> **Note:** Ansible must be able to execute the dynamic inventory script, so make sure that it has the `x` permission flag by running `chmod u+x dynamo.py` in the terminal.
 
 ```
 ntc@jump-host:~/dynamic_inv$ ansible-playbook -i dynamo.py site.yml
@@ -192,16 +194,16 @@ ok: [aci.ntc.com] => {
 }
 
 PLAY RECAP ********************************************************************
-aci.ntc.com                : ok=1    changed=0    unreachable=0    failed=0   
-arista1.ntc.com            : ok=1    changed=0    unreachable=0    failed=0   
-arista2.ntc.com            : ok=1    changed=0    unreachable=0    failed=0   
-hp1.ntc.com                : ok=1    changed=0    unreachable=0    failed=0   
-hp2.ntc.com                : ok=1    changed=0    unreachable=0    failed=0   
-hp3.ntc.com                : ok=1    changed=0    unreachable=0    failed=0   
-hp4.ntc.com                : ok=1    changed=0    unreachable=0    failed=0   
-jnprfw.ntc.com             : ok=1    changed=0    unreachable=0    failed=0   
-n9k1.ntc.com               : ok=1    changed=0    unreachable=0    failed=0   
-n9k2.ntc.com               : ok=1    changed=0    unreachable=0    failed=0   
+aci.ntc.com                : ok=1    changed=0    unreachable=0    failed=0
+arista1.ntc.com            : ok=1    changed=0    unreachable=0    failed=0
+arista2.ntc.com            : ok=1    changed=0    unreachable=0    failed=0
+hp1.ntc.com                : ok=1    changed=0    unreachable=0    failed=0
+hp2.ntc.com                : ok=1    changed=0    unreachable=0    failed=0
+hp3.ntc.com                : ok=1    changed=0    unreachable=0    failed=0
+hp4.ntc.com                : ok=1    changed=0    unreachable=0    failed=0
+jnprfw.ntc.com             : ok=1    changed=0    unreachable=0    failed=0
+n9k1.ntc.com               : ok=1    changed=0    unreachable=0    failed=0
+n9k2.ntc.com               : ok=1    changed=0    unreachable=0    failed=0
 ```
 
 See what happened?  You specified the script instead of using a static inventory file.

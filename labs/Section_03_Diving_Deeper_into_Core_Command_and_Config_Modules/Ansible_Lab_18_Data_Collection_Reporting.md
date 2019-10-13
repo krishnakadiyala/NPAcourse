@@ -427,7 +427,7 @@ This is a sample playbook for running against all 4 device types (IOS, NXOS, JUN
 
       - name: DEBUG SHORTHAND OS VERSION
         debug:
-          var: ntc_junos_facts
+          var: ansible_net_version
 ```
 
 
