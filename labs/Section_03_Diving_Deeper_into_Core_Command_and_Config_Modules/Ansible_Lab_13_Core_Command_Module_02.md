@@ -1,4 +1,4 @@
-## Lab 14 Challenge - Issuing Ping Commands and Saving the Responses
+## Lab 13 Challenge - Issuing Ping Commands and Saving the Responses
 
 This lab will have you ping a certain amount of destinations from _each_ Cisco CSR router.  
 

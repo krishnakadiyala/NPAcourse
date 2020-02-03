@@ -1,4 +1,4 @@
-## Lab 12 - Getting Started with Jinja2 Templating in Ansible
+## Lab 11 - Getting Started with Jinja2 Templating in Ansible
 
 ### Task 1 - Using Jinja2 to Build Configuration Templates
 

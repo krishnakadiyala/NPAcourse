@@ -1,4 +1,4 @@
-## Lab 13 - Using Improved Jinja2 Templates
+## Lab 12 - Using Improved Jinja2 Templates
 
 ### Task 1 - Updating the SNMP Data Model
 
