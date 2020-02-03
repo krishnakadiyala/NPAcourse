@@ -614,7 +614,7 @@ class: ubuntu
 >>> vendor = 'cisco'
 >>>
 >>> print('Device hostname is {}, shipped from {}'.format(hostname, vendor))
-Device hostname is nxos-spine1
+Device hostname is nxos-spine1, shipped from cisco
 ```
 
 
