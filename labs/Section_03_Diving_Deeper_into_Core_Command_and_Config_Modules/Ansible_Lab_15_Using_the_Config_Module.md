@@ -1,4 +1,4 @@
-## Lab 16 - Using the Config Module
+## Lab 15 - Using the Config Module
 
 ### Task 1 - Configuring Interfaces
 
