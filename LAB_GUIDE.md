@@ -45,22 +45,22 @@
 
 ### Section 02 - Configuration Templating with Jinja2 and YAML
 
-- [Lab 12 - Getting Started with Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_12_Jinja2_Config_Templates_01.md)
-- [Lab 13 - Expanding the use of Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_13_Jinja2_Config_Templates_02.md)
+- [Lab 11 - Getting Started with Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_11_Jinja2_Config_Templates_01.md)
+- [Lab 12 - Expanding the use of Jinja2 Templates](labs/Section_02_Configuration_Templating_with_Jinja2_and_YAML/Ansible_Lab_12_Jinja2_Config_Templates_02.md)
 
 ### Section 03 - Diving Deeper into Core Command and Config Modules 
 
-- [Lab 14 - Validating Reachability with the Command Module](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_14_Core_Command_Module_02.md)
-- [Lab 15 - Performing a Conditional Traceroute](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_15_Parsing_Conditional_Traceroute.md)
-- [Lab 16 - Exploring the Config Module](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_16_Using_the_Config_Module.md)
-- [Lab 17 - Making RESTful API Calls with Ansible](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_17_Making_REST_API_Calls.md)
-- [Lab 18 - Data Collection & Reporting](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_18_Data_Collection_Reporting.md)
-- [Lab 19 - Getting Started with Roles](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_19_Creating_Ansible_Role.md)
+- [Lab 13 - Validating Reachability with the Command Module](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_13_Core_Command_Module_02.md)
+- [Lab 14 - Performing a Conditional Traceroute](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_14_Parsing_Conditional_Traceroute.md)
+- [Lab 15 - Exploring the Config Module](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_15_Using_the_Config_Module.md)
+- [Lab 16 - Making RESTful API Calls with Ansible](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_16_Making_REST_API_Calls.md)
+- [Lab 17 - Data Collection & Reporting](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_17_Data_Collection_Reporting.md)
+- [Lab 18 - Getting Started with Roles](labs/Section_03_Diving_Deeper_into_Core_Command_and_Config_Modules/Ansible_Lab_18_Creating_Ansible_Role.md)
 
 ###  Section 04 - Using 3rd Party Modules 
 
-- [Lab 20 - Backing Up Configs with NTC (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_20_Backup_Configs.md)
-- [Lab 21 - Restoring Configs with NAPALM (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_21_Restore_Configs.md)
+- [Lab 19 - Backing Up Configs with NTC (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_19_Backup_Configs.md)
+- [Lab 20 - Restoring Configs with NAPALM (3rd Party)](labs/Section_04_Using_3rd_Party_Modules/Ansible_Lab_20_Restore_Configs.md)
 
 
 ### Extra
