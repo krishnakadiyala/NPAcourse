@@ -40,7 +40,7 @@ class: ubuntu
 - Just type "python" within a terminal session (Linux/MAC)
 
 ```
-ntc@ntc:~$ python
+ntc@jump-host:~$ python
 Python 2.7.6 (default, Mar 22 2014, 22:59:56)
 [GCC 4.8.2] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
@@ -1678,7 +1678,7 @@ Running `common.py` as a standalone program:
 
 .ubuntu[
 ```
-ntc@ntc:~$ python common.py
+ntc@jump-host:~$ python common.py
 Sending 'show' command...
 Command sent:
  show run
@@ -1814,7 +1814,7 @@ class: ubuntu
 OR...update your PYTHONPATH
 
 ```
-ntc@ntc:~$ env | grep "PYTHON"
+ntc@jump-host:~$ env | grep "PYTHON"
 PYTHONPATH=/home/ntc/python/libraries/
 ```
 
@@ -2066,7 +2066,7 @@ class: ubuntu
 class: ubuntu
 # Writing Data to a File
 ```
-ntc@ntc:~$ cat vlans_new.cfg
+ntc@jump-host:~$ cat vlans_new.cfg
 vlan 10
   name  USERS
 vlan 20
@@ -2124,7 +2124,7 @@ class: middle, segue
 
 .ubuntu[
 ```
-ntc@ntc:~$ python intro.py
+ntc@jump-host:~$ python intro.py
 Welcome to Python for Network Engineers!
 This is your first script.
 ```
@@ -2191,7 +2191,7 @@ print(json.dumps(devices, indent=4))
 ]
 .right-column[
 ```json
-ntc@ntc:~$ python print_facts.py
+ntc@jump-host:~$ python print_facts.py
 [
     {
         "os": "nxos",
@@ -2246,7 +2246,7 @@ if __name__ == "__main__":
 
 .ubuntu[
 ```
-ntc@ntc:~$ python verify_interface_type.py
+ntc@jump-host:~$ python verify_interface_type.py
 ethernet
 ```
 ]

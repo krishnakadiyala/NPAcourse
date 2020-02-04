@@ -13,7 +13,7 @@ This task will show you how to establish an interactive SSH session to a Cisco r
 **Make sure you can ping csr1 from the Linux terminal.**
 
 ```
-ntc@ntc:~$ ping csr1
+ntc@jump-host:~$ ping csr1
 PING csr1 (10.0.0.51) 56(84) bytes of data.
 64 bytes from csr1 (10.0.0.51): icmp_seq=1 ttl=231 time=9.9 ms
 64 bytes from csr1 (10.0.0.51): icmp_seq=2 ttl=231 time=8.8 ms
@@ -25,12 +25,12 @@ PING csr1 (10.0.0.51) 56(84) bytes of data.
 Navigate to the `files` directory and enter the Python Dynamic Interactive Interpreter.
 
 ```
-ntc@ntc:~$ cd files
-ntc@ntc:files$
+ntc@jump-host:~$ cd files
+ntc@jump-host:files$
 ```
 
 ```
-ntc@ntc:files$ python
+ntc@jump-host:files$ python
 Python 2.7.6 (default, Oct 26 2016, 20:32:47)
 [GCC 4.8.4] on linux2
 Type "help", "copyright", "credits" or "license" for more information.

@@ -1792,7 +1792,7 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 .right-column[
 .small-code[
 ```bash
-ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml --check -v
+ntc@jump-host:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml --check -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] *********************************
@@ -1810,7 +1810,7 @@ csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 
 ```
 ]
@@ -3256,7 +3256,7 @@ VLAN  Name                             Status    Ports
 
 .ubuntu[
 ```
-ntc@ntc$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw
+ntc@jump-host$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw
 FSM Template:
 Value VLAN_ID (\d+)
 Value NAME (\w+)
@@ -3663,7 +3663,7 @@ tasks:
 .ubuntu[
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory file_lookup_demo.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory file_lookup_demo.yml
 
 PLAY [DEMO FILE LOOKUPS] ****************************************************
 
@@ -7474,7 +7474,7 @@ The Ansible Vault functionality allows the user:
 Typically used to store username and passwords on the control machine.
 
 ```
-ntc@ntc:all$ ansible-vault create vaultfile.yml
+ntc@jump-host:all$ ansible-vault create vaultfile.yml
 New Vault password:
 Confirm New Vault password:
 ```
@@ -7495,9 +7495,9 @@ The encrypted version of above data:
 
 ```shell
 
-ntc@ntc:all$ ls
+ntc@jump-host:all$ ls
 vaultfile.yml
-ntc@ntc:all$ cat vaultfile.yml
+ntc@jump-host:all$ cat vaultfile.yml
 $ANSIBLE_VAULT;1.1;AES256
 38353863306139626235623263313439653437646261393562323036356531336432323736646534
 3161333737316430396431313931633863646535303432660a353461636464303238353765343162
@@ -7518,7 +7518,7 @@ class: ubuntu
 
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory use_vault.yml --ask-vault-pass
+ntc@jump-host:ansible$ ansible-playbook -i inventory use_vault.yml --ask-vault-pass
 Vault password:
 
 PLAY [USE ENCRYPTED LOGIN] *******************************************************************************************************
