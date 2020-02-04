@@ -49,7 +49,7 @@ Add a task to create the needed directory structure to store the reports per dev
 Execute the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory generate-reports.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory generate-reports.yml
 
 PLAY [GATHER AND STORE FACTS] **************************************************************************************************************************************************************************************
 
@@ -71,7 +71,7 @@ The task ran successfully and the directory structure has been created.
 You can use the Linux command `tree` to view the new directories.
 
 ```
-ntc@ntc:ansible$ tree
+ntc@jump-host:ansible$ tree
 .
 ├── filtered-facts.yml
 ├── generate-reports.yml
@@ -87,7 +87,7 @@ ntc@ntc:ansible$ tree
     └── facts.j2
 
 6 directories, 6 files
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 
@@ -114,7 +114,7 @@ Using the `filter` parameter with just "facts" is the default (the same as not u
 Execute the playbook using the `facts` tag.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory generate-reports.yml --tags=facts
+ntc@jump-host:ansible$ ansible-playbook -i inventory generate-reports.yml --tags=facts
 
 PLAY [GATHER AND STORE FACTS] **************************************************************************************************************************************************************************************
 
@@ -216,7 +216,7 @@ Run the playbook with the `facts` tag.
 
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory generate-reports.yml --tags=facts
+ntc@jump-host:ansible$ ansible-playbook -i inventory generate-reports.yml --tags=facts
 
 ```
 
@@ -227,7 +227,7 @@ Check out the new files.
 For example:
 
 ```
-ntc@ntc:ansible$ cat reports/vmx1/01_facts.txt
+ntc@jump-host:ansible$ cat reports/vmx1/01_facts.txt
 Device:  vmx1
 
 Hostname:        vmx1
@@ -236,7 +236,7 @@ Model:           VMX
 OS Version:      15.1F4.15
 Serial Number:   VMXab
 Vendor:          Juniper
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 
 ```
 
@@ -275,7 +275,7 @@ Add another task to print `lldp_data`.
 Execute the playbook using the `lldp` tag.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory generate-reports.yml --tags=lldp
+ntc@jump-host:ansible$ ansible-playbook -i inventory generate-reports.yml --tags=lldp
 ```
 
 You should see all LLDP neighbor data is stored in the `napalm_lldp_neighbors` key within the `ansible_facts` dictionary in the debug output.  
@@ -306,7 +306,7 @@ Add a task to create the report files for LLDP neighbors.
 Feel free to check the new created files:
 
 ```
-ntc@ntc:ansible$ cat reports/vmx1/02_lldp.txt
+ntc@jump-host:ansible$ cat reports/vmx1/02_lldp.txt
 Neighbors: {
     "fxp0": [
         {
@@ -363,7 +363,7 @@ Neighbors: {
         }
     ]
 }
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 
 ```
 
@@ -393,7 +393,7 @@ Neighbor Interface: {{ neighbor.port }}
 Re-run the playbook.
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory generate-reports.yml --tags=lldp
+ntc@jump-host:ansible$ ansible-playbook -i inventory generate-reports.yml --tags=lldp
 ```
 
 ##### Step 8
@@ -401,7 +401,7 @@ ntc@ntc:ansible$ ansible-playbook -i inventory generate-reports.yml --tags=lldp
 View the enhanced reports:
 
 ```
-ntc@ntc:ansible$ cat reports/vmx1/02_lldp.txt                                  
+ntc@jump-host:ansible$ cat reports/vmx1/02_lldp.txt                                  
 Local Device:       vmx1
 Local Interface:    ge-0/0/1
 Neighbor Device:    vmx3
@@ -462,7 +462,7 @@ Local Interface:    ge-0/0/0
 Neighbor Device:    vmx2
 Neighbor Interface: ge-0/0/0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 
@@ -500,7 +500,7 @@ Use the `assemble` module to assemble the devices' reports into a single `{{ inv
 Check out the new summary reports.  This is why we numbered the templates using 01 and 02--so they are assembed in order.
 
 ```
-ntc@ntc:ansible$ cat reports/summary/vmx1.txt                       
+ntc@jump-host:ansible$ cat reports/summary/vmx1.txt                       
 
 Device:  vmx1
 
@@ -571,7 +571,7 @@ Local Interface:    ge-0/0/0
 Neighbor Device:    vmx2
 Neighbor Interface: ge-0/0/0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 ```
 
 ##### Step 4
@@ -594,7 +594,7 @@ Run the playbook with the `summary` tag.
 View the final report:
 
 ```
-ntc@ntc:ansible$ cat reports/master-all.txt
+ntc@jump-host:ansible$ cat reports/master-all.txt
 ```
 
 ### Task 5 - Optional

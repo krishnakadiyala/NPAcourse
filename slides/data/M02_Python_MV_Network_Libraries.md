@@ -81,7 +81,7 @@ print("For a full mesh of {} routers, you will need {} connections".format(num_r
 - Script name is `argv[0]`
 
 .ubuntu[```
-ntc@ntc:~$ python args_test.py hello world 10.1.1.1 NYCR1
+ntc@jump-host:~$ python args_test.py hello world 10.1.1.1 NYCR1
 ['args_test.py', 'hello', 'world', '10.1.1.1', 'NYCR1']
 ```
 ]
@@ -102,7 +102,7 @@ facts = {'vendor': 'cisco', 'mgmt_ip': '10.1.1.1', 'model': 'nexus', 'hostname':
 
 User experience:
 .ubuntu[```
-ntc@ntc:~$ python print_facts.py model
+ntc@jump-host:~$ python print_facts.py model
 model: nexus
 ```
 ]
@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
 .ubuntu[
 ```
-ntc@ntc:~$ python print_facts.py model
+ntc@jump-host:~$ python print_facts.py model
 model: nexus
 ['print_facts.py', 'model']
 ```
@@ -143,15 +143,15 @@ model: nexus
 
 .ubuntu[
 ```
-ntc@ntc:~$ python get_facts.py -f model
+ntc@jump-host:~$ python get_facts.py -f model
 model: nexus
-ntc@ntc:~$ python get_facts.py -f=model
+ntc@jump-host:~$ python get_facts.py -f=model
 model: nexus
-ntc@ntc:~$ python get_facts.py --f=model
+ntc@jump-host:~$ python get_facts.py --f=model
 model: nexus
-ntc@ntc:~$ python get_facts.py --fact=model
+ntc@jump-host:~$ python get_facts.py --fact=model
 model: nexus
-ntc@ntc:~$ python get_facts.py --fact model
+ntc@jump-host:~$ python get_facts.py --fact model
 model: nexus
 ```
 ]
@@ -182,7 +182,7 @@ class: ubuntu
 - Can be disabled if needed when parser is instantiated
 
 ```
-ntc@ntc:~$ python get_facts.py --help
+ntc@jump-host:~$ python get_facts.py --help
 usage: get_facts.py [-h] [-f FACT]
 
 Python Argparse demo.
@@ -202,7 +202,7 @@ optional arguments:
 
 .ubuntu[
 ```
-ntc@ntc:~$ python get_facts.py --f platform
+ntc@jump-host:~$ python get_facts.py --f platform
 Traceback (most recent call last):
   File "get_facts.py", line 14, in <module>
     print(args.fact + ': ' + facts[args.fact])
@@ -224,13 +224,13 @@ class: ubuntu
 # argparse - Using choices
 
 ```
-ntc@ntc:~$ python get_facts.py --f platform
+ntc@jump-host:~$ python get_facts.py --f platform
 usage: get_facts.py [-h] [-f {vendor,mgmt_ip,model,hostname,os}]
 get_facts.py: error: argument -f/--fact: invalid choice: 'platform' (choose from 'vendor', 'mgmt_ip', 'model', 'hostname', 'os')
 ```
 --
 ```
-ntc@ntc:~$ python get_facts.py -h
+ntc@jump-host:~$ python get_facts.py -h
 usage: get_facts.py [-h] [-f {vendor,mgmt_ip,model,hostname,os}]
 
 Python Argparse Demo
@@ -254,7 +254,7 @@ Objective:
 - Code was modified to also print the description
 
 ```
-ntc@ntc:~$ python get_facts.py -h
+ntc@jump-host:~$ python get_facts.py -h
 usage: get_facts.py [-h] [-f {vendor,mgmt_ip,model,hostname,os}] [-d DESCR]
 
 Python Argparse Demo
@@ -269,7 +269,7 @@ optional arguments:
 ```
 
 ```
-ntc@ntc:~$ python get_facts.py -f hostname -d "Test Job"
+ntc@jump-host:~$ python get_facts.py -f hostname -d "Test Job"
 hostname: NYC301
 Test Job
 ```
@@ -451,7 +451,7 @@ VLAN  Name                             Status    Ports
 
 .ubuntu[
 ```
-ntc@ntc$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw
+ntc@jump-host$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw
 FSM Template:
 Value VLAN_ID (\d+)
 Value NAME (\w+)
@@ -529,7 +529,7 @@ Start
 
 .ubuntu[
 ```
-ntc@ntc$ python textfsm.py cisco_ios_show_version.template cisco_ios_show_version.raw
+ntc@jump-host$ python textfsm.py cisco_ios_show_version.template cisco_ios_show_version.raw
 FSM Template:
 Value VERSION (.+?)
 Value HOSTNAME (\S+)
@@ -666,7 +666,7 @@ class: ubuntu
   - Can get more granular by specifying **Hostname** too
 
 ```
-ntc@ntc:~/projects/legacy$ more ntc_templates/index
+ntc@jump-host:~/projects/legacy$ more ntc_templates/index
 
 # First line is the header fields for columns and is mandatory.
 # Regular expressions are supported in all fields except the first.
