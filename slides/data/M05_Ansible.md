@@ -496,7 +496,7 @@ routers
 
 [switches]
 10.1.1.1
-switch1.ntc.com   snmp_ro=public123 password=ntc
+switch1.ntc.com   snmp_ro=public123 ansible_ssh_pass=ntc
 
 [routers]
 r1.ntc.com
@@ -3133,7 +3133,7 @@ ok: [csr1] => {
 
       - name: TEST LOOPING OVER REGISTERED VARIABLE
         debug:
-          var: "{{ item }}"    
+          msg: "{{ item }}"    
         loop: "{{ ping_responses['results'] }}"  
 ```
 
@@ -4543,7 +4543,7 @@ class: middle, segue
 
     tasks:
 
-      - include: get-facts.yml vendor={{ ntc_vendor }}
+      - include: get-facts.yml vendor={{ vendor }}
 ```
 
 ```yaml
@@ -4649,10 +4649,8 @@ roles/
     hosts: datacenter
     connection: network_cli
     gather_facts: no
-
     roles:
       - vlans
-
 ```
 
 
@@ -4662,33 +4660,31 @@ roles/
 
 - name: ARISTA VLANs
   eos_vlan:
-    vlanid: "{{ item.id }}"
+    vlanid: "{{ item['id'] }}"
   loop: "{{ vlans }}"
   when: vendor == "arista"
 
 - name: CISCO VLANs
   nxos_vlan:
-    vlan_id: "{{ item.id }}"
+    vlan_id: "{{ item['id'] }}"
   loop: "{{ vlans }}"
   when: vendor == "cisco"
 ```
-
-
-
 ]
 
 .right-column[
 
 ```bash
 [datacenter]
-spine1 ntc_vendor=arista
-n9k1 ntc_vendor=cisco
+spine1 vendor=arista
+n9k1   vendor=cisco
 ```
 
 
 
 ```yaml
 # group_vars/all.yml
+---
 
 vlans:
   - id: 10
@@ -4707,24 +4703,22 @@ vlans:
 # VLAN Role Improved
 
 .left-column[
-
 ```yaml
 # main playbook
 .---
+
   - name: DC P1
     hosts: datacenter
     connection: network_cli
     gather_facts: no
     roles:
       - vlans
-
 ```
-
 
 ```yaml
 # roles/vlans/tasks/main.yml
 ---
-- include: "{{ ntc_vendor }}.yml"
+- include: "{{ vendor }}.yml"
 ```
 
 ```yaml
@@ -4732,14 +4726,16 @@ vlans:
 ---
 - name: ARISTA VLANs
   eos_vlan:
-    vlanid: "{{ item.id }}"
+    vlanid: "{{ item['id'] }}"
   loop: "{{ vlans }}"
 ```
 ```yaml
+
+---
 # roles/vlans/tasks/cisco.yml
 - name: CISCO VLANs
   nxos_vlan:
-    vlan_id: "{{ item.id }}"
+    vlan_id: "{{ item['id'] }}"
   loop: "{{ vlans }}"
 ```
 ]
@@ -4748,14 +4744,15 @@ vlans:
 
 ```bash
 [datacenter]
-spine1 ntc_vendor=arista
-n9k1 ntc_vendor=cisco
+spine1 vendor=arista
+n9k1   vendor=cisco
 ```
 
 
 
 ```yaml
 # group_vars/all.yml
+---
 
 vlans:
   - id: 10
