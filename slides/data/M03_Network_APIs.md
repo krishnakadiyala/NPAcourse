@@ -1081,7 +1081,6 @@ Note: Feel free to test it with IOS-XE RESTCONF or eAPI.
 
 class: middle, segue
 
-# Bonus Material
 ## Consuming HTTP APIs with Python requests
 #### Network APIs
 
