@@ -127,7 +127,7 @@ Create four new variables while on the Python shell: `auth`, `headers`, `payload
 
 `payload` should be equal to the Request object you copied above as a dictionary.
 
-`url` should be equal to `url = 'http://nxos-spine1/ins'` - this needs the `ins` appended to the switch name or IP to work.  
+`url` should be equal to `url = 'https://nxos-spine1:8443/ins'` - this needs the `ins` appended to the switch name or IP to work.  
 
 The summary up until this point is the following:
 
@@ -154,7 +154,7 @@ The summary up until this point is the following:
 ...     }
 ... }
 >>>
->>> url = 'http://nxos-spine1/ins'
+>>> url = 'https://nxos-spine1:8443/ins'
 >>>
 ```
 
@@ -855,7 +855,7 @@ def nxapi_request(device, command):
         'Content-Type': 'application/json'
     }
 
-    url = 'http://{}/ins'.format(device)
+    url = 'https://{}:8443/ins'.format(device)
 
     payload = {
         "ins_api": {
