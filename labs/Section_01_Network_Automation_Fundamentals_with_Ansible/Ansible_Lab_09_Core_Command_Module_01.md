@@ -173,7 +173,7 @@ Full and final playbook will look like this:
 
       - name: GENERATE DIRECTORIES
         file:
-          path: ./command-outputs
+          path: ./command-outputs/{{ ansible_network_os }}/
           state: directory
 
       - name: SAVE SH VERSION TO FILE

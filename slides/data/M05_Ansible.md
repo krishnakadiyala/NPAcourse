@@ -277,7 +277,7 @@ class: middle, segue
 ```yaml
 ---
 
-- name: BASIC testing
+- name: BASIC TESTING
   hosts: dc1
   connection: network_cli
   gather_facts: no
@@ -2474,7 +2474,6 @@ ntc@jump-host:ansible$
 - Lab 8 - Auto-Create Directories using the file module
 - Lab 9 - Getting Started with the Command Module
 - Lab 10 - Getting started with the cli_command Module
-- Lab 11 - Continuous Compliance with Ansible
 
 ---
 class: center, middle, title
@@ -2875,9 +2874,8 @@ Sample Output:
 
 # Lab Time
 
-- Lab 12 - Getting Started with Jinja2 Templating in Ansible
-- Lab 13 - Using Improved Jinja2 Templates
-- Lab 14 - Using Network Centric Jija2 Filters
+- Lab 11 - Getting Started with Jinja2 Templating in Ansible
+- Lab 12 - Using Improved Jinja2 Templates
 
 ---
 
@@ -3159,7 +3157,7 @@ ok: [csr1] => {
 # Lab Time
 
 
-- Lab 15 - Challenge Validating Reachability with the Command Module
+- Lab 13 - Challenge Validating Reachability with the Command Module
 
 
 ---
@@ -3426,8 +3424,8 @@ Using `regex_findall` is another way to parse the `stdout` from the `output` var
 
 # Lab Time
 
-- Lab 16 - Parsing Show Commands with TextFSM
-- Lab 17 - Performing a Conditional Traceroute with RegEx filters
+- Lab 14 - Parsing Show Commands with TextFSM
+- Lab 15 - Performing a Conditional Traceroute with RegEx filters
 
 ---
 class: center, middle, title
@@ -3929,7 +3927,7 @@ changed: [nxos] => (item=networktocode)
 
 # Lab Time
 
-- Lab 18 - Using the Config Module
+- Lab 15 - Using the Config Module
 
 
 ---
@@ -4479,8 +4477,8 @@ hostname nycr01
 
 # Lab Time
 
-- Lab 19 - Making REST API Calls from Ansible
-- Lab 20 - Data Collection Modules & Reporting
+- Lab 16 - Making REST API Calls from Ansible
+- Lab 17 - Data Collection Modules & Reporting
   - Facts Data Collection Modules
   - Inventory Report
 
@@ -4782,7 +4780,7 @@ vlans:
 
 # Lab Time
 
-- Lab 21 - Creating an Ansible Role
+- Lab 18 - Creating an Ansible Role
   - Create a multi-vendor VLAN role that works with Cisco and Arista devices
   
 ---
@@ -5438,8 +5436,8 @@ $ ansible-playbook -i inventory backup.yml --limit nxos --tags=deploy
 
 # Lab Time
 
-- Lab 22 - Backup and Restore Network Configurations Part 1
-- Lab 23 - Backup and Restore Network Configurations Part 2
+- Lab 19 - Backup and Restore Network Configurations Part 1
+- Lab 20 - Backup and Restore Network Configurations Part 2
 
 ---
 
@@ -5447,7 +5445,7 @@ class: middle, segue
 
 # Build / Push Configuration Management
 ### Ansible for Network Automation
-
+### BONUS
 ---
 
 # Build / Push
@@ -5851,7 +5849,7 @@ interface {{ interface.name }}
       - name: BUILD NETWORK CONFIGURATIONS
         template:
           src: "{{ item }}"
-          dest: "configs/partials/{{ item | basename | replace('j2', 'conf') }}"
+          dest: "configs/{{ inventory_hostname }}/partials/{{ item | basename | replace('j2', 'conf') }}"
         with_fileglob:
           - templates/*
 

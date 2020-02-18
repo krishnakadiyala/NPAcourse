@@ -330,11 +330,12 @@ This task is showing you can also do a HTTP POST passing a multi-line string wit
 
       - name: SHOW VERSION NEXUS API
         uri:
-          url: http://nxos-spine1/ins
+          url: https://nxos-spine1:8443/ins
           method: POST
           user: "{{ ansible_user }}"
           password: "{{ ansible_ssh_pass }}"
           return_content: yes
+          validate_certs: no
           body_format: json
           headers:
             Content-Type: application/json
@@ -424,12 +425,13 @@ The full playbook is as follows:
 
       - name: SHOW VERSION NEXUS API
         uri:
-          url: http://nxos-spine1/ins
+          url: https://nxos-spine1:8443/ins
           method: POST
           user: "{{ ansible_user }}"
           password: "{{ ansible_ssh_pass }}"
           return_content: yes
           body_format: json
+          validate_certs: no
           headers:
             Content-Type: application/json
             Accept: application/json
