@@ -171,6 +171,8 @@ Feel free to change `hosts: csr1` to all devices or also make that a variable an
 
 
 ```yaml
+---
+
   - name: PING TEST AND TRACEROUTE
     hosts: csr1
     connection: network_cli
