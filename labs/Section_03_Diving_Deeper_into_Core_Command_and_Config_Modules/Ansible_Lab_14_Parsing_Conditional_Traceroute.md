@@ -1,4 +1,4 @@
-## Lab 15 Challenge - Performing a Conditional Traceroute Based on Ping Failures
+## Lab 14 Challenge - Performing a Conditional Traceroute Based on Ping Failures
 
 In the previous lab, you learned how to use pre-built TextFSM templates and explored two built-in Ansible RegEx filters to parse data.
 
@@ -160,7 +160,7 @@ Execute the playbook using extra vars passing in a new `dest` IP address to test
 
 ```
 
-ntc@ntc:ansible$ ansible-playbook -i inventory test-reachability.yml --extra-vars="dest=4.4.4.4"
+ntc@jump-host:ansible$ ansible-playbook -i inventory test-reachability.yml --extra-vars="dest=4.4.4.4"
 ```
 
 You could also simply just change the value inside the playbook.  
@@ -171,6 +171,8 @@ Feel free to change `hosts: csr1` to all devices or also make that a variable an
 
 
 ```yaml
+---
+
   - name: PING TEST AND TRACEROUTE
     hosts: csr1
     connection: network_cli

@@ -18,7 +18,7 @@ Once the command prompt (terminal window) opens, type in the word `python` and p
 You will see the following prompt:
 
 ```python
-ntc@ntc:~$ python
+ntc@jump-host:~$ python
 Python 2.7.12 (default, Nov 19 2016, 06:48:10)
 [GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.

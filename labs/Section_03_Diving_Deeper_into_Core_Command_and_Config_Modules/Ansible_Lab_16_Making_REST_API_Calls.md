@@ -1,4 +1,4 @@
-## Lab 17 - Making REST API Calls from Ansible
+## Lab 16 - Making REST API Calls from Ansible
 
 This lab shows how you can make HTTP-based API calls from Ansible.  We'll look at making API calls to IOS-XE and NX-OS based systems using RESTCONF and NX-API, respectively, on those systems.
 
@@ -330,11 +330,12 @@ This task is showing you can also do a HTTP POST passing a multi-line string wit
 
       - name: SHOW VERSION NEXUS API
         uri:
-          url: http://nxos-spine1/ins
+          url: https://nxos-spine1:8443/ins
           method: POST
           user: "{{ ansible_user }}"
           password: "{{ ansible_ssh_pass }}"
           return_content: yes
+          validate_certs: no
           body_format: json
           headers:
             Content-Type: application/json
@@ -424,12 +425,13 @@ The full playbook is as follows:
 
       - name: SHOW VERSION NEXUS API
         uri:
-          url: http://nxos-spine1/ins
+          url: https://nxos-spine1:8443/ins
           method: POST
           user: "{{ ansible_user }}"
           password: "{{ ansible_ssh_pass }}"
           return_content: yes
           body_format: json
+          validate_certs: no
           headers:
             Content-Type: application/json
             Accept: application/json

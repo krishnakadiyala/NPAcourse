@@ -11,8 +11,8 @@ In this task, you'll explore working with raw text (configuration) files.  You w
 From the home directory, navigate to the `files` directory:
 
 ```
-ntc@ntc:~$ cd files/
-ntc@ntc:~/files$
+ntc@jump-host:~$ cd files/
+ntc@jump-host:~/files$
 ```
 
 ##### Step 2
@@ -20,7 +20,7 @@ ntc@ntc:~/files$
 Either by using `cat` on the terminal (in a different terminal session) or your text editor take a look at the `vlan_ids.conf` file that is located in the `files` directory.  You'll see that the file looks like this:
 
 ```
-ntc@ntc:~/files$ cat vlan_ids.conf
+ntc@jump-host:~/files$ cat vlan_ids.conf
 vlan 1
 vlan 2
 vlan 10
@@ -33,7 +33,7 @@ vlan 50
 Enter into the Python shell while you're in the `files` directory.
 
 ```python
-ntc@ntc:~/files$ python
+ntc@jump-host:~/files$ python
 Python 2.7.12 (default, Nov 19 2016, 06:48:10)
 [GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
@@ -156,11 +156,11 @@ Close the file for writing:
 In another terminal windows, use `cat` to view the file just created:
 
 ```bash
-ntc@ntc:~$ cat interface.cfg
+ntc@jump-host:~$ cat interface.cfg
 interface Eth1
  speed 100
  duplex full
-ntc@ntc:~$
+ntc@jump-host:~$
 ```
 
 ### Task 3 - Using a Context Manager

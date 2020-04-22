@@ -277,7 +277,7 @@ class: middle, segue
 ```yaml
 ---
 
-- name: BASIC testing
+- name: BASIC TESTING
   hosts: dc1
   connection: network_cli
   gather_facts: no
@@ -496,7 +496,7 @@ routers
 
 [switches]
 10.1.1.1
-switch1.ntc.com   snmp_ro=public123 password=ntc
+switch1.ntc.com   snmp_ro=public123 ansible_ssh_pass=ntc
 
 [routers]
 r1.ntc.com
@@ -1792,7 +1792,7 @@ nxos-spine1                : ok=3    changed=0    unreachable=0    failed=0
 .right-column[
 .small-code[
 ```bash
-ntc@ntc:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml --check -v
+ntc@jump-host:ansible$ ansible-playbook -i lab-inventory snmp-config-02.yml --check -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] *********************************
@@ -1810,7 +1810,7 @@ csr1                       : ok=1    changed=1    unreachable=0    failed=0
 csr2                       : ok=1    changed=1    unreachable=0    failed=0
 csr3                       : ok=1    changed=1    unreachable=0    failed=0
 
-ntc@ntc:ansible$
+ntc@jump-host:ansible$
 
 ```
 ]
@@ -2475,6 +2475,7 @@ ntc@jump-host:ansible$
 - Lab 9 - Getting Started with the Command Module
 - Lab 10 - Continuous Compliance with Ansible
 
+
 ---
 class: center, middle, title
 .footer-picture[<img src="data/media/Footer1.PNG" alt="Blue Logo" style="alight:middle;width:350px;height:60px;">]
@@ -3131,7 +3132,7 @@ ok: [csr1] => {
 
       - name: TEST LOOPING OVER REGISTERED VARIABLE
         debug:
-          var: "{{ item }}"    
+          msg: "{{ item }}"    
         loop: "{{ ping_responses['results'] }}"  
 ```
 
@@ -3254,7 +3255,7 @@ VLAN  Name                             Status    Ports
 
 .ubuntu[
 ```
-ntc@ntc$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw
+ntc@jump-host$ python textfsm.py arista_eos_show_vlan.template arista_eos_show_vlan.raw
 FSM Template:
 Value VLAN_ID (\d+)
 Value NAME (\w+)
@@ -3424,7 +3425,9 @@ Using `regex_findall` is another way to parse the `stdout` from the `output` var
 
 # Lab Time
 
+
 - Lab 14 - Performing a Conditional Traceroute with RegEx filters
+
 
 ---
 class: center, middle, title
@@ -3660,7 +3663,7 @@ tasks:
 .ubuntu[
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory file_lookup_demo.yml
+ntc@jump-host:ansible$ ansible-playbook -i inventory file_lookup_demo.yml
 
 PLAY [DEMO FILE LOOKUPS] ****************************************************
 
@@ -4540,7 +4543,7 @@ class: middle, segue
 
     tasks:
 
-      - include: get-facts.yml vendor={{ ntc_vendor }}
+      - include: get-facts.yml vendor={{ vendor }}
 ```
 
 ```yaml
@@ -4646,10 +4649,8 @@ roles/
     hosts: datacenter
     connection: network_cli
     gather_facts: no
-
     roles:
       - vlans
-
 ```
 
 
@@ -4659,33 +4660,31 @@ roles/
 
 - name: ARISTA VLANs
   eos_vlan:
-    vlanid: "{{ item.id }}"
+    vlanid: "{{ item['id'] }}"
   loop: "{{ vlans }}"
   when: vendor == "arista"
 
 - name: CISCO VLANs
   nxos_vlan:
-    vlan_id: "{{ item.id }}"
+    vlan_id: "{{ item['id'] }}"
   loop: "{{ vlans }}"
   when: vendor == "cisco"
 ```
-
-
-
 ]
 
 .right-column[
 
 ```bash
 [datacenter]
-spine1 ntc_vendor=arista
-n9k1 ntc_vendor=cisco
+spine1 vendor=arista
+n9k1   vendor=cisco
 ```
 
 
 
 ```yaml
 # group_vars/all.yml
+---
 
 vlans:
   - id: 10
@@ -4704,24 +4703,22 @@ vlans:
 # VLAN Role Improved
 
 .left-column[
-
 ```yaml
 # main playbook
 .---
+
   - name: DC P1
     hosts: datacenter
     connection: network_cli
     gather_facts: no
     roles:
       - vlans
-
 ```
-
 
 ```yaml
 # roles/vlans/tasks/main.yml
 ---
-- include: "{{ ntc_vendor }}.yml"
+- include: "{{ vendor }}.yml"
 ```
 
 ```yaml
@@ -4729,14 +4726,16 @@ vlans:
 ---
 - name: ARISTA VLANs
   eos_vlan:
-    vlanid: "{{ item.id }}"
+    vlanid: "{{ item['id'] }}"
   loop: "{{ vlans }}"
 ```
 ```yaml
+
+---
 # roles/vlans/tasks/cisco.yml
 - name: CISCO VLANs
   nxos_vlan:
-    vlan_id: "{{ item.id }}"
+    vlan_id: "{{ item['id'] }}"
   loop: "{{ vlans }}"
 ```
 ]
@@ -4745,14 +4744,15 @@ vlans:
 
 ```bash
 [datacenter]
-spine1 ntc_vendor=arista
-n9k1 ntc_vendor=cisco
+spine1 vendor=arista
+n9k1   vendor=cisco
 ```
 
 
 
 ```yaml
 # group_vars/all.yml
+---
 
 vlans:
   - id: 10
@@ -5447,7 +5447,7 @@ class: middle, segue
 
 # Build / Push Configuration Management
 ### Ansible for Network Automation
-
+### BONUS
 ---
 
 # Build / Push
@@ -5851,7 +5851,7 @@ interface {{ interface.name }}
       - name: BUILD NETWORK CONFIGURATIONS
         template:
           src: "{{ item }}"
-          dest: "configs/partials/{{ item | basename | replace('j2', 'conf') }}"
+          dest: "configs/{{ inventory_hostname }}/partials/{{ item | basename | replace('j2', 'conf') }}"
         with_fileglob:
           - templates/*
 
@@ -7471,7 +7471,7 @@ The Ansible Vault functionality allows the user:
 Typically used to store username and passwords on the control machine.
 
 ```
-ntc@ntc:all$ ansible-vault create vaultfile.yml
+ntc@jump-host:all$ ansible-vault create vaultfile.yml
 New Vault password:
 Confirm New Vault password:
 ```
@@ -7492,9 +7492,9 @@ The encrypted version of above data:
 
 ```shell
 
-ntc@ntc:all$ ls
+ntc@jump-host:all$ ls
 vaultfile.yml
-ntc@ntc:all$ cat vaultfile.yml
+ntc@jump-host:all$ cat vaultfile.yml
 $ANSIBLE_VAULT;1.1;AES256
 38353863306139626235623263313439653437646261393562323036356531336432323736646534
 3161333737316430396431313931633863646535303432660a353461636464303238353765343162
@@ -7515,7 +7515,7 @@ class: ubuntu
 
 
 ```
-ntc@ntc:ansible$ ansible-playbook -i inventory use_vault.yml --ask-vault-pass
+ntc@jump-host:ansible$ ansible-playbook -i inventory use_vault.yml --ask-vault-pass
 Vault password:
 
 PLAY [USE ENCRYPTED LOGIN] *******************************************************************************************************

@@ -6,9 +6,9 @@ This task introduces you to the Developer Sandbox environment that exists on eac
 
 ##### Step 1
 
-Open a Web Browser and connect to the switch using `http://nxos-spine1.pod0.ntc.cloud.tesuto.com/`
+Open a Web Browser and connect to the switch using `https://nxos-spine1.pod0.ntc.cloud.tesuto.com:8443/`
 
-Ensure you are using **http**.
+Ensure you are using **https**.
 
 Login with the credentials `username: ntc, password: ntc123`
 

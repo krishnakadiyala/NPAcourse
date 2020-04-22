@@ -173,7 +173,7 @@ You will replace them with the following:
 Save and execute this script, first without any arguments:
 
 ``` shell
-ntc@ntc:scripts$ python user-flags.py
+ntc@jump-host:scripts$ python user-flags.py
 usage: flags_user_input.py [-h]  -i IP -d DEVICE_TYPE -u
                              USERNAME -p PASSWORD
 flags_user_input.py: error: argument -i/--ip is required
@@ -187,7 +187,7 @@ flags_user_input.py: error: argument -i/--ip is required
 Next try and execute the script with the `-h` or `--help` flag:
 
 ``` shell
-ntc@ntc:~/scripts$ python user-flags.py --help
+ntc@jump-host:~/scripts$ python user-flags.py --help
 usage: flags_user_input.py [-h] -i IP -d DEVICE_TYPE -u
                              USERNAME -p PASSWORD
 Collect device and data file information to configure a device
@@ -209,7 +209,7 @@ optional arguments:
 Finally, execute the script with all required inputs:
 
 ```
-ntc@ntc:scripts$ python user-flags.py -i csr1 -d cisco_ios -u ntc -p ntc123
+ntc@jump-host:scripts$ python user-flags.py -i csr1 -d cisco_ios -u ntc -p ntc123
 # output omitted
 ```
 
@@ -259,7 +259,7 @@ if __name__ == "__main__":
 Save and execute the script.
 
 ```
-ntc@ntc:~/scripts$ python basic_args.py
+ntc@jump-host:~/scripts$ python basic_args.py
 HERE ARE MY ARGUMENTS:
 ['my_args.py']
 ```
@@ -271,7 +271,7 @@ Can you tell that a list was printed out?  This is a list with one element.  We 
 Re-run the script like so:
 
 ```
-ntc@ntc:~/scripts$ python basic_args.py cisco arista juniper
+ntc@jump-host:~/scripts$ python basic_args.py cisco arista juniper
 ```
 
 After running this script, you will see the following output:
@@ -302,7 +302,7 @@ if __name__ == "__main__":
 Run the script again.
 
 ```
-ntc@ntc:~/scripts$ python basic_args.py cisco arista juniper
+ntc@jump-host:~/scripts$ python basic_args.py cisco arista juniper
 ```
 
 ```

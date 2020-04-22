@@ -9,8 +9,8 @@ This lab is focused on troubleshooting the configuration build process focused o
 Navigate into the Ansible directory and copy `lab10-start` into this directory.
 
 ```
-ntc@ntc:ansible$ cp -r /home/ntc/tshoot/lab10-start/ ./lab10
-ntc@ntc:ansible$ ls
+ntc@jump-host:ansible$ cp -r /home/ntc/tshoot/lab10-start/ ./lab10
+ntc@jump-host:ansible$ ls
 lab10
 ```
 
@@ -20,7 +20,7 @@ lab10
 Navigate into the `lab10` directory to begin!
 
 ```
-ntc@ntc:ansible$ cd lab10
-ntc@ntc:lab10$
+ntc@jump-host:ansible$ cd lab10
+ntc@jump-host:lab10$
 ```
 

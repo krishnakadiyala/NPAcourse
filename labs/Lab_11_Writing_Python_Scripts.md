@@ -9,8 +9,8 @@ This lab helps make the transition from writing on the Python Interpreter to act
 Within your home directory, create a new directory called `scripts`:
 
 ```
-ntc@ntc:~$ mkdir scripts
-ntc@ntc:~$
+ntc@jump-host:~$ mkdir scripts
+ntc@jump-host:~$
 ```
 
 ##### Step 2
@@ -18,8 +18,8 @@ ntc@ntc:~$
 Navigate to the `scripts` directory.
 
 ```
-ntc@ntc:~$ cd scripts
-ntc@ntc:~/scripts$
+ntc@jump-host:~$ cd scripts
+ntc@jump-host:~/scripts$
 ```
 
 ##### Step 3
@@ -27,8 +27,8 @@ ntc@ntc:~/scripts$
 Create a new file called `networkauto.py`
 
 ```
-ntc@ntc:~/scripts$ touch networkauto.py
-ntc@ntc:~/scripts$
+ntc@jump-host:~/scripts$ touch networkauto.py
+ntc@jump-host:~/scripts$
 ```
 
 ##### Step 4
@@ -63,9 +63,9 @@ _Finally, there is another optional line that's left out of this script, which i
 Save the file and execute it from the command line:
 
 ```
-ntc@ntc:~/scripts$ python networkauto.py
+ntc@jump-host:~/scripts$ python networkauto.py
 Hello Network Automation!
-ntc@ntc:~/scripts$
+ntc@jump-host:~/scripts$
 ```
 
 As you can see, it was quite simple to write a Python script.  It's technically no different than typing on the Python shell.
@@ -103,7 +103,7 @@ print(json.dumps(devices, indent=4))
 Execute the script.
 
 ```
-ntc@ntc:~/scripts$ python print_facts.py
+ntc@jump-host:~/scripts$ python print_facts.py
 [
     {
         "os": "nxos",
@@ -121,7 +121,7 @@ ntc@ntc:~/scripts$ python print_facts.py
         "vendor": "arista"
     }
 ]
-ntc@ntc:~/scripts$
+ntc@jump-host:~/scripts$
 ```
 
 The point in this lab is to showcase the transition going from learning to write code on the Python shell.

@@ -10,6 +10,8 @@ Open a Web Browser and connect to the switch.
 
 - Enter `https://eos-spine1.pod0.ntc.cloud.tesuto.com` into the browser.
 
+> Note: Change the pod0 to your correct pod number. 
+
 ![Command Explorer 1](images/arista_01.png)
 
 ##### Step 2
