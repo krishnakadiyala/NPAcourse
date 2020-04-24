@@ -889,7 +889,7 @@ In the context of Ansible...
 # Introducing the CONFIG module
 
 .left-column[
-- Module name: `ios_config`, e.g. *_config for main OSs
+- Module name: `ios_config`, e.g. *_config for main OSs or `cli_config` for multi-vendor environments.
 - Basic Parameters: `commands`, and `src`
 - Technically `lines` is the parameter and `commands` is an alias since they are just "lines within a config file".
 - `src` and `lines/commands` are mutually exclusive for this module
@@ -2473,7 +2473,8 @@ ntc@jump-host:ansible$
 
 - Lab 8 - Auto-Create Directories using the file module
 - Lab 9 - Getting Started with the Command Module
-- Lab 10 - Getting started with the cli_command Module
+- Lab 10 - Continuous Compliance with Ansible
+
 
 ---
 class: center, middle, title
@@ -3424,8 +3425,9 @@ Using `regex_findall` is another way to parse the `stdout` from the `output` var
 
 # Lab Time
 
-- Lab 14 - Parsing Show Commands with TextFSM
-- Lab 15 - Performing a Conditional Traceroute with RegEx filters
+
+- Lab 14 - Performing a Conditional Traceroute with RegEx filters
+
 
 ---
 class: center, middle, title
