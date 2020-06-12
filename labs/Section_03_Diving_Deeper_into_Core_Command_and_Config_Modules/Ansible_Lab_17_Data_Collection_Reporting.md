@@ -44,7 +44,7 @@ In this task in the play, use the `ios_facts` module to gather the device facts.
 Execute the playbook.
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory core-facts.yml
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory core-facts.yml
 
 PLAY [GATHER IOS FACTS] ********************************************************
 
@@ -70,7 +70,7 @@ By now you should know there are two options: (1) use verbose mode (running the 
 Re-run the playbook using verbose mode and limit the playbook to just **csr1** to make the viewing of the output a little cleaner.
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory core-facts.yml -v --limit csr1
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory core-facts.yml -v --limit csr1
 
 Using /etc/ansible/ansible.cfg as config file
 
@@ -123,7 +123,7 @@ Execute the playbook.  This time **not** using verbose mode, but still limiting 
 
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory core-facts.yml --limit csr1
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory core-facts.yml --limit csr1
 
 PLAY [GATHER IOS FACTS] ********************************************************
 
@@ -269,7 +269,7 @@ The output for the new task will look like this:
 ```
 TASK [DEBUG OS VERSION] ********************************************************
 ok: [csr1] => {
-    "ntc_ios_facts['ansible_facts']['ansible_net_version']": "16.08.01a"
+    "ntc_ios_facts['ansible_facts']['ansible_net_version']": "17.01.01"
 }
 
 
@@ -297,12 +297,12 @@ The associated new output for the playbook is the following:
 ```
 TASK [DEBUG OS VERSION] ********************************************************
 ok: [csr1] => {
-    "ntc_ios_facts['ansible_facts']['ansible_net_version']": "16.08.01a"
+    "ntc_ios_facts['ansible_facts']['ansible_net_version']": "17.01.01"
 }
 
 TASK [DEBUG SHORTHAND OS VERSION] **********************************************
 ok: [csr1] => {
-    "ansible_net_version": "16.08.01a"
+    "ansible_net_version": "17.01.01"
 }
 
 ```
@@ -474,14 +474,14 @@ Text Report:
 Hostname:      csr3
 Vendor:        cisco
 Model:         UNKNOWN
-OS Version:    16.08.01a
+OS Version:    17.01.01
 Serial Number:  9KIBQAQ3OPE
 ```
 
 CSV Report:
 
 ```
-csr3,cisco,UNKNOWN,16.08.01a,9KIBQAQ3OPE
+csr3,cisco,UNKNOWN,17.01.01,9KIBQAQ3OPE
 ```
 
 Create two new templates and save them in the `templates` directory: `facts-text.j2` and `facts-csv.j2`.
@@ -736,11 +736,11 @@ The final playbook should look like this:
 The master CSV report generated will look like this:
 
 ```
-ntc@jump-host:ansible$ cat docs/master-csv.csv
+ntc@ntc-training:ansible$ cat docs/master-csv.csv
 Hostname,Vendor,Model,OS Version,Serial Number
-csr1,cisco,UNKNOWN,16.08.01a,9KIBQAQ3OPE
-csr2,cisco,UNKNOWN,16.08.01a,9KIBQAQ3OPE
-csr3,cisco,UNKNOWN,16.08.01a,9KIBQAQ3OPE
+csr1,cisco,UNKNOWN,17.01.01,9KIBQAQ3OPE
+csr2,cisco,UNKNOWN,17.01.01,9KIBQAQ3OPE
+csr3,cisco,UNKNOWN,17.01.01,9KIBQAQ3OPE
 eos-leaf1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
 eos-leaf2,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
 eos-spine1,arista,vEOS,4.20.0F-7058194.bloomingtonrel (engineering build),UNKNOWN
@@ -750,29 +750,29 @@ nxos-spine2,cisco,NX-OSv Chassis,7.3(1)D1(1) [build 7.3(1)D1(0.10)],TM604B14E3B
 vmx1,juniper,vmx,15.1F4.15,VMX2c
 vmx2,juniper,vmx,15.1F4.15,VMX63
 vmx3,juniper,vmx,15.1F4.15,VMX39
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 And the final text report will look like this:
 
 ```
-ntc@jump-host:ansible$ cat docs/master-text.md
+ntc@ntc-training:ansible$ cat docs/master-text.md
 Hostname:      csr1
 Vendor:        cisco
 Model:         UNKNOWN
-OS Version:    16.08.01a
+OS Version:    17.01.01
 Serial Number:  9KIBQAQ3OPE
 ---
 Hostname:      csr2
 Vendor:        cisco
 Model:         UNKNOWN
-OS Version:    16.08.01a
+OS Version:    17.01.01
 Serial Number:  9KIBQAQ3OPE
 ---
 Hostname:      csr3
 Vendor:        cisco
 Model:         UNKNOWN
-OS Version:    16.08.01a
+OS Version:    17.01.01
 Serial Number:  9KIBQAQ3OPE
 ---
 Hostname:      eos-leaf1
@@ -828,5 +828,5 @@ Vendor:        juniper
 Model:         vmx
 OS Version:    15.1F4.15
 Serial Number:  VMX39
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```

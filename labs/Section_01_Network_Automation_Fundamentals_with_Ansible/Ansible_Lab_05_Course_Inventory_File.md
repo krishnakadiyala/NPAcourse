@@ -13,8 +13,8 @@ This lab builds on previous labs and shows how to build a more robust Ansible in
 Navigate to the Ansible directory.
 
 ```
-ntc@jump-host:~$ cd ansible
-ntc@jump-host:ansible$
+ntc@ntc-training:~$ cd ansible
+ntc@ntc-training:ansible$
 ```
 
 ##### Step 2

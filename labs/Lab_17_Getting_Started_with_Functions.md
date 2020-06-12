@@ -40,9 +40,9 @@ Save the script.
 Execute the script.  You'll see a basic output:
 
 ```
-ntc@jump-host:scripts$ python functions.py
+ntc@ntc-training:scripts$ python functions.py
 [1, 5, 10, 20]
-ntc@jump-host:scripts$
+ntc@ntc-training:scripts$
 ```
 
 ##### Step 5
@@ -140,7 +140,7 @@ ez_cisco('csr1', 'ntc', 'ntc123', 'show version')
 Save and Execute the script.  You should see the following:
 
 ```
-ntc@jump-host:scripts$ python functions.py
+ntc@ntc-training:scripts$ python functions.py
 [1, 5, 10, 20]
 True
 False
@@ -148,7 +148,7 @@ csr1
 ntc
 ntc123
 show version
-ntc@jump-host:scripts$
+ntc@ntc-training:scripts$
 ```
 
 ##### Step 8

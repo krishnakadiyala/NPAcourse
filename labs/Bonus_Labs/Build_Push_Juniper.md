@@ -222,9 +222,9 @@ Create a `host_vars` directory (if you don't already have one), and create three
 The names of these files are significant.  They match the names as they are defined in the inventory file.
 
 ```
-ntc@jump-host:~/ansible$ mkdir host_vars
+ntc@ntc-training:~/ansible$ mkdir host_vars
 
-ntc@jump-host:~/ansible$ cd host_vars/
+ntc@ntc-training:~/ansible$ cd host_vars/
 ```
 
 Open the newly created files and ensure they have the vars as defined below in them.
@@ -599,7 +599,7 @@ Save the playbook.
 Run the playbook.
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
@@ -617,7 +617,7 @@ vmx1                       : ok=1    changed=1    unreachable=0    failed=0
 Issue the `tree` command see what happened:
 
 ```
-ntc@jump-host:~/ansible$ tree
+ntc@ntc-training:~/ansible$ tree
 .
 ├── configs
 │   ├── vmx2
@@ -654,7 +654,7 @@ Add new tasks to the playbook that will build the partial configs for the top/ba
 After these tasks are added, re-run the playbook.
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
@@ -735,7 +735,7 @@ Save the playbook.
 Run the playbook.
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
@@ -767,7 +767,7 @@ vmx1                       : ok=2    changed=1    unreachable=0    failed=0
 Now view the files that were created.
 
 ```
-ntc@jump-host:~/ansible$ tree
+ntc@ntc-training:~/ansible$ tree
 .
 ├── configs
 │   ├── vmx2
@@ -845,7 +845,7 @@ Save the playbook.
 Run the playbook.
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory juniper-build.yml
 
 PLAY [BUILD PUSH JUNIPER] *****************************************************
 
@@ -978,7 +978,7 @@ Execute ONLY the new task by using tags.
 
 Use this command:
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory juniper-build.yml --tags=push
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory juniper-build.yml --tags=push
 ```
 
 Congratulations!  You just pushed a new running configuration to three devices.

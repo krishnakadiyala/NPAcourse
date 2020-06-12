@@ -11,8 +11,8 @@ In this task we will learn how to use Jinja2 templates in Ansible to dynamically
 Create a new playbook within the `ansible` directory:
 
 ```
-ntc@jump-host:ansible$ touch deploy-snmp.yml
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$ touch deploy-snmp.yml
+ntc@ntc-training:ansible$
 ```
 
 
@@ -78,7 +78,7 @@ Execute the playbook and view the results from the `debug` module.
 
 
 ```commandline
-ntc@jump-host:ansible$ ansible-playbook -i inventory deploy-snmp.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory deploy-snmp.yml
 
 PLAY [GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS] ***************************************************
 
@@ -98,7 +98,7 @@ csr1                       : ok=1    changed=0    unreachable=0    failed=0
 csr2                       : ok=1    changed=0    unreachable=0    failed=0
 csr3                       : ok=1    changed=0    unreachable=0    failed=0
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 >Note: As we learned earlier we can define variables in different locations like inside our inventory, playbook, included files, roles, Ansible command line, local facts, host_vars and group_vars directories, which Ansible will find based on the module.
@@ -141,10 +141,10 @@ In the previous step, the source of the template was identified as a `j2` file. 
 Create a `templates` directory if it's not there already within the `ansible` directory and navigate to that directory.
 
 ```
-ntc@jump-host:ansible$
-ntc@jump-host:ansible$ mkdir templates
-ntc@jump-host:ansible$ cd templates
-ntc@jump-host:templates$
+ntc@ntc-training:ansible$
+ntc@ntc-training:ansible$ mkdir templates
+ntc@ntc-training:ansible$ cd templates
+ntc@ntc-training:templates$
 ```
 
 ##### Step 8
@@ -154,8 +154,8 @@ In the `templates` directory, create the Jinja template we will be using to rend
 > Note: this already referenced in the playbook.
 
 ```
-ntc@jump-host:templates$ touch ios-snmp.j2
-ntc@jump-host:templates$
+ntc@ntc-training:templates$ touch ios-snmp.j2
+ntc@ntc-training:templates$
 ```
 
 
@@ -177,7 +177,7 @@ Keep in mind that the value for this variable was defined in **Step 3** within t
 Run the playbook as follows:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory deploy-snmp.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory deploy-snmp.yml
 
 PLAY [GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS] *********************************************************************************
 
@@ -201,7 +201,7 @@ csr1                       : ok=2    changed=1    unreachable=0    failed=0
 csr2                       : ok=2    changed=1    unreachable=0    failed=0   
 csr3                       : ok=2    changed=1    unreachable=0    failed=0   
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 ##### Step 11
@@ -209,8 +209,8 @@ ntc@jump-host:ansible$
 Validate that the variables have been rendered correctly by checking the files created in the `configs` directory.
 
 ```
-ntc@jump-host:ansible$ cd configs
-ntc@jump-host:configs$ cat csr1-snmp.cfg
+ntc@ntc-training:ansible$ cd configs
+ntc@ntc-training:configs$ cat csr1-snmp.cfg
 
 snmp-server community ntc_course  RO
 ```
@@ -228,11 +228,11 @@ The name of the directory called `group_vars` is an important name within Ansibl
 
 
 ```
-ntc@jump-host:ansible$ mkdir group_vars
-ntc@jump-host:ansible$ cd group_vars
-ntc@jump-host:group_vars$ touch AMER.yml
-ntc@jump-host:group_vars$ touch EMEA.yml
-ntc@jump-host:group_vars$
+ntc@ntc-training:ansible$ mkdir group_vars
+ntc@ntc-training:ansible$ cd group_vars
+ntc@ntc-training:group_vars$ touch AMER.yml
+ntc@ntc-training:group_vars$ touch EMEA.yml
+ntc@ntc-training:group_vars$
 
 ```
 
@@ -375,7 +375,7 @@ Add one more play to this playbook to also build the JUNOS specific configuratio
 Execute the playbook and take a look at the output of the `debug` module:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory deploy-snmp.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory deploy-snmp.yml
 
 PLAY [GENERATE SNMP CONFIGS USING JINJA2 - AMERICAS] **********************************************************************
 
@@ -446,7 +446,7 @@ vmx1                       : ok=3    changed=0    unreachable=0    failed=0
 vmx2                       : ok=3    changed=0    unreachable=0    failed=0
 vmx3                       : ok=3    changed=0    unreachable=0    failed=0  
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 
 ```
 
@@ -456,7 +456,7 @@ ntc@jump-host:ansible$
 Validate that the configurations have been created in the `configs` directory:
 
 ```
-ntc@jump-host:ansible$ ls configs/
+ntc@ntc-training:ansible$ ls configs/
 # output omitted
 ```
 

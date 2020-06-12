@@ -9,8 +9,8 @@ This lab helps make the transition from writing on the Python Interpreter to act
 Within your home directory, create a new directory called `scripts`:
 
 ```
-ntc@jump-host:~$ mkdir scripts
-ntc@jump-host:~$
+ntc@ntc-training:ntc$ mkdir scripts
+ntc@ntc-training:ntc$ 
 ```
 
 ##### Step 2
@@ -18,8 +18,8 @@ ntc@jump-host:~$
 Navigate to the `scripts` directory.
 
 ```
-ntc@jump-host:~$ cd scripts
-ntc@jump-host:~/scripts$
+ntc@ntc-training:ntc$ cd scripts
+ntc@ntc-training:scripts$
 ```
 
 ##### Step 3
@@ -27,8 +27,8 @@ ntc@jump-host:~/scripts$
 Create a new file called `networkauto.py`
 
 ```
-ntc@jump-host:~/scripts$ touch networkauto.py
-ntc@jump-host:~/scripts$
+ntc@ntc-training:scripts$ touch networkauto.py
+ntc@ntc-training:scripts$
 ```
 
 ##### Step 4
@@ -63,9 +63,8 @@ _Finally, there is another optional line that's left out of this script, which i
 Save the file and execute it from the command line:
 
 ```
-ntc@jump-host:~/scripts$ python networkauto.py
+ntc@ntc-training:scripts$ python networkauto.py
 Hello Network Automation!
-ntc@jump-host:~/scripts$
 ```
 
 As you can see, it was quite simple to write a Python script.  It's technically no different than typing on the Python shell.
@@ -103,25 +102,24 @@ print(json.dumps(devices, indent=4))
 Execute the script.
 
 ```
-ntc@jump-host:~/scripts$ python print_facts.py
+ntc@ntc-training:scripts$ python print_facts.py
 [
     {
+        "vendor": "cisco",
         "os": "nxos",
-        "ipaddr": "10.1.1.1",
-        "vendor": "cisco"
+        "ipaddr": "10.1.1.1"
     },
     {
+        "vendor": "cisco",
         "os": "ios",
-        "ipaddr": "10.2.1.1",
-        "vendor": "cisco"
+        "ipaddr": "10.2.1.1"
     },
     {
+        "vendor": "arista",
         "os": "eos",
-        "ipaddr": "10.1.1.2",
-        "vendor": "arista"
+        "ipaddr": "10.1.1.2"
     }
 ]
-ntc@jump-host:~/scripts$
 ```
 
 The point in this lab is to showcase the transition going from learning to write code on the Python shell.

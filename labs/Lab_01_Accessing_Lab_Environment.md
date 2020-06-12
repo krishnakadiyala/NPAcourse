@@ -16,7 +16,7 @@ Obtain your Public IP Address from the Course Instructor
 As of December 2018, your Linux jump host will be accessible at the following address:
 
 ```
-jump-host.pod<pod-number>.ntc.cloud.tesuto.com
+ntc-training.pod<pod-number>.ntc.cloud.tesuto.com
 ```
 
 Username: **ntc**
@@ -27,7 +27,7 @@ You can access the Jump Host via SSH or RDP (for a full desktop experience)
 Using a Linux based OS, use the following command:
 
 ```
-ssh ntc@jump-host.pod<pod-number>.ntc.cloud.tesuto.com
+ssh ntc@ntc-training.pod<pod-number>.ntc.cloud.tesuto.com
 ```
 
 Otherwise, you can use a standard SSH client such as Putty or SecureCRT.

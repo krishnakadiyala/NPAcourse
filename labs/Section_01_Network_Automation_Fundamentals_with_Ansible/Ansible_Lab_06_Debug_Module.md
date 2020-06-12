@@ -11,8 +11,8 @@ Let's review a few ways the `debug` module helps with troubleshooting.
 Navigate to the `ansible` directory.
 
 ```
-ntc@jump-host:~$ cd ansible/
-ntc@jump-host:ansible$
+ntc@ntc-training:~$ cd ansible/
+ntc@ntc-training:ansible$
 ```
 
 ##### Step 2
@@ -20,8 +20,8 @@ ntc@jump-host:ansible$
 Create a playbook file called `debug.yml`.
 
 ```
-ntc@jump-host:ansible$ touch debug.yml
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$ touch debug.yml
+ntc@ntc-training:ansible$
 ```
 
 Open the file in your text editor.
@@ -59,7 +59,7 @@ Save and execute the playbook.
 You should see the following output.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory debug.yml
 
 PLAY [USING THE DEBUG MODULE] ***************************************************
 
@@ -79,7 +79,7 @@ csr1                       : ok=1    changed=0    unreachable=0    failed=0
 csr2                       : ok=1    changed=0    unreachable=0    failed=0
 csr3                       : ok=1    changed=0    unreachable=0    failed=0
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 Note, this just printed the variable to the terminal.
@@ -99,7 +99,7 @@ Save and execute the playbook.
 You should see the following output.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory debug.yml
 
 
 PLAY [USING THE DEBUG MODULE] ***************************************************
@@ -156,7 +156,7 @@ vmx1                       : ok=1    changed=0    unreachable=0    failed=0
 vmx2                       : ok=1    changed=0    unreachable=0    failed=0
 vmx3                       : ok=1    changed=0    unreachable=0    failed=0
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 See how we can quickly view the same variable for all devices quite easily?
@@ -203,7 +203,7 @@ Add a task to the playbook to debug the `device_type` variable so the playbook r
 Save and execute the following:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory debug.yml
 ```
 
 You should see the following output for the new task:
@@ -274,7 +274,7 @@ ntc_device_type=n9kv
 Save and execute the following:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory debug.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory debug.yml
 ```
 
 You should see the following output for the new task:
@@ -927,7 +927,7 @@ You'll see the relevant output for the 8th task in the playbook:
 ```commandline
 TASK [DEBUG AND PRINT ANSIBLE_VERSION] *********************************************************************
 ok: [csr1] => {
-    "msg": "Ansible Version: '{'major': 2, 'full': '2.7.9', 'string': '2.7.9', 'minor': 7, 'revision': 9}'"
+    "msg": "Ansible Version: '{'string': '2.8.5', 'full': '2.8.5', 'major': 2, 'minor': 8, 'revision': 5}'"
 }
 ```
 

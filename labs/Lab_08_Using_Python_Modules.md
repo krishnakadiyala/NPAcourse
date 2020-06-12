@@ -150,9 +150,7 @@ You can check to see your current working directory with the `getcwd()` function
 
 ```python
 >>> os.getcwd()
-'/home/ntc'
->>>
-
+'/ntc'
 ```
 
 ##### Step 3
@@ -173,7 +171,7 @@ You can also access your OS ENVIRONMENT variables. Here we're accessing an envir
 
 ```python
 >>> os.getenv('HOME')
-'/home/ntc'
+'/root'
 >>>
 ```
 
@@ -184,7 +182,7 @@ In a separate Linux terminal window, you can type `env` to see other environment
 You can also list the contents of a given directory from Python:
 
 ```python
->>> os.listdir('/home/ntc')
+>>> os.listdir('/ntc')
 # output omitted
 >>>
 ```

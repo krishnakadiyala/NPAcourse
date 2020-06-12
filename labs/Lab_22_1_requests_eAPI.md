@@ -23,13 +23,12 @@ $ ping eos-leaf2
 Enter the Python shell.
 
 ```python
-$ python
-
-Python 2.7.12 (default, Nov 19 2016, 06:48:10) 
-[GCC 5.4.0 20160609] on linux2
+ntc@ntc-training:scripts$ python
+Python 3.6.8 (default, Jun 11 2019, 01:16:11) 
+[GCC 6.3.0 20170516] on linux
 Type "help", "copyright", "credits" or "license" for more information.
+>>> 
 
->>>
 ```
 
 ##### Step 3
@@ -204,18 +203,18 @@ Now, let's see the actual response from the switch using the `text` attribute.
 >>> rsp = response.text
 >>>
 >>> type(rsp)
-<type 'unicode'>
+<class 'str'>
 >>>
 ```
 
-Remember the response comes back as a unicode string.  Now Print it out:
+Now Print it out:
 
 > Note: if you use the print statement, you actually can't tell it's a string. This is critical to understand because you may think it's a dictionary.
 
 
 ```python
 >>> rsp
-u'{"jsonrpc": "2.0", "result": [{"modelName": "vEOS", "internalVersion": "4.15.2F-2663444.4152F", "systemMacAddress": "2c:c2:60:28:54:dd", "serialNumber": "", "memTotal": 3895836, "bootupTimestamp": 1477365548.64, "memFree": 1615940, "version": "4.15.2F", "architecture": "i386", "internalBuildId": "0ebbad93-563f-4920-8ecb-731057802b9c", "hardwareRevision": ""}], "id": "EapiExplorer-1"}'
+'{"jsonrpc": "2.0", "result": [{"modelName": "vEOS", "internalVersion": "4.15.2F-2663444.4152F", "systemMacAddress": "2c:c2:60:28:54:dd", "serialNumber": "", "memTotal": 3895836, "bootupTimestamp": 1477365548.64, "memFree": 1615940, "version": "4.15.2F", "architecture": "i386", "internalBuildId": "0ebbad93-563f-4920-8ecb-731057802b9c", "hardwareRevision": ""}], "id": "EapiExplorer-1"}'
 >>>
 ```
 
@@ -233,7 +232,7 @@ Perform a type check:
 
 ```python
 >>> type(data)
-<type 'dict'>
+<class 'dict'>
 >>>
 ```
 

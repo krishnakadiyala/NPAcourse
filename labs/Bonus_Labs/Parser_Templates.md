@@ -57,7 +57,7 @@ Save the playbook and execute it. You should see the following output:
 
 ```commandline
 
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory parsers.yml
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory parsers.yml
 PLAY [USING PARSER TEMPLATES] *******************************************************
 
 TASK [QUERY DEVICE VIA SNMP] ********************************************************

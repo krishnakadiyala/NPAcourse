@@ -505,13 +505,13 @@ Save the playbook (don't close it) and go back to the Linux command line.
 Execute the playbook using the following command:
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory build-push.yml
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory build-push.yml
 ```
 
 You will see the following output during execution:
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory build-push.yml
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory build-push.yml
 
 PLAY [Build Configuration Files] **********************************************
 
@@ -530,7 +530,7 @@ eos-leaf2                      : ok=1    changed=1    unreachable=0    failed=0
 Take notice of your new file/directory structure.
 
 ```
-ntc@jump-host:~/ansible$ tree
+ntc@ntc-training:~/ansible$ tree
 .
 ├── build-push.yml
 ├── configs
@@ -646,7 +646,7 @@ Execute ONLY the new task by using tags.
 
 Use this command:
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory build-push.yml --tags=push
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory build-push.yml --tags=push
 ```
 
 
@@ -674,13 +674,13 @@ Remember the diffs are stored in the `diffs` created you created in the previous
 In order to see the full workflow, delete/remove all of the conf files from the `configs` directory.
 
 ```
-ntc@jump-host:~/ansible$ rm configs/eos-leaf*.conf
+ntc@ntc-training:~/ansible$ rm configs/eos-leaf*.conf
 ```
 
 You file/dir structure should look like this:
 
 ```yaml
-ntc@jump-host:~/ansible$ tree
+ntc@ntc-training:~/ansible$ tree
 .
 ├── build-push.yml
 ├── configs
@@ -698,7 +698,7 @@ ntc@jump-host:~/ansible$ tree
 Run the playbook without tags:
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory build-push.yml
+ntc@ntc-training:~/ansible$ ansible-playbook -i inventory build-push.yml
 ```
 
 ```

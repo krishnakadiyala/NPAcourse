@@ -12,7 +12,7 @@ The two main parameters we are going to focus on are `path` and `state`.
 
 ```
 
-ntc@jump-host:ansible$ ansible-doc file
+ntc@ntc-training:ansible$ ansible-doc file
 
 ```
 
@@ -45,8 +45,8 @@ ntc@jump-host:ansible$ ansible-doc file
 Create a file called `auto-create.yml` for your playbook. 
 
 ```
-ntc@jump-host:ansible$ touch auto-create.yml
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$ touch auto-create.yml
+ntc@ntc-training:ansible$
 ```
 
 
@@ -104,7 +104,7 @@ You should see the following output.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook -i inventory auto-create.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory auto-create.yml
 
 PLAY [Auto Generate Files and Directories] ***************************************
 
@@ -135,7 +135,7 @@ nxos-spine2                : ok=1    changed=0    unreachable=0    failed=0
 vmx1                       : ok=1    changed=1    unreachable=0    failed=0
 vmx2                       : ok=1    changed=0    unreachable=0    failed=0
 vmx3                       : ok=1    changed=0    unreachable=0    failed=0
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 You'll also note that not every device has a _changed_ task.  This is because the OS name is being used as a directory name and only the first device in that group actually makes the change.  The subsequent devices have only "changed ok" without a "change" because the module is idempotent.
@@ -145,7 +145,7 @@ You'll also note that not every device has a _changed_ task.  This is because th
 Type the command `tree` in the terminal to see the directory structure.
 
 ```
-ntc@jump-host:ansible$ tree
+ntc@ntc-training:ansible$ tree
 .
 ├── auto-create.yml
 ├── configs
@@ -208,7 +208,7 @@ You should see the following output.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook -i inventory auto-create.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory auto-create.yml
 
 PLAY [Auto Generate Files and Directories] *******************************
 
@@ -263,7 +263,7 @@ Type the command `tree` in the terminal again to see the new files in the direct
 
 
 ```commandline
-ntc@jump-host:ansible$ tree
+ntc@ntc-training:ansible$ tree
 .
 ├── auto-create.yml
 ├── configs
@@ -334,7 +334,7 @@ You should see the following output.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook -i inventory auto-create.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory auto-create.yml
 
 
 PLAY [Auto Generate Files and Directories] ***********************************************************************************************

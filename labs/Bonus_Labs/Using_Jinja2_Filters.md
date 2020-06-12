@@ -12,8 +12,8 @@ The Jinja2 library ships with many filters already, but in addition to those Ans
 Create a new playbook in the `ansible` directory called `jinja_filters.yml`.
 
 ```
-ntc@jump-host:ansible$ touch jinja_filters.yml
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$ touch jinja_filters.yml
+ntc@ntc-training:ansible$
 
 ```
 ##### Step 2
@@ -71,7 +71,7 @@ You should see the following output.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+ntc@ntc-training:ansible$ ansible-playbook jinja_filters.yml
 
 PLAY [TEST JINJA FILTERS] ***************************************************************************************
 
@@ -88,7 +88,7 @@ ok: [localhost] => {
 PLAY RECAP ******************************************************************************************************
 localhost                  : ok=2    changed=0    unreachable=0    failed=0
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 
 ```
 
@@ -149,7 +149,7 @@ You should see the following output.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+ntc@ntc-training:ansible$ ansible-playbook jinja_filters.yml
 
 PLAY [TEST JINJA FILTERS] ***************************************************************************************
 
@@ -171,7 +171,7 @@ ok: [localhost] => {
 PLAY RECAP ******************************************************************************************************
 localhost                  : ok=3    changed=0    unreachable=0    failed=0
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 
 ```
 
@@ -250,7 +250,7 @@ You should see the following output.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+ntc@ntc-training:ansible$ ansible-playbook jinja_filters.yml
 
 PLAY [TEST JINJA FILTERS] ***************************************************************************************
 
@@ -290,7 +290,7 @@ ok: [localhost] => {
 PLAY RECAP ******************************************************************************************************
 localhost                  : ok=4    changed=0    unreachable=0    failed=0
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 ##### Step 9
@@ -321,7 +321,7 @@ You should see the following output.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+ntc@ntc-training:ansible$ ansible-playbook jinja_filters.yml
 ....output omitted
 
 TASK [RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES] *******************************************************
@@ -343,7 +343,7 @@ TASK [RETURN LIST OF ALL NAME KEYS IN THE INTERFACES_CONFIG LIST OF DICTIONARIES
 PLAY RECAP ******************************************************************************************************
 localhost                  : ok=6    changed=0    unreachable=0    failed=0
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 
 ```
 
@@ -371,7 +371,7 @@ You should see the following output.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+ntc@ntc-training:ansible$ ansible-playbook jinja_filters.yml
 ....output omitted
 
 TASK [RETURN JUST LIST OF INTERFACE NAMES THAT ARE UP (TRUE)] ***************************************************
@@ -424,7 +424,7 @@ You should see the following output.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook jinja_filters.yml
+ntc@ntc-training:ansible$ ansible-playbook jinja_filters.yml
 ....output omitted
 
 TASK [CONVERT BOOLEAN T/F TO SOMETHING MORE CONTEXTUAL FOR NETWORKING] *******************************************************************
@@ -440,7 +440,7 @@ ok: [localhost] => {
 PLAY RECAP ***************************************************************************************
 localhost                  : ok=9    changed=0    unreachable=0    failed=0
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 
 ```
 

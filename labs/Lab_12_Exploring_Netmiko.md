@@ -13,26 +13,26 @@ This task will show you how to establish an interactive SSH session to a Cisco r
 **Make sure you can ping csr1 from the Linux terminal.**
 
 ```
-ntc@jump-host:~$ ping csr1
-PING csr1 (10.0.0.51) 56(84) bytes of data.
-64 bytes from csr1 (10.0.0.51): icmp_seq=1 ttl=231 time=9.9 ms
-64 bytes from csr1 (10.0.0.51): icmp_seq=2 ttl=231 time=8.8 ms
-64 bytes from csr1 (10.0.0.51): icmp_seq=3 ttl=231 time=8.9 ms
+oot@ntc-training:~$ ping csr1 -c 3
+PING csr1 (172.21.0.6) 56(84) bytes of data.
+64 bytes from csr1.ntc-training (172.21.0.6): icmp_seq=1 ttl=64 time=0.053 ms
+64 bytes from csr1.ntc-training (172.21.0.6): icmp_seq=2 ttl=64 time=0.059 ms
+64 bytes from csr1.ntc-training (172.21.0.6): icmp_seq=3 ttl=64 time=0.073 ms
 ```
-
+> Note: The IP address you have will be different than above and that is ok.
 ##### Step 2
 
 Navigate to the `files` directory and enter the Python Dynamic Interactive Interpreter.
 
 ```
-ntc@jump-host:~$ cd files
-ntc@jump-host:files$
+ntc@ntc-training:ntc$ cd files
+ntc@ntc-training:files$
 ```
 
 ```
-ntc@jump-host:files$ python
-Python 2.7.6 (default, Oct 26 2016, 20:32:47)
-[GCC 4.8.4] on linux2
+ntc@ntc-training:files$ python
+Python 3.6.8 (default, Jun 11 2019, 01:16:11) 
+[GCC 6.3.0 20170516] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
@@ -344,7 +344,7 @@ If you're unsure of where you entered the shell, remember you can do the followi
 >>> import os
 >>>
 >>> os.getcwd()
-'/home/ntc/files'
+'/ntc/files'
 >>>
 ```
 

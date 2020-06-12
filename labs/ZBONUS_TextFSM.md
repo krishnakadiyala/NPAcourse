@@ -146,7 +146,7 @@ Return to the terminal within the `textfsm` directory.
 Run the following command using `textfsm.py`:
 
 ```bash
-ntc@jump-host:~/textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw
+ntc@ntc-training:~/textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw
 ```
 
 You will see the following output:
@@ -199,7 +199,7 @@ Save the updated template.
 Re-run the textfsm.py script.
 
 ```bash
-ntc@jump-host:~/textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw
+ntc@ntc-training:~/textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw
 FSM Template:
 Value INTERFACE (\S+)
 Value IP (\d+\.\d+\.\d+\.\d+)

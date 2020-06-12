@@ -250,11 +250,11 @@ You can verify it by using the `type()` statement in the for loop.
 ...     print(type(vlan))
 ...
 {'name': 'web', 'id': '10'}
-<type 'dict'>
+<class 'dict'>
 {'name': 'app', 'id': '20'}
-<type 'dict'>
+<class 'dict'>
 {'name': 'db', 'id': '30'}
-<type 'dict'>
+<class 'dict'>
 >>>
 ```
 

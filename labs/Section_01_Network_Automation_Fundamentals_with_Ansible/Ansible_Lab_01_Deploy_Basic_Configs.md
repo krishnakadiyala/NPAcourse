@@ -9,10 +9,10 @@ This lab provides an introduction to using Ansible creating your first playbook 
 While in your home directory, create a new directory called `ansible` and then navigate into this new directory.
 
 ```
-ntc@jump-host:~$ mkdir ansible
-
-ntc@jump-host:~$ cd ansible/
-ntc@jump-host:ansible$
+ntc@ntc-training:ntc$ mkdir ansible
+ntc@ntc-training:ntc$ 
+ntc@ntc-training:ntc$ cd ansible
+ntc@ntc-training:ansible$
 ```
 
 ##### Step 2
@@ -20,8 +20,8 @@ ntc@jump-host:ansible$
 Create an Ansible inventory file.  The name of this file is arbitrary--we'll use the name `inventory`.
 
 ```
-ntc@jump-host:ansible$ touch inventory
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$ touch inventory
+ntc@ntc-training:ansible$ 
 ```
 
 ##### Step 3
@@ -114,7 +114,7 @@ Here are some other details on the task you should be aware of:
 Execute the playbook using the following Linux command:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
 ```
 
 Few notes about this command:
@@ -127,23 +127,21 @@ Few notes about this command:
 Upon executing the playbook:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
-SSH password:
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
+SSH password: 
 
+PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] ***********************************************************************************************************************************
 
-PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
-
-TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] *******************************************
-changed: [csr1]
-changed: [csr2]
+TASK [TASK 1 in PLAY 1 - ENSURE SNMP COMMANDS EXIST ON IOS DEVICES] ********************************************************************************************************************
 changed: [csr3]
+changed: [csr2]
+changed: [csr1]
 
-PLAY RECAP ****************************************************************************************************
-csr1                       : ok=1    changed=1    unreachable=0    failed=0   
-csr2                       : ok=1    changed=1    unreachable=0    failed=0   
-csr3                       : ok=1    changed=1    unreachable=0    failed=0   
-
-ntc@jump-host:ansible$
+PLAY RECAP *****************************************************************************************************************************************************************************
+csr1                       : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+csr2                       : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+csr3                       : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+ntc@ntc-training:ansible$
 ```
 
 You should have seen **changed** for each device.  This is because the devices didn't have this configuration yet and an actual change was applied to each device.
@@ -164,7 +162,7 @@ At this point, you've ran your first playbook and have successfully configured S
 Re-run the same exact playbook as the last task:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
 SSH password:
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -179,7 +177,7 @@ csr1                       : ok=1    changed=0    unreachable=0    failed=0
 csr2                       : ok=1    changed=0    unreachable=0    failed=0   
 csr3                       : ok=1    changed=0    unreachable=0    failed=0   
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 Do you see the difference from the previous output?
@@ -256,7 +254,7 @@ Save the new playbook.
 With the Juniper play added to the playbook, re-execute the playbook.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
 SSH password:
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -281,7 +279,7 @@ vmx1                       : ok=1    changed=1    unreachable=0    failed=0
 vmx2                       : ok=1    changed=1    unreachable=0    failed=0   
 vmx3                       : ok=1    changed=1    unreachable=0    failed=0   
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 Take note of the PLAY RECAP.  You can see that the *changed* flag is 0 for all IOS CSR devices because no change occurred (because the **ios_config** module is idempotent).  
@@ -293,7 +291,7 @@ However, notice how *changed* is equal to 1 for each Juniper vMX device since a 
 Re-run the playbook one more time ensuring you don't see any changes.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-01.yml -u ntc -k
 SSH password:
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] **********************************************************
@@ -318,7 +316,7 @@ vmx1                       : ok=1    changed=0    unreachable=0    failed=0
 vmx2                       : ok=1    changed=0    unreachable=0    failed=0   
 vmx3                       : ok=1    changed=0    unreachable=0    failed=0   
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 
@@ -347,7 +345,7 @@ This is assigning the value of "ntc" to the built-in Ansible variable called `an
 Execute the same playbook.  This time do not use the `-u` flag.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml -k
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-01.yml -k
 SSH password:
 # output omitted
 ```
@@ -377,7 +375,7 @@ Re-run the playbook.
 This time DO NOT USE either the `-u` and `-k` flags.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-01.yml
 
 # output omitted - same as Step 11
 ```
@@ -426,7 +424,7 @@ The updated playbook should look like this:
 Re-run the playbook ensuring everything is correct from a syntax perspective and that the playbook still works.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-01.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-01.yml
 
 ```
 

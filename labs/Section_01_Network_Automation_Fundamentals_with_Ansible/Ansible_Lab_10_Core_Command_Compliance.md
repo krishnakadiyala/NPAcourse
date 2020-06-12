@@ -34,13 +34,13 @@ Use the following playbook to gather `show version` for the IOS devices.
 
 ##### Step 2
 
-Add a task that will _assert_ that version "16.08.01a" is running each device and that the config register is set properly to "0x2102".
+Add a task that will _assert_ that version "17.01.01" is running each device and that the config register is set properly to "0x2102".
 
 ```yaml
       - name: CHECK OS AND CONFIG REGISTER
         assert:
           that:
-           - "'16.08.01a' in output['stdout'][0]"
+           - "'17.01.01' in output['stdout'][0]"
            - "'0x2102' in output['stdout'][0]"
 
 ```
@@ -54,7 +54,7 @@ Since IOS doesn't return structured data (JSON), we're simply seeing if strings 
 Execute the playbook.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory compliance.yml   
+ntc@ntc-training:ansible$ ansible-playbook -i inventory compliance.yml   
 
 PLAY [IOS COMPLIANCE] ***********************************************************************
 
@@ -83,7 +83,7 @@ csr1                       : ok=2    changed=0    unreachable=0    failed=0
 csr2                       : ok=2    changed=0    unreachable=0    failed=0   
 csr3                       : ok=2    changed=0    unreachable=0    failed=0   
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 ##### Check
@@ -111,7 +111,7 @@ Full and final playbook will look like this:
       - name: CHECK OS AND CONFIG REGISTER
         assert:
           that:
-           - "'16.08.01a' in output['stdout'][0]"
+           - "'17.01.01' in output['stdout'][0]"
            - "'0x2102' in output['stdout'][0]"
 
 ```
@@ -147,7 +147,7 @@ Normally on the CLI of the newer versions of JUNOS OS you can run ` command | di
       - name: CHECK OS AND CONFIG REGISTER
         assert:
           that:
-           - "'16.08.01a' in output['stdout'][0]"
+           - "'17.01.01' in output['stdout'][0]"
            - "'0x2102' in output['stdout'][0]"
            
            
@@ -191,7 +191,7 @@ Execute the playbook and view the data that is stored in the `output` variable.
 ```commandline
 
 
-ntc@jump-host:ansible$ ansible-playbook -i inventory compliance.yml   
+ntc@ntc-training:ansible$ ansible-playbook -i inventory compliance.yml   
 
 .... output omitted ....
 
@@ -291,7 +291,7 @@ Execute the playbook and view the data that is stored in the new variables.
 
 
 ```commandline
-ntc@jump-host:ansible$ ansible-playbook -i inventory compliance.yml   
+ntc@ntc-training:ansible$ ansible-playbook -i inventory compliance.yml   
 
 .... output omitted ....
 
@@ -348,7 +348,7 @@ The assertion is also using `| int` after the `percent` because you can see the 
 Execute the playbook and view results. 
 
 ```yaml
-ntc@jump-host:ansible$ ansible-playbook -i inventory compliance.yml   
+ntc@ntc-training:ansible$ ansible-playbook -i inventory compliance.yml   
 
 .... output omitted ....
 
@@ -426,7 +426,7 @@ Execute the playbook and view results. Notice that the assertion failed and retu
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook -i inventory compliance.yml   
+ntc@ntc-training:ansible$ ansible-playbook -i inventory compliance.yml   
 
 .... output omitted ....
 
@@ -495,7 +495,7 @@ Execute the playbook and view results.
 
 ```commandline
 
-ntc@jump-host:ansible$ ansible-playbook -i inventory compliance.yml   
+ntc@ntc-training:ansible$ ansible-playbook -i inventory compliance.yml   
 
 .... output omitted ....
 
@@ -588,7 +588,7 @@ Full and final playbook will look like this:
       - name: CHECK OS AND CONFIG REGISTER
         assert:
           that:
-           - "'16.08.01a' in output['stdout'][0]"
+           - "'17.01.01' in output['stdout'][0]"
            - "'0x2102' in output['stdout'][0]"
 
 

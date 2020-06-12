@@ -108,7 +108,7 @@ You should see this error message:
 ```python
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
-TypeError: cannot concatenate 'str' and 'int' objects
+TypeError: must be str, not int
 >>> 
 ```
 
