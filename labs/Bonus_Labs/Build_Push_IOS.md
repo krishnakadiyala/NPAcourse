@@ -807,12 +807,12 @@ Execute ONLY the new task by using tags.
 
 Use this command:
 ```
-ntc@ntc-training:~/ansible$ ansible-playbook -i inventory build-push.yml --tags=push
+ntc@ntc-training:ansible$ ansible-playbook -i inventory build-push.yml --tags=push
 ```
 
 
 ```
-ntc@ntc-training:~/ansible$ ansible-playbook -i inventory build-push.yml --tags=push
+ntc@ntc-training:ansible$ ansible-playbook -i inventory build-push.yml --tags=push
 
 PLAY [Build Configuration Files] **********************************************
 
@@ -843,7 +843,7 @@ ntc@ntc-training:ansible$ rm configs/*.cfg
 Run the playbook without tags:
 
 ```
-ntc@ntc-training:~/ansible$ ansible-playbook -i inventory build-push.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory build-push.yml
 ```
 
 You'll see the configs get built in real-time and then deployed. Once deployed, you should see OSPF adjacencies come up.

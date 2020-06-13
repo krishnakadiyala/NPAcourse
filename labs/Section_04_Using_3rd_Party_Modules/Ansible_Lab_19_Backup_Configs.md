@@ -95,8 +95,8 @@ In this task, you will save and backup the current running configuration of all 
 Within the `ansible` directory, create a new directory called `backups`.
 
 ```
-ntc@ntc-training:~/ansible$ mkdir backups
-ntc@ntc-training:~/ansible$
+ntc@ntc-training:ansible$ mkdir backups
+ntc@ntc-training:ansible$
 ```
 
 > Note: you could also do this with the `file` module if you'd like so it's fully automated!
@@ -104,8 +104,8 @@ ntc@ntc-training:~/ansible$
 Additionally, in the same `ansible` directory, create a playbook called `backup.yml`
 
 ```
-ntc@ntc-training:~/ansible$ touch backup.yml
-ntc@ntc-training:~/ansible$
+ntc@ntc-training:ansible$ touch backup.yml
+ntc@ntc-training:ansible$
 ```
 
 ##### Step 2
@@ -319,7 +319,7 @@ Notice how there are now tags embedded for each of these tasks.  This allows us 
 Save the playbook and run it again with the following command.
 
 ```
-ntc@ntc-training:~/ansible$ $ ansible-playbook -i inventory backup.yml --tags=clean
+ntc@ntc-training:ansible$ $ ansible-playbook -i inventory backup.yml --tags=clean
 
 ```
 

@@ -52,7 +52,7 @@ if __name__ == "__main__":
 Run this Python script using the `-i` flag from the Linux terminal, so you get dropped into the Python shell after it executes.
 
 ```
-ntc@ntc-training:~/dynamic_inv$ python -i dynamo.py
+ntc@ntc-training:dynamic_inv$ python -i dynamo.py
 ```
 
 The scripts executes, but you still have access to the variables in scope within `if __name__ == "__main__"`.  Here that's just `rsp`.
@@ -132,7 +132,7 @@ In this directory there is also a sample playbook called `site.yml`
 Run the playbook using the dynamic inventory script.
 
 ```
-ntc@ntc-training:~/dynamic_inv$ ansible-playbook -i dynamo.py site.yml
+ntc@ntc-training:dynamic_inv$ ansible-playbook -i dynamo.py site.yml
 ```
 
 ```

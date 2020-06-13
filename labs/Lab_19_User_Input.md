@@ -187,7 +187,7 @@ flags_user_input.py: error: argument -i/--ip is required
 Next try and execute the script with the `-h` or `--help` flag:
 
 ``` shell
-ntc@ntc-training:~/scripts$ python user-flags.py --help
+ntc@ntc-training:scripts$ python user-flags.py --help
 usage: flags_user_input.py [-h] -i IP -d DEVICE_TYPE -u
                              USERNAME -p PASSWORD
 Collect device and data file information to configure a device
@@ -259,7 +259,7 @@ if __name__ == "__main__":
 Save and execute the script.
 
 ```
-ntc@ntc-training:~/scripts$ python basic_args.py
+ntc@ntc-training:scripts$ python basic_args.py
 HERE ARE MY ARGUMENTS:
 ['basic_args.py']
 ```
@@ -271,7 +271,7 @@ Can you tell that a list was printed out?  This is a list with one element.  We 
 Re-run the script like so:
 
 ```
-ntc@ntc-training:~/scripts$ python basic_args.py cisco arista juniper
+ntc@ntc-training:scripts$ python basic_args.py cisco arista juniper
 ```
 
 After running this script, you will see the following output:
@@ -302,7 +302,7 @@ if __name__ == "__main__":
 Run the script again.
 
 ```
-ntc@ntc-training:~/scripts$ python basic_args.py cisco arista juniper
+ntc@ntc-training:scripts$ python basic_args.py cisco arista juniper
 ```
 
 ```
