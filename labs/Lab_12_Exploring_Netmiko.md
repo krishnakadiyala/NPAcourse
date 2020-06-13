@@ -344,7 +344,7 @@ If you're unsure of where you entered the shell, remember you can do the followi
 >>> import os
 >>>
 >>> os.getcwd()
-'/ntc/files'
+'/home/ntc/files'
 >>>
 ```
 

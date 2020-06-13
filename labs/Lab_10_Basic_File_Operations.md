@@ -57,7 +57,7 @@ type(vlan_file)
 <class '_io.TextIOWrapper'>
 ```
 
-You will notice this is an object of type `_io.TextIOWrapper`.
+You will notice this is an object of type `_io.TextIOWrapper`.  This was named `file` type prior to Python 3.  
 
 ##### Step 6
 

@@ -16,15 +16,13 @@ You need to perform two steps to start using 3rd party modules.
 Issue the command `ansible --version`.  This will give us a wealth of information about our Ansible environment.
 
 ```commandline
-   ntc@ntc-training:~/ansible$ ansible --version
-    ansible 2.8.5
-      config file = /etc/ansible/ansible.cfg
-      configured module search path = ['/etc/ntc/ansible/library']
-      ansible python module location = /usr/local/lib/python3.6/site-packages/ansible
-      executable location = /usr/local/bin/ansible
-      python version = 3.6.8 (default, Jun 11 2019, 01:16:11) [GCC 6.3.0 20170516]
-      
-   ntc@ntc-training:~/ansible$
+ntc@ntc-training:~$ ansible --version
+ansible 2.9.9
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/etc/ntc/ansible/library']
+  ansible python module location = /usr/local/lib/python3.6/site-packages/ansible
+  executable location = /usr/local/bin/ansible
+  python version = 3.6.8 (default, Jun 11 2019, 01:16:11) [GCC 6.3.0 20170516]
 ```
 
 You can note our configured module search path as `/etc/ntc/ansible/library`.  Ansible will recursively search for modules in that path now.
@@ -58,14 +56,13 @@ library        = /home/ntc/projects/:/etc/ntc/ansible/library
 Save and exit the file.
 
 ```commandline
-   ntc@ntc-training:~/ansible$ ansible --version
-   ansible 2.7.9
-      config file = /etc/ansible/ansible.cfg
-      configured module search path = [u'/etc/ntc/ansible/library', u'/home/ntc/projects']
-      ansible python module location = /home/ntc/.local/lib/python3.6/site-packages/ansible
-      executable location = /usr/local/bin/ansible
-      python version = 3.6.7 (default, Oct 22 2018, 11:32:17) [GCC 8.2.0]
-   ntc@ntc-training:~/ansible$
+ntc@ntc-training:~$ ansible --version
+ansible 2.9.9
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/etc/ntc/ansible/library']
+  ansible python module location = /usr/local/lib/python3.6/site-packages/ansible
+  executable location = /usr/local/bin/ansible
+  python version = 3.6.8 (default, Jun 11 2019, 01:16:11) [GCC 6.3.0 20170516]
 ```
 
 ##### Step 3
