@@ -64,7 +64,7 @@ Do a type check on `facts_list`:
 
 ```python
 >>> type(facts_list)
-<type 'list'>
+<class 'list'>
 >>>
 ```
 
@@ -88,7 +88,7 @@ In this step, we'll just check the data type of the first element in the list.
 
 ```python
 >>> type(facts_list[0])
-<type 'dict'>
+<class 'dict'>
 >>>
 ```
 
@@ -98,7 +98,7 @@ OR
 >>> first = facts_list[0]
 >>>
 >>> type(first)
-<type 'dict'>
+<class 'dict'>
 >>>
 ```
 
@@ -285,9 +285,9 @@ In the next Task, we'll walk through a more gradual process helpful with parsing
 Enter the Python shell and import the `json` module.
 
 ```python
-ntc@jump-host:~$ python
-Python 2.7.12 (default, Nov 19 2016, 06:48:10)
-[GCC 5.4.0 20160609] on linux2
+ntc@ntc-training:ntc$ python
+Python 3.6.8 (default, Jun 11 2019, 01:16:11) 
+[GCC 6.3.0 20170516] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
 >>> import json
@@ -522,7 +522,7 @@ Verify the single key of the dictionary by using the `keys` method.
 
 ```python
 >>> print(content.keys())
-['output']
+dict_keys(['output'])
 >>>
 ```
 
@@ -547,7 +547,7 @@ Let's try it.
 
 ```python
 >>> type(output)
-<type 'dict'>
+<class 'dict'>
 >>>
 ```
 
@@ -555,7 +555,7 @@ Now that you  know it's a dictionary, print the keys.
 
 ```python
 >>> print(output.keys())
-['ansible_facts']
+dict_keys(['ansible_facts'])
 >>>
 ```
 
@@ -801,7 +801,7 @@ But you can also verify using the following type function statement.
 
 ```python
 >>> print(type(output['ansible_facts']['fan_info']))
-<type 'list'>
+<class 'list'>
 >>>
 ```
 

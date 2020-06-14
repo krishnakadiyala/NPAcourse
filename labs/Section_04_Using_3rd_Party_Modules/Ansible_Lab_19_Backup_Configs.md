@@ -16,15 +16,13 @@ You need to perform two steps to start using 3rd party modules.
 Issue the command `ansible --version`.  This will give us a wealth of information about our Ansible environment.
 
 ```commandline
-   ntc@jump-host:~/ansible$ ansible --version
-   ansible 2.7.9
-      config file = /etc/ansible/ansible.cfg
-      configured module search path = ['/etc/ntc/ansible/library']
-      ansible python module location = /home/ntc/.local/lib/python3.6/site-packages/ansible
-      executable location = /usr/local/bin/ansible
-      python version = 3.6.7 (default, Oct 22 2018, 11:32:17) [GCC 8.2.0]
-      
-   ntc@jump-host:~/ansible$
+ntc@ntc-training:~$ ansible --version
+ansible 2.9.9
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/etc/ntc/ansible/library']
+  ansible python module location = /usr/local/lib/python3.6/site-packages/ansible
+  executable location = /usr/local/bin/ansible
+  python version = 3.6.8 (default, Jun 11 2019, 01:16:11) [GCC 6.3.0 20170516]
 ```
 
 You can note our configured module search path as `/etc/ntc/ansible/library`.  Ansible will recursively search for modules in that path now.
@@ -58,14 +56,13 @@ library        = /home/ntc/projects/:/etc/ntc/ansible/library
 Save and exit the file.
 
 ```commandline
-   ntc@jump-host:~/ansible$ ansible --version
-   ansible 2.7.9
-      config file = /etc/ansible/ansible.cfg
-      configured module search path = [u'/etc/ntc/ansible/library', u'/home/ntc/projects']
-      ansible python module location = /home/ntc/.local/lib/python3.6/site-packages/ansible
-      executable location = /usr/local/bin/ansible
-      python version = 3.6.7 (default, Oct 22 2018, 11:32:17) [GCC 8.2.0]
-   ntc@jump-host:~/ansible$
+ntc@ntc-training:~$ ansible --version
+ansible 2.9.9
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/etc/ntc/ansible/library']
+  ansible python module location = /usr/local/lib/python3.6/site-packages/ansible
+  executable location = /usr/local/bin/ansible
+  python version = 3.6.8 (default, Jun 11 2019, 01:16:11) [GCC 6.3.0 20170516]
 ```
 
 ##### Step 3
@@ -78,9 +75,9 @@ You can now just `git clone` any git project that has modules inside your config
 For the course, we have a number of repositories cloned that contain 3rd party open source Ansible modules:
 
 ```
-ntc@jump-host:~$ ls /etc/ntc/ansible/library/
+ntc@ntc-training:~$ ls /etc/ntc/ansible/library/
 ansible-junos-stdlib  ansible-pan  ansible-snmp  napalm  napalm-ansible  ntc-ansible
-ntc@jump-host:~$
+ntc@ntc-training:~$
 ```
 
 Each one of these also required Python packages to be installed via `pip` including: `pyntc`, `napalm`, `ntc_templates`, `nelsnmp` just to name a few.
@@ -98,8 +95,8 @@ In this task, you will save and backup the current running configuration of all 
 Within the `ansible` directory, create a new directory called `backups`.
 
 ```
-ntc@jump-host:~/ansible$ mkdir backups
-ntc@jump-host:~/ansible$
+ntc@ntc-training:ansible$ mkdir backups
+ntc@ntc-training:ansible$
 ```
 
 > Note: you could also do this with the `file` module if you'd like so it's fully automated!
@@ -107,8 +104,8 @@ ntc@jump-host:~/ansible$
 Additionally, in the same `ansible` directory, create a playbook called `backup.yml`
 
 ```
-ntc@jump-host:~/ansible$ touch backup.yml
-ntc@jump-host:~/ansible$
+ntc@ntc-training:ansible$ touch backup.yml
+ntc@ntc-training:ansible$
 ```
 
 ##### Step 2
@@ -236,13 +233,13 @@ Supported platforms for this module actually matches anything Netmiko, a popular
 Save and Execute the playbook.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory backup.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory backup.yml
 ```
 
 You will see the following output during execution (this output doesn't include Nexus):
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory backup.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory backup.yml
 
 PLAY [BACKUP] *************************************************************************************************
 
@@ -274,7 +271,7 @@ vmx1                       : ok=1    changed=0    unreachable=0    failed=0
 vmx2                       : ok=1    changed=0    unreachable=0    failed=0   
 vmx3                       : ok=1    changed=0    unreachable=0    failed=0   
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 
 ```
 
@@ -322,7 +319,7 @@ Notice how there are now tags embedded for each of these tasks.  This allows us 
 Save the playbook and run it again with the following command.
 
 ```
-ntc@jump-host:~/ansible$ $ ansible-playbook -i inventory backup.yml --tags=clean
+ntc@ntc-training:ansible$ $ ansible-playbook -i inventory backup.yml --tags=clean
 
 ```
 

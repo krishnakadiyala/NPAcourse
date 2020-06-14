@@ -27,12 +27,11 @@ snmp-server contact JOHN_SMITH
 Enter the Python shell **from your home directory**.
 
 ```python
-ntc@jump-host:~$ python
-Python 2.7.12 (default, Nov 19 2016, 06:48:10)
-[GCC 5.4.0 20160609] on linux2
+ntc@ntc-training:~$ python
+Python 3.6.8 (default, Jun 11 2019, 01:16:11) 
+[GCC 6.3.0 20170516] on linux
 Type "help", "copyright", "credits" or "license" for more information.
->>>
->>>
+>>> 
 ```
 
 ##### Step 4
@@ -294,7 +293,7 @@ router bgp 65512
 Enter the Python shell from your home directory, import the *eos* napalm driver and create an *eos* device object for *eos-spine1* just like you already did on Task 1.
 
 ```python
-ntc@jump-host:~$ python
+ntc@ntc-training:~$ python
 
 Python 2.7.6 (default, Jun 22 2015, 17:58:13)
 [GCC 4.8.2] on linux2
@@ -375,7 +374,7 @@ In this task you will make practice with NAPALM getters on several platforms.
 Enter into the Python shell from your home directory.
 
 ```python
-ntc@jump-host:~$ python
+ntc@ntc-training:~$ python
 Python 2.7.12 (default, Nov 19 2016, 06:48:10)
 [GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.

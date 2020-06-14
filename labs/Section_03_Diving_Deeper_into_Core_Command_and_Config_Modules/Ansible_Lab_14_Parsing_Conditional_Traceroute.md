@@ -160,7 +160,7 @@ Execute the playbook using extra vars passing in a new `dest` IP address to test
 
 ```
 
-ntc@jump-host:ansible$ ansible-playbook -i inventory test-reachability.yml --extra-vars="dest=4.4.4.4"
+ntc@ntc-training:ansible$ ansible-playbook -i inventory test-reachability.yml --extra-vars="dest=4.4.4.4"
 ```
 
 You could also simply just change the value inside the playbook.  

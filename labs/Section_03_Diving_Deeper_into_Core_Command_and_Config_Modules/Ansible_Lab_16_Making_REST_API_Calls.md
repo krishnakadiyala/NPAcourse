@@ -191,7 +191,7 @@ Save and re-run the playbook.
 This is the full output you should see:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory restapis.yml --tags=ios
+ntc@ntc-training:ansible$ ansible-playbook -i inventory restapis.yml --tags=ios
 
 PLAY [PLAY 1 - ISSUE API CALL TO CSR] ******************************************
 
@@ -330,7 +330,7 @@ This task is showing you can also do a HTTP POST passing a multi-line string wit
 
       - name: SHOW VERSION NEXUS API
         uri:
-          url: https://nxos-spine1:8443/ins
+          url: https://nxos-spine1/ins
           method: POST
           user: "{{ ansible_user }}"
           password: "{{ ansible_ssh_pass }}"
@@ -425,7 +425,7 @@ The full playbook is as follows:
 
       - name: SHOW VERSION NEXUS API
         uri:
-          url: https://nxos-spine1:8443/ins
+          url: https://nxos-spine1/ins
           method: POST
           user: "{{ ansible_user }}"
           password: "{{ ansible_ssh_pass }}"

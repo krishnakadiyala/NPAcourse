@@ -151,8 +151,6 @@ You can check to see your current working directory with the `getcwd()` function
 ```python
 >>> os.getcwd()
 '/home/ntc'
->>>
-
 ```
 
 ##### Step 3

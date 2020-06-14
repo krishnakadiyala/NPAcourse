@@ -713,13 +713,13 @@ Save the playbook (don't close it) and go back to the Linux command line.
 Execute the playbook using the following command:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory build-push.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory build-push.yml
 ```
 
 You will see the following output during execution:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory build-push.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory build-push.yml
 
 PLAY [Build Configuration Files] **********************************************
 
@@ -807,12 +807,12 @@ Execute ONLY the new task by using tags.
 
 Use this command:
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory build-push.yml --tags=push
+ntc@ntc-training:ansible$ ansible-playbook -i inventory build-push.yml --tags=push
 ```
 
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory build-push.yml --tags=push
+ntc@ntc-training:ansible$ ansible-playbook -i inventory build-push.yml --tags=push
 
 PLAY [Build Configuration Files] **********************************************
 
@@ -834,7 +834,7 @@ Congratulations!  You just pushed configuration to three routers.
 In order to see the full workflow, delete/remove all of the cfg files from the `configs` directory.
 
 ```
-ntc@jump-host:ansible$ rm configs/*.cfg
+ntc@ntc-training:ansible$ rm configs/*.cfg
 ```
 
 
@@ -843,7 +843,7 @@ ntc@jump-host:ansible$ rm configs/*.cfg
 Run the playbook without tags:
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory build-push.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory build-push.yml
 ```
 
 You'll see the configs get built in real-time and then deployed. Once deployed, you should see OSPF adjacencies come up.

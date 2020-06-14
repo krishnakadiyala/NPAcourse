@@ -123,7 +123,7 @@ You will see the output below.
 
 
 ```
-ntc@jump-host:~/ansible$ ansible-playbook -i inventory snmp-role-pb.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-role-pb.yml
 ```
 
 ```

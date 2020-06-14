@@ -29,8 +29,8 @@ Use the following playbook to gather `show version` and `show interfaces` for th
 
     vars:
       template_path: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/"
-      show_version_path: "{{ template_path }}cisco_ios_show_version.template"
-      show_interface_path: "{{ template_path }}cisco_ios_show_interfaces.template"
+      show_version_path: "{{ template_path }}cisco_ios_show_version.textfsm"
+      show_interface_path: "{{ template_path }}cisco_ios_show_interfaces.textfsm"
 
     tasks:
 
@@ -77,7 +77,7 @@ Looking at the relevant debug output, you should see the following:
 
 ```
 
-ntc@jump-host:ansible$ ansible-playbook -i inventory parse-ios.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory parse-ios.yml
 
 .......Output omitted
 
@@ -349,8 +349,8 @@ The full playbook should look like the following:
 
     vars:
       template_path: "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/"
-      show_version_path: "{{ template_path }}cisco_ios_show_version.template"
-      show_interface_path: "{{ template_path }}cisco_ios_show_interfaces.template"
+      show_version_path: "{{ template_path }}cisco_ios_show_version.textfsm"
+      show_interface_path: "{{ template_path }}cisco_ios_show_interfaces.textfsm"
 
     tasks:
 

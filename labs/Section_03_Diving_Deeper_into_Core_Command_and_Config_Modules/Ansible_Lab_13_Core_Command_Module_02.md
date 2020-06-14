@@ -30,7 +30,7 @@ The solution should output one of the following directory and file structures:
 **Solution Option 1**
 
 ```
-ntc@jump-host:ansible$ tree ping-responses/
+ntc@ntc-training:ansible$ tree ping-responses/
 ping-responses
 ├── ping_results_from_csr1.txt
 ├── ping_results_from_csr2.txt
@@ -38,13 +38,13 @@ ping-responses
 
 1 directory, 3 files
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 **Solution Option 2**
 
 ```
-ntc@jump-host:ansible$ tree ping-responses/
+ntc@ntc-training:ansible$ tree ping-responses/
 ping-responses/
 ├── csr1
 │   ├── to_198.6.1.4.txt
@@ -60,7 +60,7 @@ ping-responses/
     └── to_8.8.8.8.txt
 
 3 directories, 9 files
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```
 
 ## STOP SCROLLING - SOLUTIONS BELOW

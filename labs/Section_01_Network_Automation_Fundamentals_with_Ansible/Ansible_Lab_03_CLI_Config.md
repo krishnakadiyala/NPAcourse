@@ -12,8 +12,8 @@ In this lab the `cli_config` module will be used for both Cisco and Juniper devi
 Navigate to the `ansible` directory and create a new playbook file called `snmp-config-03.yml`.
 
 ```bash
-ntc@jump-host:ansible$ touch snmp-config-03.yml
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$ touch snmp-config-03.yml
+ntc@ntc-training:ansible$
 ```
 ##### Step 2
 
@@ -48,7 +48,7 @@ Save this file.
 Run the playbook using the following command: `ansible-playbook -i inventory snmp-config-03.yml`
 
 ```bash
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-03.yml
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] ***********************************************************************************************************************
 
@@ -113,7 +113,7 @@ Run the Ansible playbook again. You should see changes on the VMX devices as the
 
 
 ```bash
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-03.yml
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] ***********************************************************************************************************************
 
@@ -222,7 +222,7 @@ Run the Ansible playbook again. There should'nt be any changes to the configurat
 
 
 ```bash
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-03.yml
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] ***********************************************************************************************************************
 
@@ -368,7 +368,7 @@ Run the Ansible playbook again. There shouldn't be any changes to the configurat
 
 
 ```bash
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-config-03.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-03.yml
 
 PLAY [PLAY 1 - DEPLOYING SNMP CONFIGURATIONS ON IOS] ***********************************************************************************************************************
 

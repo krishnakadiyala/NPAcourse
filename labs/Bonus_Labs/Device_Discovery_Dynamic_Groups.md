@@ -93,7 +93,7 @@ Execute the playbook using verbose mode and limit the playbook to just **csr1** 
 
 ```
 
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-discovery.yml --limit csr1,nxos-spine1 -v
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-discovery.yml --limit csr1,nxos-spine1 -v
 Using /etc/ansible/ansible.cfg as config file
 
 PLAY [PLAY 1 - DISCOVER OS] ****************************************************
@@ -318,7 +318,7 @@ Save and execute the playbook.
 You should see this output proving the creation of 3 new groups:
 
 ```yaml
-ntc@jump-host:ansible$ ansible-playbook -i inventory snmp-discovery.yml
+ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-discovery.yml
 
 PLAY [PLAY 1 - DISCOVER OS] **********************************************************
 
@@ -1070,5 +1070,5 @@ vmx3                       : ok=7    changed=0    unreachable=0    failed=0
 
 
 
-ntc@jump-host:ansible$
+ntc@ntc-training:ansible$
 ```

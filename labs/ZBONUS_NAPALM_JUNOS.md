@@ -28,10 +28,10 @@ set snmp contact JOHN_SMITH
 Enter the Python shell **from your home directory**.
 
 ```python
-Python 2.7.12 (default, Nov 19 2016, 06:48:10)
-[GCC 5.4.0 20160609] on linux2
+ntc@ntc-training:~$ python
+Python 3.6.8 (default, Jun 11 2019, 01:16:11) 
+[GCC 6.3.0 20170516] on linux
 Type "help", "copyright", "credits" or "license" for more information.
->>>
 >>>
 ```
 
@@ -315,9 +315,9 @@ set protocols bgp group NTC_EXTERNAL neighbor 10.0.0.102
 Enter the Python shell from your home directory, import the *junos* napalm driver and create an *junos* device object for *vmx2* just like you already did on Task 1.
 
 ```python
-ntc@jump-host:~$ python
-Python 2.7.12 (default, Nov 19 2016, 06:48:10)
-[GCC 5.4.0 20160609] on linux2
+ntc@ntc-training:~$ python
+Python 3.6.8 (default, Jun 11 2019, 01:16:11) 
+[GCC 6.3.0 20170516] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
 >>> from napalm import get_network_driver
@@ -387,9 +387,9 @@ In this task you will practice with NAPALM getters on several platforms.
 Enter into the Python shell from your home directory.
 
 ```python
-ntc@jump-host:~$ python
-Python 2.7.12 (default, Nov 19 2016, 06:48:10)
-[GCC 5.4.0 20160609] on linux2
+ntc@ntc-training:~$ python
+Python 3.6.8 (default, Jun 11 2019, 01:16:11) 
+[GCC 6.3.0 20170516] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```

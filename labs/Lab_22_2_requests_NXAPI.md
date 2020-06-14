@@ -20,13 +20,13 @@ $ ping nxos-spine2
 Enter the Python shell.
 
 ```python
-$ python
 
-Python 2.7.12 (default, Nov 19 2016, 06:48:10) 
-[GCC 5.4.0 20160609] on linux2
+
+ntc@ntc-training:~$ python
+Python 3.6.8 (default, Jun 11 2019, 01:16:11) 
+[GCC 6.3.0 20170516] on linux
 Type "help", "copyright", "credits" or "license" for more information.
-
->>>
+>>> 
 ```
 
 ##### Step 3
@@ -127,7 +127,7 @@ Create four new variables while on the Python shell: `auth`, `headers`, `payload
 
 `payload` should be equal to the Request object you copied above as a dictionary.
 
-`url` should be equal to `url = 'https://nxos-spine1:8443/ins'` - this needs the `ins` appended to the switch name or IP to work.  
+`url` should be equal to `url = 'https://nxos-spine1/ins'` - this needs the `ins` appended to the switch name or IP to work.  
 
 The summary up until this point is the following:
 
@@ -154,7 +154,7 @@ The summary up until this point is the following:
 ...     }
 ... }
 >>>
->>> url = 'https://nxos-spine1:8443/ins'
+>>> url = 'https://nxos-spine1/ins'
 >>>
 ```
 
@@ -165,7 +165,7 @@ At this point, we are ready to make a HTTP API call to the Nexus switch.  Rememb
 Make the API call to the device using the `post` function of `requests` as shown below.
 
 ```python
->>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
+>>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
 >>>
 ```
 
@@ -197,16 +197,11 @@ Now, let's see the actual response from the switch using the `text` attribute.
 >>> rsp = response.text
 >>>
 >>> type(rsp)
-<type 'unicode'>
+<class 'str'>
 >>>
 ```
 
-> Whenever, you see `unicode`, you can think of it as a different type of encoding for a string.
-
 Now print out the `rsp` variable:
-
-> Note: if you use the print statement, you actually can't tell it's a string (unicode). This is critical to understand because you may think it's a dictionary.
-
 
 ```python
 >>> rsp
@@ -257,7 +252,7 @@ Perform a type check:
 
 ```python
 >>> type(data)
-<type 'dict'>
+<class 'dict'>
 >>>
 ```
 
@@ -315,7 +310,7 @@ Print the name of the kickstart image.
 
 ```python
 >>> print(data['ins_api']['outputs']['output']['body']['kickstart_ver_str'])
-7.3(1)D1(1) [build 7.3(1)D1(0.10)]
+9.3(3)
 >>>
 ```
 
@@ -327,7 +322,7 @@ Extract everything from `body` in a variable first and then print the kickstart 
 >>> body = data['ins_api']['outputs']['output']['body']
 >>>
 >>> print(body.get('kickstart_ver_str'))
-7.3(1)D1(1) [build 7.3(1)D1(0.10)]
+9.3(3)
 >>>
 ```
 
@@ -352,7 +347,7 @@ Print the JSON object using `json.dumps` out when complete.
 ...     }
 ... }
 >>>
->>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
+>>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
 >>>
 >>> data = json.loads(response.text)
 >>>
@@ -430,7 +425,7 @@ SSH back into the switch and add VLAN 10.
 Re-issue the same API call and re-create the `vlans` variable.
 
 ```python
->>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
+>>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
 >>>
 >>> data = json.loads(response.text)
 >>>
@@ -540,7 +535,7 @@ You'll notice this process becomes repetitive, so you'd want to store a few of t
 ...     }
 ... }
 >>>
->>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
+>>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
 >>>
 >>> data = json.loads(response.text)
 >>>
@@ -855,7 +850,7 @@ def nxapi_request(device, command):
         'Content-Type': 'application/json'
     }
 
-    url = 'https://{}:8443/ins'.format(device)
+    url = 'https://{}/ins'.format(device)
 
     payload = {
         "ins_api": {
@@ -868,7 +863,7 @@ def nxapi_request(device, command):
         }
     }
 
-    response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
+    response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
     return response
 
 def get_nxos_neighbors(response):

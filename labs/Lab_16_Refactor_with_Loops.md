@@ -128,7 +128,7 @@ with open("/home/ntc/scripts/configs/csr2.cfg", "w") as config_file:
 Execute the script ensuring it still works as expected:
 
 ```
-ntc@jump-host:scripts$ python backupv2.py
+ntc@ntc-training:scripts$ python backupv2.py
 Connecting to device | csr1
 Saving configuration | csr1
 Backing up configuration | csr1

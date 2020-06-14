@@ -173,7 +173,7 @@ You will replace them with the following:
 Save and execute this script, first without any arguments:
 
 ``` shell
-ntc@jump-host:scripts$ python user-flags.py
+ntc@ntc-training:scripts$ python user-flags.py
 usage: flags_user_input.py [-h]  -i IP -d DEVICE_TYPE -u
                              USERNAME -p PASSWORD
 flags_user_input.py: error: argument -i/--ip is required
@@ -187,7 +187,7 @@ flags_user_input.py: error: argument -i/--ip is required
 Next try and execute the script with the `-h` or `--help` flag:
 
 ``` shell
-ntc@jump-host:~/scripts$ python user-flags.py --help
+ntc@ntc-training:scripts$ python user-flags.py --help
 usage: flags_user_input.py [-h] -i IP -d DEVICE_TYPE -u
                              USERNAME -p PASSWORD
 Collect device and data file information to configure a device
@@ -209,7 +209,7 @@ optional arguments:
 Finally, execute the script with all required inputs:
 
 ```
-ntc@jump-host:scripts$ python user-flags.py -i csr1 -d cisco_ios -u ntc -p ntc123
+ntc@ntc-training:scripts$ python user-flags.py -i csr1 -d cisco_ios -u ntc -p ntc123
 # output omitted
 ```
 
@@ -259,9 +259,9 @@ if __name__ == "__main__":
 Save and execute the script.
 
 ```
-ntc@jump-host:~/scripts$ python basic_args.py
+ntc@ntc-training:scripts$ python basic_args.py
 HERE ARE MY ARGUMENTS:
-['my_args.py']
+['basic_args.py']
 ```
 
 Can you tell that a list was printed out?  This is a list with one element.  We can see that the first and only element in the list is the name of the Python file being executed.
@@ -271,7 +271,7 @@ Can you tell that a list was printed out?  This is a list with one element.  We 
 Re-run the script like so:
 
 ```
-ntc@jump-host:~/scripts$ python basic_args.py cisco arista juniper
+ntc@ntc-training:scripts$ python basic_args.py cisco arista juniper
 ```
 
 After running this script, you will see the following output:
@@ -302,7 +302,7 @@ if __name__ == "__main__":
 Run the script again.
 
 ```
-ntc@jump-host:~/scripts$ python basic_args.py cisco arista juniper
+ntc@ntc-training:scripts$ python basic_args.py cisco arista juniper
 ```
 
 ```

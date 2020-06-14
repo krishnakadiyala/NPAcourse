@@ -17,8 +17,7 @@ Perform a type check on `facts` to prove it's a dictoinary:
 
 ```python
 >>> type(facts)
-<type 'dict'>
->>>
+<class 'dict'>
 ```
 
 ##### Step 3

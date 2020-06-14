@@ -92,7 +92,7 @@ Use the following playbook as the getting started point to manage a AAA server g
 Execute the playbook in verbose mode using the "starting_config" tag:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory aaa.yml --tags=starting_config -v
+ntc@ntc-training:ansible$ ansible-playbook -i inventory aaa.yml --tags=starting_config -v
 ```
 
 Relevant task output:
@@ -149,7 +149,7 @@ Take note of the new task using the tag of "append_server".
 Execute the playbook in verbose mode using the "append_server" tag:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory aaa.yml --tags=append_server -v
+ntc@ntc-training:ansible$ ansible-playbook -i inventory aaa.yml --tags=append_server -v
 ```
 
 Relevant task output:
@@ -236,7 +236,7 @@ This task introduces even more parameters for `ios_config` such as `before` and 
 Execute the playbook in verbose mode using the "replace_on_change" tag:
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory aaa.yml --tags=replace_on_change -v
+ntc@ntc-training:ansible$ ansible-playbook -i inventory aaa.yml --tags=replace_on_change -v
 ```
 
 Relevant task output:
@@ -303,7 +303,7 @@ In prior labs, you've learned how to view the commands that are (and will) get s
 Execute the playbook using the `diff_me` tag and the `--diff` flag.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory verify-config.yml --tags=diff_me --diff
+ntc@ntc-training:ansible$ ansible-playbook -i inventory verify-config.yml --tags=diff_me --diff
 ```
 
 Notice now how you see the exact diffs directly on the Linux terminal when the playbook is running:
@@ -365,7 +365,7 @@ Add a new task to the playbook.  This task will compare the FULL config of one p
 Execute the playbook using the `verify_config` tag and the `--diff` flag.
 
 ```
-ntc@jump-host:ansible$ ansible-playbook -i inventory verify-config.yml --tags=verify_config --diff
+ntc@ntc-training:ansible$ ansible-playbook -i inventory verify-config.yml --tags=verify_config --diff
 ```
 
 Just like the last task, notice now how you see the exact diffs directly on the Linux terminal when the playbook is running.  However, you should see them for the full config being proposed (intended).
