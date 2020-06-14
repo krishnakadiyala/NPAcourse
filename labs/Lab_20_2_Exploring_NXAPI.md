@@ -6,7 +6,9 @@ This task introduces you to the Developer Sandbox environment that exists on eac
 
 ##### Step 1
 
-Open a Web Browser and connect to the switch using `https://nxos-spine1.pod0.ntc.cloud.tesuto.com:8443/`
+> Note: The below tasks must be performed from an RDP session to your lab jump host.  
+
+Open a Web Browser and connect to the switch using `https://nxos-spine1`
 
 Ensure you are using **https**.
 
