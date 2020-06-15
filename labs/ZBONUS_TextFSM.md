@@ -90,7 +90,7 @@ ADMIN = ?
 
 Navigate to the `textfsm` sub-directory in your home directory.
 
-Create a TextFSM template to extract ONLY the interface name and save it as `cisco_nxos_show_ip_interface_brief.textfm`.
+Create a TextFSM template to extract ONLY the interface name and save it as `cisco_nxos_show_ip_interface_brief.textfsm`.
 
 This is what the template should look like:
 
@@ -146,7 +146,7 @@ Return to the terminal within the `textfsm` directory.
 Run the following command using `textfsm.py`:
 
 ```bash
-ntc@ntc-training:textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw
+ntc@ntc-training:textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.textfsm cisco_nxos_show_ip_interface_brief.raw
 ```
 
 You will see the following output:
@@ -199,7 +199,7 @@ Save the updated template.
 Re-run the textfsm.py script.
 
 ```bash
-ntc@ntc-training:textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw
+ntc@ntc-training:textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.texfsm cisco_nxos_show_ip_interface_brief.raw
 FSM Template:
 Value INTERFACE (\S+)
 Value IP (\d+\.\d+\.\d+\.\d+)
@@ -276,7 +276,7 @@ if __name__ == "__main__":
     print(raw_text)
     print("-" * 10)
 
-    template = TEMPLATES_PATH + 'cisco_ios_show_ip_interface_brief.textfm'
+    template = TEMPLATES_PATH + 'cisco_ios_show_ip_interface_brief.textfsm'
     table = textfsm.TextFSM(open(template))
 
     print("-" * 10)
