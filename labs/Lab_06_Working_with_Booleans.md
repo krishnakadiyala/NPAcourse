@@ -21,7 +21,7 @@ Perform a type check on the variable:
 
 ```python
 >>> type(is_layer3)
-<type 'bool'>
+<class 'bool'>
 >>>
 ```
 

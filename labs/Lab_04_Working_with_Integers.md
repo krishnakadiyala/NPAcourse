@@ -18,7 +18,7 @@ Check the data type of `vlan_id`:
 
 ```python
 >>> type(vlan_id)
-<type 'int'>
+<class 'int'>
 >>> 
 ```
 
@@ -134,7 +134,7 @@ Walk through the process of converting this to a new variable that is a string e
 
 ```python
 >>> type(vlan_id)
-<type 'int'>
+<class 'int'>
 >>> 
 >>> vlan_id_string = str(vlan_id)
 >>> 

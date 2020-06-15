@@ -18,7 +18,7 @@ Verify the data type of the `hostname` variable and prove that it is a string:
 
 ```python
 >>> type(hostname)
-<type 'str'>
+<class 'str'>
 >>>
 ```
 
@@ -240,7 +240,7 @@ Verify the data type of `octets` by using the `type()` function.
 
 ```python
 >>> type(octets)
-<type 'list'>
+<class 'list'>
 >>> 
 ```
 
