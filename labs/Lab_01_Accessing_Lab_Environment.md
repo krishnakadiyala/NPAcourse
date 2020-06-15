@@ -9,25 +9,26 @@ You will primarily access the Linux jump host for all labs in the course.
 
 ### Task 2 - Accessing the Lab Environment
 
-Obtain your Public IP Address from the Course Instructor
-*  This is the public IP of your Linux jump host
-*  You will be able to access all network devices by name through this jump host when the network labs start
+Obtain your pod number from the Course Instructor:
 
-As of December 2018, your Linux jump host will be accessible at the following address:
+*  The pod will map directly to a publicly available FQDN that will be the public IP of your Linux jump host.
+*  You will be able to access all network devices by name through this jump host when the network labs start.
+
+The FQDN will be as fillows:
 
 ```
-ntc-training.pod<pod-number>.ntc.cloud.tesuto.com
+pod<pod-number>.cloud.networktocode.com
 ```
 
 Username: **ntc**
-Password: **ntc123**
+Password: **Ask the Instructor**
 
 You can access the Jump Host via SSH or RDP (for a full desktop experience)
 
 Using a Linux based OS, use the following command:
 
 ```
-ssh ntc@ntc-training.pod<pod-number>.ntc.cloud.tesuto.com
+ssh ntc@pod<pod-number>.cloud.networktocode.com
 ```
 
 Otherwise, you can use a standard SSH client such as Putty or SecureCRT.
