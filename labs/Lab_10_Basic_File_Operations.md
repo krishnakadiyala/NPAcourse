@@ -155,8 +155,6 @@ Close the file for writing:
 In another terminal windows, use `cat` to view the file just created:
 
 ```bash
-ntc@ntc-jump-host-0:~$ make training
-docker exec -it ntc-training /bin/bash
 ntc@ntc-training:ntc$ cd files
 ntc@ntc-training:files$ cat interface.cfg
 interface Eth1
