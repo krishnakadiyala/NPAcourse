@@ -13,19 +13,6 @@ While in the course virtual machine, click the **Terminal** icon on the desktop.
 
 ##### Step 3
 
-Once the command prompt (terminal window) opens, type `make training` and press `Enter`.
-```
-ntc@jump-host-0:~$ make training
-docker exec -it ntc-training /bin/bash
-ntc@ntc-training:ntc$
-```
-The above command puts you into the shell inside a Docker container. We will be 
-performing all lab exercises from inside the Docker container.  If at any time 
-it is necessary to return to the jumphost shell you can simply type `exit`. 
-
-
-##### Step 4
-
 Type in the word `python` and press `Enter`.
 
 You will see the following prompt:
