@@ -90,7 +90,7 @@ ADMIN = ?
 
 Navigate to the `textfsm` sub-directory in your home directory.
 
-Create a TextFSM template to extract ONLY the interface name and save it as `cisco_nxos_show_ip_interface_brief.template`.
+Create a TextFSM template to extract ONLY the interface name and save it as `cisco_nxos_show_ip_interface_brief.textfm`.
 
 This is what the template should look like:
 
@@ -276,7 +276,7 @@ if __name__ == "__main__":
     print(raw_text)
     print("-" * 10)
 
-    template = TEMPLATES_PATH + 'cisco_ios_show_ip_int_brief.template'
+    template = TEMPLATES_PATH + 'cisco_ios_show_ip_interface_brief.textfm'
     table = textfsm.TextFSM(open(template))
 
     print("-" * 10)
