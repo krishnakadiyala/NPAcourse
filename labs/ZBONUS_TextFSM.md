@@ -90,7 +90,7 @@ ADMIN = ?
 
 Navigate to the `textfsm` sub-directory in your home directory.
 
-Create a TextFSM template to extract ONLY the interface name and save it as `cisco_nxos_show_ip_interface_brief.template`.
+Create a TextFSM template to extract ONLY the interface name and save it as `cisco_nxos_show_ip_interface_brief.textfsm`.
 
 This is what the template should look like:
 
@@ -146,7 +146,7 @@ Return to the terminal within the `textfsm` directory.
 Run the following command using `textfsm.py`:
 
 ```bash
-ntc@ntc-training:textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw
+ntc@ntc-training:textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.textfsm cisco_nxos_show_ip_interface_brief.raw
 ```
 
 You will see the following output:
@@ -199,7 +199,7 @@ Save the updated template.
 Re-run the textfsm.py script.
 
 ```bash
-ntc@ntc-training:textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.template cisco_nxos_show_ip_interface_brief.raw
+ntc@ntc-training:textfsm$ python textfsm.py cisco_nxos_show_ip_interface_brief.textfsm cisco_nxos_show_ip_interface_brief.raw
 FSM Template:
 Value INTERFACE (\S+)
 Value IP (\d+\.\d+\.\d+\.\d+)
@@ -276,7 +276,7 @@ if __name__ == "__main__":
     print(raw_text)
     print("-" * 10)
 
-    template = TEMPLATES_PATH + 'cisco_ios_show_ip_int_brief.template'
+    template = TEMPLATES_PATH + 'cisco_ios_show_ip_interface_brief.textfsm'
     table = textfsm.TextFSM(open(template))
 
     print("-" * 10)
@@ -330,53 +330,53 @@ This is a list of commands / templates of common commands.
 
 For an exact list of commands supported, navigate [here](https://github.com/networktocode/ntc-templates/tree/master/templates)
 
-* arista_eos_show_clock.template
-* cisco_ios_show_ip_arp.template
-* cisco_nxos_show_flogi_database.template
-* arista_eos_show_interfaces_status.template
-* cisco_ios_show_ip_bgp_summary.template
-* cisco_nxos_show_interface_brief.template
-* arista_eos_show_ip_access-lists.template
-* cisco_ios_show_ip_bgp.template
-* cisco_nxos_show_interface_status.template
-* arista_eos_show_ip_arp.template
-* cisco_ios_show_ip_int_brief.template
-* cisco_nxos_show_inventory.template
-* arista_eos_show_ip_interface_brief.template
-* cisco_ios_show_ip_ospf_neighbor.template
-* cisco_nxos_show_ip_arp_detail.template
-* arista_eos_show_lldp_neighbors.template
-* cisco_ios_show_ip_route.template
-* cisco_nxos_show_ip_ospf_neighbor_vrf.template
-* arista_eos_show_mlag.template
-* cisco_ios_show_lldp_neighbors.template
-* cisco_nxos_show_ip_route.template
-* arista_eos_show_snmp_community.template
-* cisco_ios_show_mac-address-table.template
-* cisco_nxos_show_lldp_neighbors.template
-* arista_eos_show_vlan.template
-* cisco_ios_show_snmp_community.template
-* cisco_nxos_show_mac_address-table.template
-* cisco_ios_show_access-list.template
-* cisco_ios_show_spanning-tree.template
-* cisco_nxos_show_port-channel_summary.template
-* cisco_ios_show_cdp_neighbors.template
-* cisco_ios_show_standby_brief.template
-* cisco_nxos_show_version.template
-* cisco_ios_show_clock.template
-* cisco_ios_show_vtp_status.template
-* cisco_nxos_show_vlan.template
-* cisco_ios_show_interfaces_status.template
-* cisco_nxos_show_access-lists.template
-* cisco_nxos_show_vpc.template
-* cisco_ios_show_interfaces.template
-* cisco_nxos_show_cdp_neighbors.template
-* cisco_wlc_ssh_show_sysinfo.template
-* cisco_ios_show_interface_transceiver.template
-* cisco_nxos_show_clock.template
-* hp_comware_display_vlan_brief.template
-* cisco_ios_show_inventory.template
-* cisco_nxos_show_feature.template
+* arista_eos_show_clock.textfsm
+* cisco_ios_show_ip_arp.textfsm
+* cisco_nxos_show_flogi_database.textfsm
+* arista_eos_show_interfaces_status.textfsm
+* cisco_ios_show_ip_bgp_summary.textfsm
+* cisco_nxos_show_interface_brief.textfsm
+* arista_eos_show_ip_access-lists.textfsm
+* cisco_ios_show_ip_bgp.textfsm
+* cisco_nxos_show_interface_status.textfsm
+* arista_eos_show_ip_arp.textfsm
+* cisco_ios_show_ip_int_brief.textfsm
+* cisco_nxos_show_inventory.textfsm
+* arista_eos_show_ip_interface_brief.textfsm
+* cisco_ios_show_ip_ospf_neighbor.textfsm
+* cisco_nxos_show_ip_arp_detail.textfsm
+* arista_eos_show_lldp_neighbors.textfsm
+* cisco_ios_show_ip_route.textfsm
+* cisco_nxos_show_ip_ospf_neighbor_vrf.textfsm
+* arista_eos_show_mlag.textfsm
+* cisco_ios_show_lldp_neighbors.textfsm
+* cisco_nxos_show_ip_route.textfsm
+* arista_eos_show_snmp_community.textfsm
+* cisco_ios_show_mac-address-table.textfsm
+* cisco_nxos_show_lldp_neighbors.textfsm
+* arista_eos_show_vlan.textfsm
+* cisco_ios_show_snmp_community.textfsm
+* cisco_nxos_show_mac_address-table.textfsm
+* cisco_ios_show_access-list.textfsm
+* cisco_ios_show_spanning-tree.textfsm
+* cisco_nxos_show_port-channel_summary.textfsm
+* cisco_ios_show_cdp_neighbors.textfsm
+* cisco_ios_show_standby_brief.textfsm
+* cisco_nxos_show_version.textfsm
+* cisco_ios_show_clock.textfsm
+* cisco_ios_show_vtp_status.textfsm
+* cisco_nxos_show_vlan.textfsm
+* cisco_ios_show_interfaces_status.textfsm
+* cisco_nxos_show_access-lists.textfsm
+* cisco_nxos_show_vpc.textfsm
+* cisco_ios_show_interfaces.textfsm
+* cisco_nxos_show_cdp_neighbors.textfsm
+* cisco_wlc_ssh_show_sysinfo.textfsm
+* cisco_ios_show_interface_transceiver.textfsm
+* cisco_nxos_show_clock.textfsm
+* hp_comware_display_vlan_brief.textfsm
+* cisco_ios_show_inventory.textfsm
+* cisco_nxos_show_feature.textfsm
 * View online for more templates
 
 You can try any of the associated commands that start with "cisco_ios" on your router (assuming the device supports the command).  The commands supported map directly to the template name removing "cisco_ios" and substituting spaces for underscores.
