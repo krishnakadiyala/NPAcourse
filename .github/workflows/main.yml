@@ -1,0 +1,91 @@
+---
+
+name: Build PDF Slides
+
+on:
+  push:
+    tags:
+      - 'v*'  # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2.1.0
+
+      - run: npm install decktape
+      - run: pwd && ls -al
+
+      # Runs a single command using the runners shell
+      - name: Execute decktape
+        env:
+          SLIDES_LIST: "M01_Python M02_Python_MV_Network_Libraries M03_Network_APIs M04_YAML_JSON M05_Ansible"
+        run: |
+          for i in $SLIDES_LIST; do
+            $(npm bin)/decktape --chrome-arg=--disable-web-security slides/$i.html $i.pdf
+          done
+
+      - run: pwd && ls -al
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Course PDF Slides ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset M01_Python.pdf
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./M01_Python.pdf
+          asset_name: M01_Python.pdf
+          asset_content_type: application/pdf
+
+      - name: Upload Release Asset M02_Python_MV_Network_Libraries.pdf
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./M02_Python_MV_Network_Libraries.pdf
+          asset_name: M02_Python_MV_Network_Libraries.pdf
+          asset_content_type: application/pdf
+
+      - name: Upload Release Asset M03_Network_APIs.pdf
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./M03_Network_APIs.pdf
+          asset_name: M03_Network_APIs.pdf
+          asset_content_type: application/pdf
+
+      - name: Upload Release Asset M04_YAML_JSON.pdf
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./M04_YAML_JSON.pdf
+          asset_name: M04_YAML_JSON.pdf
+          asset_content_type: application/pdf
+
+      - name: Upload Release Asset M05_Ansible.pdf
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./M05_Ansible.pdf
+          asset_name: M05_Ansible.pdf
+          asset_content_type: application/pdf
