@@ -20,13 +20,13 @@ $ ping nxos-spine2
 Enter the Python shell.
 
 ```python
+$ python
 
-
-ntc@ntc-training:~$ python
-Python 3.6.8 (default, Jun 11 2019, 01:16:11) 
+Python 3.6.8 (default, Jun 11 2019, 01:16:11)
 [GCC 6.3.0 20170516] on linux
 Type "help", "copyright", "credits" or "license" for more information.
->>> 
+
+>>>
 ```
 
 ##### Step 3
@@ -55,11 +55,8 @@ Help on package requests:
 NAME
     requests
 
-FILE
-    /usr/local/lib/python2.7/dist-packages/requests/__init__.py
-
 DESCRIPTION
-    Requests HTTP library
+    Requests HTTP Library
     ~~~~~~~~~~~~~~~~~~~~~
 
     Requests is an HTTP library, written in Python, for human beings. Basic GET
@@ -69,19 +66,22 @@ DESCRIPTION
        >>> r = requests.get('https://www.python.org')
        >>> r.status_code
        200
-       >>> 'Python is a programming language' in r.content
+       >>> 'Python is a programming language' in str(r.content)
        True
 
     ... or POST:
 
        >>> payload = dict(key1='value1', key2='value2')
-       >>> r = requests.post('http://httpbin.org/post', data=payload)
+       >>> r = requests.post('https://httpbin.org/post', data=payload)
        >>> print(r.text)
        {
          ...
          "form": {
            "key2": "value2",
            "key1": "value1"
+         },
+         ...
+       }
 
 # output omitted
 
@@ -127,7 +127,9 @@ Create four new variables while on the Python shell: `auth`, `headers`, `payload
 
 `payload` should be equal to the Request object you copied above as a dictionary.
 
+
 `url` should be equal to `url = 'https://nxos-spine1/ins'` - this needs the `ins` appended to the switch name or IP to work.  
+
 
 The summary up until this point is the following:
 
@@ -166,6 +168,23 @@ Make the API call to the device using the `post` function of `requests` as shown
 
 ```python
 >>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
+/usr/lib/python3/dist-packages/urllib3/connectionpool.py:849: InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  InsecureRequestWarning)
+>>>
+```
+
+The output of the above command is just a warning stating that certificate verification has been disabled, and it's recommended to enable it. Since this is only for testing, it can be disabled by using the following command:
+```python
+>>>
+>>> requests.packages.urllib3.disable_warnings()
+>>>
+```
+
+Executing the `POST` request again will not show the warning anymore. 
+
+```python
+>>>
+>>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
 >>>
 ```
 
@@ -201,41 +220,83 @@ Now, let's see the actual response from the switch using the `text` attribute.
 >>>
 ```
 
+
 Now print out the `rsp` variable:
+
+> Note: if you use the print statement, you actually can't tell it's a string. This is critical to understand because you may think it's a dictionary.
+
 
 ```python
 >>> rsp
-u'{\n\t"ins_api":\t{\n\t\t"type":\t"cli_show",\n\t\t"version":\t"1.2",\n\t\
-"sid":\t"eoc",\n\t\t"outputs":\t{\n\t\t\t"output":\t{\n\t\t\t\t"input":\t"show
-version",\n\t\t\t\t"msg":\t"Success",\n\t\t\t\t"code":\t"200",\n\t\t\t\t"body"
-\t{\n\t\t\t\t\t"header_str":\t"Cisco Nexus Operating System (NX-OS)
-Software\\nTAC support: http://www.cisco.com/tac\\nDocuments: http://www.cisco
-com/en/US/products/ps9372/tsd_products_support_series_home.html\\nCopyright
-c) 2002-2016, Cisco Systems, Inc. All rights reserved.\\nThe copyrights to
-certain works contained herein are owned by\\nother third parties and are used
-and distributed under license.\\nSome parts of this software are covered under
-the GNU Public\\nLicense. A copy of the license is available at\\nhttp://www
-gnu.org/licenses/gpl.html.\\n\\nNX-OSv is a demo version of the Nexus
-Operating System\\n",\n\t\t\t\t\t"loader_ver_str":\t"N
-A",\n\t\t\t\t\t"kickstart_ver_str":\t"7.3(1)D1(1) [build 7.3(1)D1(0.10)]",\n\
-\t\t\t\t"sys_ver_str":\t"7.3(1)D1(1) [build 7.3(1)D1(0.10)]",\n\t\t\t\t\t
-kick_file_name":\t"bootflash:///titanium-d1-kickstart.7.3.1.D1.0.10.bin",\n\t\
-\t\t\t"kick_cmpl_time":\t" 1/11/2016 16:00:00",\n\t\t\t\t\t"kick_tmstmp":\t"02
-22/2016 23:39:33",\n\t\t\t\t\t"isan_file_name":\t"bootflash:///titanium-d
-.7.3.1.D1.0.10.bin",\n\t\t\t\t\t"isan_cmpl_time":\t" 1/11/2016 16:00:00",\n\t\
-\t\t\t"isan_tmstmp":\t"02/23/2016 01:43:36",\n\t\t\t\t\t"chassis_id":\t"NX-OSv
-Chassis",\n\t\t\t\t\t"module_id":\t"NX-OSv Supervisor Module",\n\t\t\t\t\t
-cpu_name":\t"Intel(R) Xeon(R) CPU @ 2.50G",\n\t\t\t\t\t"memory":\t4002312,\n\
-\t\t\t\t"mem_type":\t"kB",\n\t\t\t\t\t"proc_board_id":\t"TM29D1D533B",\n\t\t\
-\t\t"host_name":\t"nxos-spine1",\n\t\t\t\t\t"bootflash_size":\t1582402,\n\t\t\
-\t\t"kern_uptm_days":\t0,\n\t\t\t\t\t"kern_uptm_hrs":\t2,\n\t\t\t\t\t
-kern_uptm_mins":\t17,\n\t\t\t\t\t"kern_uptm_secs":\t42,\n\t\t\t\t\t
-manufacturer":\t"Cisco Systems, Inc."\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}'
+'{\n\t"ins_api":\t{\n\t\t"type":\t"cli_show",\n\t\t"version":\t"1.0",\n\t\t"sid":\t"eoc",\n\t\t"outputs":\t{\n\t\t\t"output":\t{\n\t\t\t\t"input":\t"show version",\n\t\t\t\t"msg":\t"Success",\n\t\t\t\t"code":\t"200",
+\n\t\t\t\t"body":\t{\n\t\t\t\t\t"header_str":\t"Cisco Nexus Operating System (NX-OS) Software\\nTAC support: http://www.cisco.com/tac\\nDocuments: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.
+html\\nCopyright (c) 2002-2019, Cisco Systems, Inc. All rights reserved.\\nThe copyrights to certain works contained herein are owned by\\nother third parties and are used and distributed under license.\\nSome parts of this software
+are covered under the GNU Public\\nLicense. A copy of the license is available at\\nhttp://www.gnu.org/licenses/gpl.html.\\n\\nNexus 9000v is a demo version of the Nexus Operating System\\n",\n\t\t\t\t\t"bios_ver_str":\t"",
+\n\t\t\t\t\t"kickstart_ver_str":\t"9.3(3)",\n\t\t\t\t\t"nxos_ver_str":\t"9.3(3)",\n\t\t\t\t\t"bios_cmpl_time":\t"",\n\t\t\t\t\t"kick_file_name":\t"bootflash:///nxos.9.3.3.bin",\n\t\t\t\t\t"nxos_file_name":\t"bootflash:///nxos.9.3.3.
+bin",\n\t\t\t\t\t"kick_cmpl_time":\t"12/22/2019 2:00:00",\n\t\t\t\t\t"nxos_cmpl_time":\t"12/22/2019 2:00:00",\n\t\t\t\t\t"kick_tmstmp":\t"12/22/2019 14:00:37",\n\t\t\t\t\t"nxos_tmstmp":\t"12/22/2019 14:00:37",
+\n\t\t\t\t\t"chassis_id":\t"Nexus9000 C9300v Chassis",\n\t\t\t\t\t"cpu_name":\t"",\n\t\t\t\t\t"memory":\t6097044,\n\t\t\t\t\t"mem_type":\t"kB",\n\t\t\t\t\t"proc_board_id":\t"98IAC051ND7",\n\t\t\t\t\t"host_name":\t"nxos-spine1",
+\n\t\t\t\t\t"bootflash_size":\t4287040,\n\t\t\t\t\t"kern_uptm_days":\t0,\n\t\t\t\t\t"kern_uptm_hrs":\t3,\n\t\t\t\t\t"kern_uptm_mins":\t28,\n\t\t\t\t\t"kern_uptm_secs":\t6,\n\t\t\t\t\t"rr_reason":\t"Unknown",
+\n\t\t\t\t\t"rr_sys_ver":\t"",\n\t\t\t\t\t"rr_service":\t"",\n\t\t\t\t\t"plugins":\t"Core Plugin, Ethernet Plugin",\n\t\t\t\t\t"manufacturer":\t"Cisco Systems, Inc.",\n\t\t\t\t\t"TABLE_package_list":\t
+{\n\t\t\t\t\t\t"ROW_package_list":\t{\n\t\t\t\t\t\t\t"package_id":\t""\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}'
 >>>
 
 ```
 
 Try also printing it with the `print` statement.
+
+```python
+>>>
+>>> print(rsp)
+{
+	"ins_api":	{
+		"type":	"cli_show",
+		"version":	"1.0",
+		"sid":	"eoc",
+		"outputs":	{
+			"output":	{
+				"input":	"show version",
+				"msg":	"Success",
+				"code":	"200",
+				"body":	{
+					"header_str":	"Cisco Nexus Operating System (NX-OS) Software\nTAC support: http://www.cisco.com/tac\nDocuments: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html\nCopyright (c) 2002-2019, Cisco Systems, Inc. All rights reserved.\nThe copyrights to certain works contained herein are owned by\nother third parties and are used and distributed under license.\nSome parts of this software are covered under the GNU Public\nLicense. A copy of the license is available at\nhttp://www.gnu.org/licenses/gpl.html.\n\nNexus 9000v is a demo version of the Nexus Operating System\n",
+					"bios_ver_str":	"",
+					"kickstart_ver_str":	"9.3(3)",
+					"nxos_ver_str":	"9.3(3)",
+					"bios_cmpl_time":	"",
+					"kick_file_name":	"bootflash:///nxos.9.3.3.bin",
+					"nxos_file_name":	"bootflash:///nxos.9.3.3.bin",
+					"kick_cmpl_time":	"12/22/2019 2:00:00",
+					"nxos_cmpl_time":	"12/22/2019 2:00:00",
+					"kick_tmstmp":	"12/22/2019 14:00:37",
+					"nxos_tmstmp":	"12/22/2019 14:00:37",
+					"chassis_id":	"Nexus9000 C9300v Chassis",
+					"cpu_name":	"",
+					"memory":	6097044,
+					"mem_type":	"kB",
+					"proc_board_id":	"98IAC051ND7",
+					"host_name":	"nxos-spine1",
+					"bootflash_size":	4287040,
+					"kern_uptm_days":	0,
+					"kern_uptm_hrs":	3,
+					"kern_uptm_mins":	28,
+					"kern_uptm_secs":	6,
+					"rr_reason":	"Unknown",
+					"rr_sys_ver":	"",
+					"rr_service":	"",
+					"plugins":	"Core Plugin, Ethernet Plugin",
+					"manufacturer":	"Cisco Systems, Inc.",
+					"TABLE_package_list":	{
+						"ROW_package_list":	{
+							"package_id":	""
+						}
+					}
+				}
+			}
+		}
+	}
+}
+>>>
+```
 
 ##### Step 9
 
@@ -252,7 +313,7 @@ Perform a type check:
 
 ```python
 >>> type(data)
-<class 'dict'>
+<type 'dict'>
 >>>
 ```
 
@@ -264,41 +325,50 @@ Print the dictionary using `json.dumps`:
 >>> print(json.dumps(data, indent=4))
 {
     "ins_api": {
+        "type": "cli_show",
+        "version": "1.0",
+        "sid": "eoc",
         "outputs": {
             "output": {
-                "msg": "Success",
                 "input": "show version",
+                "msg": "Success",
                 "code": "200",
                 "body": {
-                    "kern_uptm_secs": 42,
-                    "kick_file_name": "bootflash:///titanium-d1-kickstart.7.3.1.D1.0.10.bin",
-                    "loader_ver_str": "N/A",
-                    "module_id": "NX-OSv Supervisor Module",
-                    "kick_tmstmp": "02/22/2016 23:39:33",
-                    "isan_file_name": "bootflash:///titanium-d1.7.3.1.D1.0.10.bin",
-                    "sys_ver_str": "7.3(1)D1(1) [build 7.3(1)D1(0.10)]",
-                    "bootflash_size": 1582402,
-                    "kickstart_ver_str": "7.3(1)D1(1) [build 7.3(1)D1(0.10)]",
-                    "kick_cmpl_time": " 1/11/2016 16:00:00",
-                    "chassis_id": "NX-OSv Chassis",
-                    "proc_board_id": "TM29D1D533B",
-                    "memory": 4002312,
-                    "kern_uptm_mins": 17,
-                    "cpu_name": "Intel(R) Xeon(R) CPU @ 2.50G",
-                    "kern_uptm_hrs": 2,
-                    "isan_tmstmp": "02/23/2016 01:43:36",
-                    "manufacturer": "Cisco Systems, Inc.",
-                    "header_str": "Cisco Nexus Operating System (NX-OS) Software\nTAC support: http://www.cisco.com/tac\nDocuments: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html\nCopyright (c) 2002-2016, Cisco Systems, Inc. All rights reserved.\nThe copyrights to certain works contained herein are owned by\nother third parties and are used and distributed under license.\nSome parts of this software are covered under the GNU Public\nLicense. A copy of the license is available at\nhttp://www.gnu.org/licenses/gpl.html.\n\nNX-OSv is a demo version of the Nexus Operating System\n",
-                    "isan_cmpl_time": " 1/11/2016 16:00:00",
-                    "host_name": "nxos-spine1",
+                    "header_str": "Cisco Nexus Operating System (NX-OS) Software\nTAC support: http://www.cisco.com/tac\nDocuments: http://www.cisco.com/en/US/products/ps9372/tsd_products_support_series_home.html\nCopyright (c) 2002-2019, Cisco Systems, Inc. All rights reserved.\nThe copyrights to certain works contained herein are owned by\nother third parties and are used and distributed under license.\nSome parts of this software are covered under the GNU Public\nLicense. A copy of the license is available at\nhttp://www.gnu.org/licenses/gpl.html.\n\nNexus 9000v is a demo version of the Nexus Operating System\n",
+                    "bios_ver_str": "",
+                    "kickstart_ver_str": "9.3(3)",
+                    "nxos_ver_str": "9.3(3)",
+                    "bios_cmpl_time": "",
+                    "kick_file_name": "bootflash:///nxos.9.3.3.bin",
+                    "nxos_file_name": "bootflash:///nxos.9.3.3.bin",
+                    "kick_cmpl_time": "12/22/2019 2:00:00",
+                    "nxos_cmpl_time": "12/22/2019 2:00:00",
+                    "kick_tmstmp": "12/22/2019 14:00:37",
+                    "nxos_tmstmp": "12/22/2019 14:00:37",
+                    "chassis_id": "Nexus9000 C9300v Chassis",
+                    "cpu_name": "",
+                    "memory": 6097044,
                     "mem_type": "kB",
-                    "kern_uptm_days": 0
+                    "proc_board_id": "98IAC051ND7",
+                    "host_name": "nxos-spine1",
+                    "bootflash_size": 4287040,
+                    "kern_uptm_days": 0,
+                    "kern_uptm_hrs": 3,
+                    "kern_uptm_mins": 28,
+                    "kern_uptm_secs": 6,
+                    "rr_reason": "Unknown",
+                    "rr_sys_ver": "",
+                    "rr_service": "",
+                    "plugins": "Core Plugin, Ethernet Plugin",
+                    "manufacturer": "Cisco Systems, Inc.",
+                    "TABLE_package_list": {
+                        "ROW_package_list": {
+                            "package_id": ""
+                        }
+                    }
                 }
             }
-        },
-        "version": "1.2",
-        "type": "cli_show",
-        "sid": "eoc"
+        }
     }
 }
 >>>
@@ -354,29 +424,31 @@ Print the JSON object using `json.dumps` out when complete.
 >>> print(json.dumps(data, indent=4))
 {
     "ins_api": {
+        "type": "cli_show",
+        "version": "1.0",
+        "sid": "eoc",
         "outputs": {
             "output": {
-                "msg": "Success",
                 "input": "show vlan brief",
+                "msg": "Success",
                 "code": "200",
                 "body": {
                     "TABLE_vlanbriefxbrief": {
                         "ROW_vlanbriefxbrief": {
-                            "vlanshowbr-vlanid": 16777216,
-                            "vlanshowbr-vlanid-utf": 1,
+                            "vlanshowbr-vlanid": "1",
+                            "vlanshowbr-vlanid-utf": "1",
                             "vlanshowbr-vlanname": "default",
                             "vlanshowbr-vlanstate": "active",
-                            "vlanshowbr-shutstate": "noshutdown"
+                            "vlanshowbr-shutstate": "noshutdown",
+                            "vlanshowplist-ifidx": "Ethernet1/1,Ethernet1/2,Ethernet1/3,Ethernet1/4,Ethernet1/5,Ethernet1/6,Ethernet1/7,Ethernet1/8,Ethernet1/9,Ethernet1/10,Ethernet1/11,Ethernet1/12,Ethernet1/13,Ethernet1/14,Ethernet1/15,Ethernet1/16,Ethernet1/17,Ethernet1/18,Ethernet1/19,Ethernet1/20,Ethernet1/21,Ethernet1/22,Ethernet1/23,Ethernet1/24,Ethernet1/25,Ethernet1/26,Ethernet1/27,Ethernet1/28,Ethernet1/29,Ethernet1/30,Ethernet1/31,Ethernet1/32,Ethernet1/33,Ethernet1/34,Ethernet1/35,Ethernet1/36,Ethernet1/37,Ethernet1/38,Ethernet1/39,Ethernet1/40,Ethernet1/41,Ethernet1/42,Ethernet1/43,Ethernet1/44,Ethernet1/45,Ethernet1/46,Ethernet1/47,Ethernet1/48,Ethernet1/49,Ethernet1/50,Ethernet1/51,Ethernet1/52,Ethernet1/53,Ethernet1/54,Ethernet1/55,Ethernet1/56,Ethernet1/57,Ethernet1/58,Ethernet1/59,Ethernet1/60,Ethernet1/61,Ethernet1/62,Ethernet1/63,Ethernet1/64"
                         }
                     }
                 }
             }
-        },
-        "version": "1.2",
-        "type": "cli_show",
-        "sid": "eoc"
+        }
     }
 }
+>>>
 >>>
 
 ```
@@ -392,11 +464,12 @@ Save the VLAN object (everything under body) as a new variable called `vlans`.
 {
     "TABLE_vlanbriefxbrief": {
         "ROW_vlanbriefxbrief": {
-            "vlanshowbr-vlanid": 16777216,
-            "vlanshowbr-vlanid-utf": 1,
+            "vlanshowbr-vlanid": "1",
+            "vlanshowbr-vlanid-utf": "1",
             "vlanshowbr-vlanname": "default",
             "vlanshowbr-vlanstate": "active",
-            "vlanshowbr-shutstate": "noshutdown"
+            "vlanshowbr-shutstate": "noshutdown",
+            "vlanshowplist-ifidx": "Ethernet1/1,Ethernet1/2,Ethernet1/3,Ethernet1/4,Ethernet1/5,Ethernet1/6,Ethernet1/7,Ethernet1/8,Ethernet1/9,Ethernet1/10,Ethernet1/11,Ethernet1/12,Ethernet1/13,Ethernet1/14,Ethernet1/15,Ethernet1/16,Ethernet1/17,Ethernet1/18,Ethernet1/19,Ethernet1/20,Ethernet1/21,Ethernet1/22,Ethernet1/23,Ethernet1/24,Ethernet1/25,Ethernet1/26,Ethernet1/27,Ethernet1/28,Ethernet1/29,Ethernet1/30,Ethernet1/31,Ethernet1/32,Ethernet1/33,Ethernet1/34,Ethernet1/35,Ethernet1/36,Ethernet1/37,Ethernet1/38,Ethernet1/39,Ethernet1/40,Ethernet1/41,Ethernet1/42,Ethernet1/43,Ethernet1/44,Ethernet1/45,Ethernet1/46,Ethernet1/47,Ethernet1/48,Ethernet1/49,Ethernet1/50,Ethernet1/51,Ethernet1/52,Ethernet1/53,Ethernet1/54,Ethernet1/55,Ethernet1/56,Ethernet1/57,Ethernet1/58,Ethernet1/59,Ethernet1/60,Ethernet1/61,Ethernet1/62,Ethernet1/63,Ethernet1/64"            
         }
     }
 }
@@ -454,15 +527,16 @@ Print out `vlans` on it's own:
     "TABLE_vlanbriefxbrief": {
         "ROW_vlanbriefxbrief": [
             {
-                "vlanshowbr-vlanid": 16777216,
-                "vlanshowbr-vlanid-utf": 1,
+                "vlanshowbr-vlanid": "1",
+                "vlanshowbr-vlanid-utf": "1",
                 "vlanshowbr-vlanname": "default",
                 "vlanshowbr-vlanstate": "active",
-                "vlanshowbr-shutstate": "noshutdown"
+                "vlanshowbr-shutstate": "noshutdown",
+                "vlanshowplist-ifidx": "Ethernet1/1,Ethernet1/2,Ethernet1/3,Ethernet1/4,Ethernet1/5,Ethernet1/6,Ethernet1/7,Ethernet1/8,Ethernet1/9,Ethernet1/10,Ethernet1/11,Ethernet1/12,Ethernet1/13,Ethernet1/14,Ethernet1/15,Ethernet1/16,Ethernet1/17,Ethernet1/18,Ethernet1/19,Ethernet1/20,Ethernet1/21,Ethernet1/22,Ethernet1/23,Ethernet1/24,Ethernet1/25,Ethernet1/26,Ethernet1/27,Ethernet1/28,Ethernet1/29,Ethernet1/30,Ethernet1/31,Ethernet1/32,Ethernet1/33,Ethernet1/34,Ethernet1/35,Ethernet1/36,Ethernet1/37,Ethernet1/38,Ethernet1/39,Ethernet1/40,Ethernet1/41,Ethernet1/42,Ethernet1/43,Ethernet1/44,Ethernet1/45,Ethernet1/46,Ethernet1/47,Ethernet1/48,Ethernet1/49,Ethernet1/50,Ethernet1/51,Ethernet1/52,Ethernet1/53,Ethernet1/54,Ethernet1/55,Ethernet1/56,Ethernet1/57,Ethernet1/58,Ethernet1/59,Ethernet1/60,Ethernet1/61,Ethernet1/62,Ethernet1/63,Ethernet1/64"
             },
             {
-                "vlanshowbr-vlanid": 167772160,
-                "vlanshowbr-vlanid-utf": 10,
+                "vlanshowbr-vlanid": "10",
+                "vlanshowbr-vlanid-utf": "10",
                 "vlanshowbr-vlanname": "VLAN0010",
                 "vlanshowbr-vlanstate": "active",
                 "vlanshowbr-shutstate": "noshutdown"
@@ -470,6 +544,7 @@ Print out `vlans` on it's own:
         ]
     }
 }
+>>>
 >>>
 ```
 
@@ -535,101 +610,89 @@ You'll notice this process becomes repetitive, so you'd want to store a few of t
 ...     }
 ... }
 >>>
->>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
+>>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
 >>>
 >>> data = json.loads(response.text)
 >>>
 >>> print(json.dumps(data, indent=4))
 {
     "ins_api": {
+        "type": "cli_show",
+        "version": "1.0",
+        "sid": "eoc",
         "outputs": {
             "output": {
-                "msg": "Success",
                 "input": "show cdp neighbors",
+                "msg": "Success",
                 "code": "200",
                 "body": {
-                    "neigh_count": 5,
+                    "neigh_count": 4,
                     "TABLE_cdp_neighbor_brief_info": {
                         "ROW_cdp_neighbor_brief_info": [
                             {
-                                "platform_id": "N7K-C7018",
-                                "intf_id": "mgmt0",
+                                "ifindex": 436207616,
+                                "device_id": "nxos-spine2.ntc.com(9N9ILWQL1JJ)",
+                                "intf_id": "Ethernet1/1",
+                                "ttl": "156",
                                 "capability": [
                                     "router",
                                     "switch",
+                                    "IGMP_cnd_filtering",
                                     "Supports-STP-Dispute"
                                 ],
-                                "ttl": 150,
-                                "ifindex": 83886080,
-                                "port_id": "mgmt0",
-                                "device_id": "nxos-spine2(TB601325DFB)"
+                                "platform_id": "N9K-C9300v",
+                                "port_id": "Ethernet1/1"
                             },
                             {
-                                "platform_id": "N7K-C7018",
-                                "intf_id": "Ethernet2/1",
+                                "ifindex": 436208128,
+                                "device_id": "nxos-spine2.ntc.com(9N9ILWQL1JJ)",
+                                "intf_id": "Ethernet1/2",
+                                "ttl": "156",
                                 "capability": [
                                     "router",
                                     "switch",
+                                    "IGMP_cnd_filtering",
                                     "Supports-STP-Dispute"
                                 ],
-                                "ttl": 120,
-                                "ifindex": 436731904,
-                                "port_id": "Ethernet2/1",
-                                "device_id": "nxos-spine2(TB601325DFB)"
+                                "platform_id": "N9K-C9300v",
+                                "port_id": "Ethernet1/2"
                             },
                             {
-                                "platform_id": "N7K-C7018",
-                                "intf_id": "Ethernet2/2",
+                                "ifindex": 436208640,
+                                "device_id": "nxos-spine2.ntc.com(9N9ILWQL1JJ)",
+                                "intf_id": "Ethernet1/3",
+                                "ttl": "158",
                                 "capability": [
                                     "router",
                                     "switch",
+                                    "IGMP_cnd_filtering",
                                     "Supports-STP-Dispute"
                                 ],
-                                "ttl": 120,
-                                "ifindex": 436736000,
-                                "port_id": "Ethernet2/2",
-                                "device_id": "nxos-spine2(TB601325DFB)"
+                                "platform_id": "N9K-C9300v",
+                                "port_id": "Ethernet1/3"
                             },
                             {
-                                "platform_id": "N7K-C7018",
-                                "intf_id": "Ethernet2/3",
+                                "ifindex": 436209152,
+                                "device_id": "nxos-spine2.ntc.com(9N9ILWQL1JJ)",
+                                "intf_id": "Ethernet1/4",
+                                "ttl": "158",
                                 "capability": [
                                     "router",
                                     "switch",
+                                    "IGMP_cnd_filtering",
                                     "Supports-STP-Dispute"
                                 ],
-                                "ttl": 120,
-                                "ifindex": 436740096,
-                                "port_id": "Ethernet2/3",
-                                "device_id": "nxos-spine2(TB601325DFB)"
-                            },
-                            {
-                                "platform_id": "N7K-C7018",
-                                "intf_id": "Ethernet2/4",
-                                "capability": [
-                                    "router",
-                                    "switch",
-                                    "Supports-STP-Dispute"
-                                ],
-                                "ttl": 120,
-                                "ifindex": 436744192,
-                                "port_id": "Ethernet2/4",
-                                "device_id": "nxos-spine2(TB601325DFB)"
+                                "platform_id": "N9K-C9300v",
+                                "port_id": "Ethernet1/4"
                             }
                         ]
                     }
                 }
             }
-        },
-        "version": "1.2",
-        "type": "cli_show",
-        "sid": "eoc"
+        }
     }
 }
 >>>
-
-
-
 ```
 
 We can see that **nxos-spine1** has 4+ neighbor entries pointing to the same device, **nxos-spine2**. That's because **nxos-spine1** and **nxos-spine2** are connected with 4 links.
@@ -694,31 +757,27 @@ Pretty print `neighbors_list`.
 >>> print(json.dumps(neighbors_list, indent=4))
 [
     {
-        "neighbor_interface": "mgmt0",
-        "local_interface": "mgmt0",
-        "neighbor": "nxos-spine2(TB601325DFB)"
+        "neighbor_interface": "Ethernet1/1",
+        "neighbor": "nxos-spine2.ntc.com(9N9ILWQL1JJ)",
+        "local_interface": "Ethernet1/1"
     },
     {
-        "neighbor_interface": "Ethernet2/1",
-        "local_interface": "Ethernet2/1",
-        "neighbor": "nxos-spine2(TB601325DFB)"
+        "neighbor_interface": "Ethernet1/2",
+        "neighbor": "nxos-spine2.ntc.com(9N9ILWQL1JJ)",
+        "local_interface": "Ethernet1/2"
     },
     {
-        "neighbor_interface": "Ethernet2/2",
-        "local_interface": "Ethernet2/2",
-        "neighbor": "nxos-spine2(TB601325DFB)"
+        "neighbor_interface": "Ethernet1/3",
+        "neighbor": "nxos-spine2.ntc.com(9N9ILWQL1JJ)",
+        "local_interface": "Ethernet1/3"
     },
     {
-        "neighbor_interface": "Ethernet2/3",
-        "local_interface": "Ethernet2/3",
-        "neighbor": "nxos-spine2(TB601325DFB)"
-    },
-    {
-        "neighbor_interface": "Ethernet2/4",
-        "local_interface": "Ethernet2/4",
-        "neighbor": "nxos-spine2(TB601325DFB)"
+        "neighbor_interface": "Ethernet1/4",
+        "neighbor": "nxos-spine2.ntc.com(9N9ILWQL1JJ)",
+        "local_interface": "Ethernet1/4"
     }
 ]
+>>>
 ```
 
 ##### Challenge Exercise
@@ -842,6 +901,7 @@ Here is an example of a working script:
 import requests
 import json
 from requests.auth import HTTPBasicAuth
+requests.packages.urllib3.disable_warnings()
 
 
 def nxapi_request(device, command):
@@ -850,7 +910,9 @@ def nxapi_request(device, command):
         'Content-Type': 'application/json'
     }
 
+
     url = 'https://{}/ins'.format(device)
+
 
     payload = {
         "ins_api": {
