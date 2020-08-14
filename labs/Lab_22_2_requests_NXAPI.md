@@ -168,8 +168,8 @@ Make the API call to the device using the `post` function of `requests` as shown
 
 ```python
 >>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
-/usr/lib/python3/dist-packages/urllib3/connectionpool.py:849: InsecureRequestWarning: Unverified HTTPS request is being made. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
-  InsecureRequestWarning)
+/usr/local/lib/python3.6/site-packages/urllib3/connectionpool.py:986: InsecureRequestWarning: Unverified HTTPS request is being made to host 'nxos-spine1'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#ssl-warnings
+  InsecureRequestWarning,
 >>>
 ```
 
@@ -313,7 +313,7 @@ Perform a type check:
 
 ```python
 >>> type(data)
-<type 'dict'>
+<class 'dict'>
 >>>
 ```
 
