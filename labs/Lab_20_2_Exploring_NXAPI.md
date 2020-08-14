@@ -10,6 +10,9 @@ This task introduces you to the Developer Sandbox environment that exists on eac
 
 Open a Web Browser and connect to the switch using `https://nxos-spine1`
 
+Remote-desktop into your jump-host and open a web browser and connect to the switch using `https://nxos-spine1`
+
+
 Ensure you are using **https**.
 
 Login with the credentials `username: ntc, password: ntc123`
@@ -26,13 +29,13 @@ Enter the command `show version` in the large text box on the left hand side. Ke
 
 ##### Step 3
 
-Click the blue **POST** button.
+Click the blue **Send** button.
 
-You will see the response in the bottom right pane.
+You will see the response in the **Response** box.
 
 ![NX-API Sandbox 5](images/cisco_05.png)
 
-Notice the JSON data that came back. It has several key-value pairs including `jsonrpc`, `result`, and `id`.  Notably, the main response is in under its own key called `body` as the value for the key `result`.
+Notice the JSON data that came back. It has several key-value pairs including `jsonrpc` and `result`.  Notably, the main response is in under its own key called `body` as the value for the key `result`.
 
 ##### Step 4
 
@@ -48,7 +51,7 @@ Choose the Message format **XML** and choose the command type **cli_show_ascii**
 
 ##### Step 6
 
-Click the blue **POST** button.
+Click the amber **Send** button.
 
 ![NX-API Sandbox 6](images/cisco-show-int.png)
 
@@ -64,7 +67,7 @@ Now keep the same command `show interface Eth1/2`, but change the command type b
 
 ##### Step 8
 
-Click the blue **POST** button.
+Click the amber **Send** button.
 
 Notice the difference from the previous task comparing and contrasting receiving structured data (XML) vs. raw text.  Feel free to try the same command using JSON-RPC.
 
@@ -87,7 +90,7 @@ Change the command type to be **cli_conf**.
 
 ##### Step 11
 
-Click the blue **POST** button.
+Click the amber **Send** button.
 
 ![NX-API Sandbox 10](images/step9_11.png)
 
