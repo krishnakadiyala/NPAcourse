@@ -23,7 +23,7 @@ Create a new playbook called `test-reachability.yml`.  Use the following to get 
     gather_facts: no
 
     vars:
-      dest: "8.8.8.8"
+      dest: "10.0.0.15"
 
     tasks:
 
@@ -51,7 +51,7 @@ Add two new tasks:
     gather_facts: no
 
     vars:
-      dest: "8.8.8.8"
+      dest: "10.0.0.15"
 
     tasks:
 
@@ -179,7 +179,7 @@ Feel free to change `hosts: csr1` to all devices or also make that a variable an
     gather_facts: no
 
     vars:
-      dest: "8.8.8.8"
+      dest: "10.0.0.15"
 
     tasks:
 

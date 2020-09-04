@@ -65,20 +65,7 @@ The goal will be to pass in the device, username, password, and device_type vari
 
 ##### Step 3
 
-Import `input` from `builtins` and replace the hard-coded variables you just created with interactive prompts:
-
-```python
-from builtins import input
-```
-
-```python
-    device = input("Please enter the hostname or IP: ")
-    username = input("Please enter the username: ")
-    password = input("Please enter the password: ")
-    device_type = input("Please enter the device type: ")
-```
-
-The bottom portion of the script should look like this:
+Replace the hard-coded variables in the main block of the script with interactive prompts by using the builtin Python `input` function. The bottom portion of the `interactive.py` script should look like this:
 
 ```python
 if __name__ == "__main__":
@@ -120,7 +107,7 @@ Our goal here is to allow the script to help instruct the user on the usage/limi
 
 ##### Step 1
 
-Perform a Save As on the file you just created in the previous lab.  Save it as `user-flags.py`.
+Perform a `Save As` on the file you just created in the previous task. Save it as `user-flags.py`.
 
 ##### Step 2
 

@@ -191,7 +191,7 @@ Save and re-run the playbook.
 This is the full output you should see:
 
 ```
-ntc@ntc-training:ansible$ ansible-playbook -i inventory restapis.yml --tags=ios
+ntc@ntc-training:ansible$ ansible-playbook -i inventory rest-apis.yml --tags=ios
 
 PLAY [PLAY 1 - ISSUE API CALL TO CSR] ******************************************
 

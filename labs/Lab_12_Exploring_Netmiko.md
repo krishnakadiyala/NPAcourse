@@ -233,13 +233,13 @@ You can always view the output coming back from the device saving it to a variab
 Let's try checking connectivity to Google's DNS server.
 
 ```python
->>> output = device.send_command('ping 8.8.8.8')
+>>> output = device.send_command('ping 10.0.0.15')
 >>>
 >>> print(output)
 Type escape sequence to abort.
-Sending 5, 100-byte ICMP Echos to 8.8.8.8, timeout is 2 seconds:
+Sending 5, 100-byte ICMP Echos to 10.0.0.15, timeout is 2 seconds:
 !!!!!
-Success rate is 100 percent (5/5), round-trip min/avg/max = 2/2/2 ms
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
 >>>
 ```
 

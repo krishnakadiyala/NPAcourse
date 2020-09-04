@@ -275,4 +275,4 @@ def main():
 main()
 ```
 
-As you can tell, this code is much more modular and you can now re-use these functions as you need too, for example, if you need to do another save or backup somewhere else in the script.
+As you can tell, this code is much more modular and you can now re-use these functions as you need to, for example, if you need to do another save or backup somewhere else in the script.

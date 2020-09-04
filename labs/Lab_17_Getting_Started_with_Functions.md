@@ -153,7 +153,7 @@ ntc@ntc-training:scripts$
 
 ##### Step 8
 
-Remove the latest function called `ez_cisco` and put it into a new script called `cisco-connect.py`.  The only code in that file should be the following:
+Remove the function called `ez_cisco` (both its definition and execution) and put it into a new script called `cisco-connect.py`. The only code in that file should be the following:
 
 ```python
 #! /usr/bin/env python
@@ -169,11 +169,11 @@ ez_cisco('csr1', 'ntc', 'ntc123', 'show version')
 
 ##### Step 9
 
-Make the following changes to the script:
+Make the following changes to the `cisco-connect.py` script:
 
 * Import the `ConnectHandler` netmiko object
-* Perform the desired action
-* The function should return show command as a string
+* Perform the desired action pass in the `show_command` parameter
+* The function should return the command output as a string
 * Test the script by issuing the `show version` to **csr1**
 
 ```python
