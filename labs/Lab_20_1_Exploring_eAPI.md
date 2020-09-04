@@ -6,7 +6,7 @@ This task introduces you to the Command Explorer environment that exists on each
 
 ##### Step 1
 
-Remote-desktop into your jump-host and open a web browser open a web browser and connect to the switch.
+Remote-desktop into your jump-host, open a web browser, and then connect to the switch.
 
 - Enter `https://eos-spine1` into the browser.
 

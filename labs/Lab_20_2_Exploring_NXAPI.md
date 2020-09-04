@@ -12,7 +12,6 @@ Open a Web Browser and connect to the switch using `https://nxos-spine1`
 
 Remote-desktop into your jump-host and open a web browser and connect to the switch using `https://nxos-spine1`
 
-
 Ensure you are using **https**.
 
 Login with the credentials `username: ntc, password: ntc123`
@@ -29,7 +28,7 @@ Enter the command `show version` in the large text box on the left hand side. Ke
 
 ##### Step 3
 
-Click the blue **Send** button.
+Click the **Send** button.
 
 You will see the response in the **Response** box.
 

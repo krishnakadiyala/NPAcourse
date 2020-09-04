@@ -531,7 +531,7 @@ Add a new play to create reports for each IOS device (for both report types).
 
 ##### Step 4
 
-Exectute the playbook.
+Execute the playbook.
 
 View all files that have been created.
 

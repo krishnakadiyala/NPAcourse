@@ -19,8 +19,8 @@ Start with this base playbook that includes the IP addresses that you need to pi
 
     vars:
       target_ips:
-        - "8.8.8.8"
-        - "4.4.4.4"
+        - "10.0.0.15"
+        - "10.0.0.2"
         - "198.6.1.4"
 ```
 
@@ -48,16 +48,16 @@ ntc@ntc-training:ansible$ tree ping-responses/
 ping-responses/
 ├── csr1
 │   ├── to_198.6.1.4.txt
-│   ├── to_4.4.4.4.txt
-│   └── to_8.8.8.8.txt
+│   ├── to_10.0.0.2.txt
+│   └── to_10.0.0.15.txt
 ├── csr2
 │   ├── to_198.6.1.4.txt
-│   ├── to_4.4.4.4.txt
-│   └── to_8.8.8.8.txt
+│   ├── to_10.0.0.2.txt
+│   └── to_10.0.0.15.txt
 └── csr3
     ├── to_198.6.1.4.txt
-    ├── to_4.4.4.4.txt
-    └── to_8.8.8.8.txt
+    ├── to_10.0.0.2.txt
+    └── to_10.0.0.15.txt
 
 3 directories, 9 files
 ntc@ntc-training:ansible$
@@ -177,7 +177,7 @@ ntc@ntc-training:ansible$
 ### Solution Option 1
 
 
-```
+```yaml
 ---
 
   - name: TEST REACHABILITY - SOLUTION 1
@@ -187,8 +187,8 @@ ntc@ntc-training:ansible$
 
     vars:
       target_ips:
-        - "8.8.8.8"
-        - "4.4.4.4"
+        - "10.0.0.15"
+        - "10.0.0.2"
         - "198.6.1.4"
 
     tasks:
@@ -236,7 +236,7 @@ ntc@ntc-training:ansible$
 
 Playbook **ping.yml**
 
-```
+```yaml
 ---
 
   - name: TEST REACHABILITY - SOLUTION 2
@@ -246,8 +246,8 @@ Playbook **ping.yml**
 
     vars:
       target_ips:
-        - "8.8.8.8"
-        - "4.4.4.4"
+        - "10.0.0.15"
+        - "10.0.0.2"
         - "198.6.1.4"
 
     tasks:

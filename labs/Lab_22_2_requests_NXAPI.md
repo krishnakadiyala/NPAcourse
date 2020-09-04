@@ -610,7 +610,7 @@ You'll notice this process becomes repetitive, so you'd want to store a few of t
 ...     }
 ... }
 >>>
->>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth)
+>>> response = requests.post(url, data=json.dumps(payload), headers=headers, auth=auth, verify=False)
 >>>
 >>> data = json.loads(response.text)
 >>>

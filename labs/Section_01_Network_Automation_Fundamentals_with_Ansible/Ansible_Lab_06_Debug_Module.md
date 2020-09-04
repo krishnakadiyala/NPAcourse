@@ -47,7 +47,8 @@ The task will simply print the variable `ntc_vendor` for each device in the grou
 
     tasks:
       - name: DEBUG AND PRINT TO TERMINAL
-        debug: var=ntc_vendor
+        debug: 
+          var: ntc_vendor
 ```
 
 Remember the `ntc_vendor` variable is simply a variable we created in the last lab for each group of devices and now we are going to print it for the **iosxe** group.
@@ -192,10 +193,12 @@ Add a task to the playbook to debug the `device_type` variable so the playbook r
 
     tasks:
       - name: DEBUG AND PRINT TO TERMINAL
-        debug: var=ntc_vendor
+        debug:
+          var: ntc_vendor
 
       - name: DEBUG AND PRINT DEVICE TYPE TO TERMINAL
-        debug: var=ntc_device_type
+        debug:
+          var: ntc_device_type
 ```
 
 ##### Step 3
@@ -406,7 +409,6 @@ Add a new task to the playbook to debug the `inventory_hostname` and `ansible_ne
 **IMPORTANT**: The `inventory_hostname` variable is a built-in variable that's equal to the hostname of the device as you've defined it in the inventory file.
 
 ```yaml
-
 ---
 
   - name: USING THE DEBUG MODULE
@@ -417,13 +419,16 @@ Add a new task to the playbook to debug the `inventory_hostname` and `ansible_ne
 
     tasks:
       - name: DEBUG AND PRINT TO TERMINAL
-        debug: var=ntc_vendor
+        debug: 
+          var: ntc_vendor
 
       - name: DEBUG AND PRINT DEVICE TYPE TO TERMINAL
-        debug: var=ntc_device_type
+        debug:
+          var: ntc_device_type
 
       - name: DEBUG AND PRINT THE OS
-        debug: msg="The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
+        debug: 
+          msg: "The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
 ```
 
 ##### Step 2
@@ -490,13 +495,16 @@ Your playbook should look like this:
 
     tasks:
       - name: DEBUG AND PRINT TO TERMINAL
-        debug: var=ntc_vendor
+        debug:
+          var: ntc_vendor
 
       - name: DEBUG AND PRINT DEVICE TYPE TO TERMINAL
-        debug: var=ntc_device_type
+        debug:
+          var: ntc_device_type
 
       - name: DEBUG AND PRINT THE OS
-        debug: msg="The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
+        debug:
+          msg: "The OS for {{ inventory_hostname }} is {{ ansible_network_os }}."
 
 ```
 
