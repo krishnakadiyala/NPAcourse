@@ -1,4 +1,4 @@
-## Lab 3 - Working with Strings
+# Lab 3 - Working with Strings
 
 ### Task 1 - Working with Strings Part 1
 
@@ -52,7 +52,7 @@ coreswitch-a
 
 ```
 
-As you can see, you can print using the `print` statement, but also print by typing the variable name and pressing Enter.  Using the print statement in the Python _shell_ is not a requirement, but it is needed if you want to render escape characters such as `\n`.
+As you can see, not only you can print by using the `print` statement, but also by typing the variable name and pressing Enter.  Using the print statement in the Python _shell_ is not a requirement, but it is needed if you want to render escape characters such as `\n`.
 
 ##### Step 5
 
@@ -109,7 +109,7 @@ Once it's created use the built-in method `replace` to replace only the 3rd octe
 >>>
 ```
 
-If you notice, this replaces the 3rd and 4th octets.  We only want to replace the 3rd octet though.  The `replace` built-in method supports an optional parameter which specifies how many occurrences to replace of the matching string.
+Notice that this replaces the 3rd and 4th octets.  We only want to replace the 3rd octet though.  The `replace` built-in method supports an optional parameter which specifies how many occurrences to replace of the matching string.
 
 ##### Step 9
 
@@ -249,7 +249,7 @@ Don't worry, we're showing this now because `split` is a method for strings, but
 
 ### Task 2 - Working with Strings Part 2
 
-As a network engineer, you'll often work with numbers in the form of IP Addresses, MAC addresses, Interface Numbers, etc., and you may need to validate the correct syntax of a user input parameter.  As such, you may want to ensure the value entered is really a number.
+As a network engineer, you'll often work with numbers in the form of IP Addresses, MAC addresses, Interface Numbers, etc., and you may need to validate the correct syntax of an user input parameter.  As such, you may want to ensure the value entered is really a number.
 
 Let's say you need to parse the interface "Ethernet1/10" and want to ensure the interface has a number followed by a "/" followed by another number.
 
@@ -298,7 +298,7 @@ Create two new variables called `slot` and `intf` - each should store the slot/i
 >>> intf = int_id.split('/')[1]
 ```
 
-Remember that `split` returns a list and you access elements in a list using an index value starting at zero.  Again, we'll cover lists in depth in an upcoming lab.
+Remember that `split` returns a list and you can access elements in a list using an index value starting at zero.  Again, we'll cover lists in depth in an upcoming lab.
 
 ##### Step 5
 
@@ -331,13 +331,13 @@ True
 
 Feel free to run through this example again with a typo such as EthernetX/10, and see what happens.
 
-If you do another example, you'll need to re-run the "parsing" statements stripping "Ethernet"< splitting on `/`, and then checking each element to see if they are digits.
+If you do another example, you'll need to re-run the "parsing" statements stripping "Ethernet"< splitting on `/`, and then checking each element to see if it is a number.
 
-> Note: this is just one example of how this could be done to teach particular methods.  There are other ways this could be done that's more _"production" grade_. 
+> Note: this is just one example of how this could be done to teach particular methods.  There are other ways this could be done that are more _"production" grade_. 
 
 ### Task 3 - Working with Strings Part 3
 
-When working with CLI commands, you usually know the command to enter, but just need the particular value to configure.  So, if you are configuring Ethernet1/10, you may need to configure it's speed, duplex, and description.
+When working with CLI commands, you usually know the command to enter, but just need the particular value to configure.  So, if you are configuring Ethernet1/10, you may need to configure its speed, duplex, and description.
 
 As a network engineer, you already know the interface commands for each of these are:
 
@@ -347,7 +347,7 @@ duplex { auto | full }
 description { user text }
 ```
 
-When you're working in Python, you may store the values you want to *insert* in a variable (or take them in as user input).  Let's take a look.
+When you're working in Python, you may store the values you want to *insert* in a variable (or take them in as user inputs).  Let's take a look.
 
 ##### Step 1
 
@@ -373,7 +373,7 @@ Create three new command strings and insert the proper value into each command u
 >>> descr_cmd = 'description {}'.format(description)
 ```
 
-> Note: the variable is being inserted where the curly braces are.  This is merely a templated string.
+> Note: the variables are being inserted where the curly braces are.  This is merely a templated string.
 
 ##### Step 3
 

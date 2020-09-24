@@ -1,4 +1,4 @@
-## Lab 15 - Using the Config Module
+# Lab 15 - Using the Config Module
 
 ### Task 1 - Configuring Interfaces
 
@@ -228,7 +228,7 @@ Add one new task as shown below.
 
 This task introduces even more parameters for `ios_config` such as `before` and `match`.
 
- * `before` - commands that will get execute "before" the `parents` and `commands` _if_ a change is required
+ * `before` - commands that will get executed "before" the `parents` and `commands` _if_ a change is required
  * `match` - this dictates how matching is done against the existing running configuration.  The default is `match: line` which just ensures the commands exist.  "exact" will make sure the ordering is exactly how you define it in the playbook.
 
 ##### Step 8

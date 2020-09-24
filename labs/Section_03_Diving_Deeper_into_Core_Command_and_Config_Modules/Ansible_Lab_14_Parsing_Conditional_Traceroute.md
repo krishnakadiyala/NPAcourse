@@ -1,4 +1,4 @@
-## Lab 14 Challenge - Performing a Conditional Traceroute Based on Ping Failures
+# Lab 14 Challenge - Performing a Conditional Traceroute Based on Ping Failures
 
 In the previous lab, you learned how to use pre-built TextFSM templates and explored two built-in Ansible RegEx filters to parse data.
 
@@ -70,7 +70,7 @@ Add two new tasks:
 
 This example is _chaining_ `regex_search()` calls together because the first one returns "Success rate is 80 percent" and when passing it to the second filter, it then only returns "80".
 
-If you'd like add these two tasks to better understand why they are chained together:
+If you'd like, add these two tasks to better understand why they are chained together:
 
 ```yaml
     - name: PARSE PING RESPONSE TO OBTAIN % OF SUCCESS
@@ -134,7 +134,7 @@ Save and execute the playbook.
 
 Add conditional logic using the `when` task attribute to only perform the traceroute if the ping response percentage is less than 81%.
 
-In this task, we're also using a Jinja2 filter called `int` to convert `ping_pct` from a string to an integer so can perform comparisons on it.
+In this task, we're also using a Jinja2 filter called `int` to convert `ping_pct` from a string to an integer so you can perform comparisons on it.
 
 ```yaml
     - name: ISSUE TRACEROUTE

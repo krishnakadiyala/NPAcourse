@@ -1,4 +1,4 @@
-## Lab 22 - Using Python requests 
+# Lab 22 - Using Python requests 
 
 Do the lab(s) as directed by your instructor.  This is determined based on your lab topology.
 

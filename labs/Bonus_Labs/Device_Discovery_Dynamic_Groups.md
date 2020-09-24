@@ -1,4 +1,4 @@
-## Discovering Device Types and Dynamically Creating Groups
+# Discovering Device Types and Dynamically Creating Groups
 
 Ansible is best known for issuing configuration commands, but as you've seen, you can also issue show commands to the device and collect data.  Because Ansible is extensible, it's possible to perform anything inside a module that you could write a script for.
 
@@ -168,7 +168,7 @@ You'll create three ad-hoc dynamic groups called "os_ios", "os_nxos", and "os_ju
 
 ##### Step 1
 
-Add a two tasks to the same playbook from Task 2.
+Add two tasks to the same playbook from Task 2.
 
 This task will show you how to use the `group_by` module.
 

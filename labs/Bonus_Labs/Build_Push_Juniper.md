@@ -1,4 +1,4 @@
-## Lab 24.3 - Building and Pushing Network Configuration Files
+# Lab 24.3 - Building and Pushing Network Configuration Files
 
 This lab will show how to use Ansible to automate the process of building full network configuration files and pushing them to network devices.  
 
@@ -188,9 +188,9 @@ You will create a template for each configuration stanza that exists on the CLI.
 
 ##### Step 4
 
-Open the interfaces template `02_interfaces.j2`.  Ensure you use the following template.
+Open the interface template `02_interfaces.j2`.  Ensure you use the following template.
 
-Take your time to review the template.  You will notice all this is, is Juniper CLI commands with variables, loops, and if statements added to it.
+Take your time to review the template.  You will notice all this is Juniper CLI commands with variables, loops, and if statements added to it.
 
 ```
 interfaces {
@@ -318,7 +318,7 @@ interfaces:
 ```
 
 
-Now review the interfaces template again to ensure you understand how the data is modeled in the YAML variables files and how it maps back to the interfaces template.
+Now review the interface template again to ensure you understand how the data is modeled in the YAML variable files and how it maps back to the interface template.
 
 
 ##### Step 6
@@ -369,7 +369,7 @@ snmp:
 
 ##### Step 8
 
-Finally, open the protocols template file `04_protocols.j2`.
+Finally, open the protocol template file `04_protocols.j2`.
 
 Use the following template.
 

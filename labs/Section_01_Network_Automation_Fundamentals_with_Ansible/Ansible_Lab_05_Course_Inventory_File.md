@@ -1,8 +1,8 @@
-## Lab 5 - Ansible Inventory File
+# Lab 5 - Ansible Inventory File
 
 This lab builds on previous labs and shows how to build a more robust Ansible inventory file.  You'll learn how to create groups, nested groups, and group based variables all within the inventory file.
 
-> **Note:** This is the master inventory file used for this course.  It is critical this step is performed so that all other tasks work as expected.
+> **Note:** This is the master inventory file used for this course.  It is critical that this step is performed so that all other tasks work as expected.
 
 > If there are certain devices that are not in your course, please do not include them in your inventory file.
 
@@ -220,7 +220,7 @@ We'll use these variables in a variety of ways throughout the course.
 
 ### Task 8 - Status Check
 
-After adding all group variables, your inventory file should look like this (note that order doesn't matter):
+After adding all group variables, your inventory file should look like this (Note that order doesn't matter):
 
 > Note: if there isn't a particular device in your topology, there is no need to have it in the inventory file.
 
@@ -289,7 +289,7 @@ vmx
 
 Here is some extra information to be aware of:
 
-* Variables starting with `ansible_` are usually all built-in and specical variables within Ansible
+* Variables starting with `ansible_` are usually all built-in and special variables within Ansible
 * Other variables such as `ntc_` are not special and just data we'll use in the course, but they are name-spaced with `ntc_` to make them easier to find and track.
 * It is possible to put IP addresses in an inventory file as well like this:
 
@@ -307,7 +307,4 @@ router1  ansible_host=10.1.1.1
 router2
 ```
 
-`ansible_host` is a special variable in which allows you easily manage devices using names in your inventory file and playbooks without having formal DNS or IP to name mappings.  This example assumes `router2` is a DNS name.
-
-
-
+`ansible_host` is a special variable that allows you to easily manage devices using names in your inventory file and playbooks without having formal DNS or IP to name mappings.  This example assumes `router2` is a DNS name.

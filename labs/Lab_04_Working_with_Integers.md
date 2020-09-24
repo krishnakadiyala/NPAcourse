@@ -1,4 +1,4 @@
-## Lab 4 - Working with Integers
+# Lab 4 - Working with Integers
 
 This lab provides an introduction to working with integers in Python.  While integers aren't used much in the course, it's still worth understanding some basics of integers.
 
@@ -24,7 +24,7 @@ Check the data type of `vlan_id`:
 
 ##### Step 3
 
-Using the `dir(vlan_id)` or `dir(int)` statement, view all built-in methods for integers:
+Using the `dir(vlan_id)` or `dir(int)` statement to view all built-in methods for integers:
 
 ```python
 >>> dir(vlan_id)
@@ -41,7 +41,7 @@ Using the `dir(vlan_id)` or `dir(int)` statement, view all built-in methods for 
 >>>
 ```
 
-You'll notice there are not very many relevant methods for integers.
+You'll notice there are not many very relevant methods for integers.
 
 ##### Step 4
 
@@ -84,7 +84,7 @@ Here you can see which one the string is by noticing the quotes wrapped around t
 
 ##### Step 7
 
-Let's now take a look at a concept called "casting" converting one data type to another.
+Let's now take a look at a concept called "casting" - converting one data type to another.
 
 Create a variable called `ipaddr` and assign it the value of "10.2.9.1" and also create another variable called `mask` assigning it a value of 24:
 

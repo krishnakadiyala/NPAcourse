@@ -1,4 +1,4 @@
-## Lab 9 - Exploring Nested Objects
+# Lab 9 - Exploring Nested Objects
 
 ### Task 1 - Nested Dictionary Objects
 
@@ -203,7 +203,7 @@ Think about this:
   * `facts_list[0]` is a dictionary
   * We know to add key-value pairs to a dictionary, we use:
     *  `dict["key"] = "value"`
-  *  Knowing this, we can add the new key called `neighbors` and assign it the value of the variable that just happen to also be called `neighbors`
+  *  Knowing this, we can add the new key called `neighbors` and assign it the value of the variable that just happens to also be called `neighbors`
 
 
 ##### Step 13
@@ -551,7 +551,7 @@ Let's try it.
 >>>
 ```
 
-Now that you  know it's a dictionary, print the keys.
+Now that you know it's a dictionary, print the keys.s
 
 ```python
 >>> print(output.keys())

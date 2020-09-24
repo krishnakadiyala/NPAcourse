@@ -1,8 +1,8 @@
-## Lab 20.1 - Arista eAPI
+# Lab 20.1 - Arista eAPI
 
 ### Task 1 - Command Explorer
 
-This task introduces you to the Command Explorer environment that exists on each Arista switch.  The command explorer is a great tool for beginners and experts alike, as it gives you direct insight with how the switch will respond to API calls.  This allows you to verify what key-value pairs and response you should be getting back as you are writing and testing your code.
+This task introduces you to the Command Explorer environment that exists on each Arista switch.  The command explorer is a great tool for beginners and experts alike, as it gives you direct insight on how the switch will respond to API calls.  This allows you to verify what key-value pairs and response you should be getting back as you are writing and testing your code.
 
 ##### Step 1
 

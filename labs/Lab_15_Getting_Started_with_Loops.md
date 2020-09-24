@@ -1,6 +1,6 @@
-## Lab 15 - Getting Started with For Loops
+# Lab 15 - Getting Started with For Loops
 
-This lab walks you through an introduction of using for loops iterating over a list of strings, a dictionaries, and finally, a list of dictionaries.
+This lab walks you through an introduction of using for loops to iterate over a list of strings, a dictionaries, and finally, a list of dictionaries.
 
 ### Task 1 - Printing in a For Loop
 
@@ -148,7 +148,7 @@ description ---> Configured by Python
 >>>
 ```
 
-Note that using `items` gives you each to each `item` and remember that `items` returns a list of tuples (you can also think of this as a list of lists from a usability perspective). Here `key` maps to the first element in each tuple and `value` maps to the second in element in each tuple.
+Note that using `items` gives you each to each `item` and remember that `items` returns a list of tuples (you can also think of this as a list of lists from an usability perspective). Here `key` maps to the first element in each tuple and `value` maps to the second in element in each tuple.
 
 Remember `key` and `value` are user defined:
 

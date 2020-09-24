@@ -1,4 +1,4 @@
-## Lab 10 - Continuous Compliance with IOS
+# Lab 10 - Continuous Compliance with IOS
 
 This lab introduces a methodology to perform real-time validation and compliance of network configuration and operational state.
 
@@ -407,7 +407,7 @@ Looks like everything passed and is in a good state, but what if the file system
 
 ##### Step 9
 
-Lets make a change on the `set_fact` module and change the variable `percent` to `60` and comment out the original variable.
+Let's make a change on the `set_fact` module, change the variable `percent` to `60` and comment out the original variable.
 
 ```yaml
 
@@ -459,7 +459,7 @@ vmx3                       : ok=4    changed=0    unreachable=0    failed=1
 
 ```
 
-Another thing to point out is that the assertions stopped being analyzed after the first task and and did not run the second task because the module returned with an error. 
+Another thing to point out is that the assertions stopped being analyzed after the first task and did not run the second task because the module returned with an error. 
 
 To prevent that from happening you can add the argument `ignore_errors: true` and it will ignore any errors and move on to the next task. 
 

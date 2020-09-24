@@ -1,6 +1,6 @@
-## EXTRA LAB - Deploying Configurations with Netmiko
+# EXTRA LAB - Deploying Configurations with Netmiko
 
-In this lab, you will continue to build on what you learned in the Netmiko building more useful scripts.
+In this lab, you will continue to build on what you learned in the Netmiko to build more useful scripts.
 
 ### Task 1 - Deploying Interface Configurations
 
@@ -73,11 +73,11 @@ Showing the result copied in successfully:
 ```
 
 
-We need to make sure you understand using an object like this.  Let's walk through a few more steps.
+We need to make sure you understand how to use an object like this.  Let's walk through a few more steps.
 
 ##### Step 7
 
-Print all configuration parameters for **csr1** followed by it's IP Address and mask:
+Print all configuration parameters for **csr1** followed by its IP Address and mask:
 
 ```python
 >>> print(INTERFACE_MAP['csr1'])
@@ -175,7 +175,7 @@ csr2_commands = [csr2_interface_command, csr2_ipaddr_command, csr2_descr_command
 
 ##### Step 13
 
-Add necessary print statements to your script. You may want to print each command or the final commands list for each evice.
+Add necessary print statements to your script. You may want to print each command or the final command list for each device.
 
 ##### Step 14
 

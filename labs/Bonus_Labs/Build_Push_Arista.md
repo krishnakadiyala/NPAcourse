@@ -1,4 +1,4 @@
-## Lab 24.1 - Building and Pushing Network Configuration Files
+# Lab 24.1 - Building and Pushing Network Configuration Files
 
 This lab will show how to use Ansible to automate the process of building full network configuration files and pushing them to network devices.  
 
@@ -130,7 +130,7 @@ We'll use the following as variable names:
 - role
 - secret
 
-> Note: remember that `inventory_hostname` is a built in variable that gets set to the name of the host as it is defined in the inventory file.
+> Note: remember that `inventory_hostname` is a built-in variable that gets set to the name of the host as it is defined in the inventory file.
 
 ##### Step 4
 
@@ -152,7 +152,7 @@ username {{ username }} privilege {{ priv }} role {{ role }} secret 5 {{ secret 
 !
 ```
 
-As you can see, all that is required is to substitute the proper values using double curly braces around your new variable name.  This is the easiest kind of template to work with.
+As you can see, all that requires is to substitute the proper values using double curly braces around your new variable name.  This is the easiest kind of template to work with.
 
 ##### Step 5
 
@@ -236,7 +236,7 @@ You can see that `vlans` is a list and each element in the list is a dictionary.
 
 ##### Step 9
 
-The next major section to de-compose is the interfaces section (mgmt is left out):
+The next major section to de-compose is the interface section (mgmt is left out):
 
 ```python
 !
@@ -543,7 +543,7 @@ ntc@ntc-training:ansible$ tree
     └── eos-leaf.j2
 ```
 
-Open a few of the configuration files and a take look at them.
+Open a few of the configuration files and take a look at them.
 
 Notice anything incorrect?
 
@@ -561,7 +561,7 @@ Open the configs to make sure they updated correctly.
 
 
 OPTIONAL:
-  - Create the required variables file called `eos-spines.yml` in the `group_vars` directory for *eos-spine1* and *eos-spine2* to build out all 4 configurations.
+  - Create the required variable file called `eos-spines.yml` in the `group_vars` directory for *eos-spine1* and *eos-spine2* to build out all 4 configurations.
 
 
 ### Task 3 - Pushing the Configurations

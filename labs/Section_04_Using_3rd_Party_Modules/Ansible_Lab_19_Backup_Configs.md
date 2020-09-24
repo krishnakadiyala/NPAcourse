@@ -1,10 +1,10 @@
-## Lab 19 - Backup and Restore Network Configurations Part 1
+# Lab 19 - Backup and Restore Network Configurations Part 1
 
-Before Starting the lab we are going to go over how to add 3rd party modules to your Ansible environment.  This could include open source modules or custom modules you decide to write over time. 
+Before starting the lab we are going to go over how to add 3rd party modules to your Ansible environment.  This could include open source modules or custom modules you decide to write over time. 
 
 Below are some tips on how to do it, but for this lab environment it has already been added so we **don't** have to apply any changes.   This first Task is **read-only**.
 
-## Task 1 - Adding 3rd Party Modules
+### Task 1 - Adding 3rd Party Modules
 
 ##### Step 1
 
@@ -69,7 +69,7 @@ ansible 2.9.9
 
 You can now just `git clone` any git project that has modules inside your configured search path.
 
-* It's recommend to follow the 3rd party module instructions to make sure it has met its dependencies requirements, what's important after the install is to make sure the libraries are in placed in where we have configured `configured module search path = [u'/etc/ntc/ansible/library', u'/home/ntc/projects']` of the `ansible.cfg` file.  Remember, you will need to ensure any Python dependencies are met too, e.g. `pip install $package`.
+* It's recommended to follow the 3rd party module instructions to make sure it has met its dependencies requirements. What's important after the install is to make sure the libraries are in placed in where we have configured `configured module search path = [u'/etc/ntc/ansible/library', u'/home/ntc/projects']` of the `ansible.cfg` file.  Remember, you will need to ensure any Python dependencies are met too, e.g. `pip install $package`.
 
 
 For the course, we have a number of repositories cloned that contain 3rd party open source Ansible modules:
@@ -155,7 +155,7 @@ By making an object like this, it'll allow us to use a single task to backup all
 
 ##### Step 4
 
-Since, we're using a 3rd party module, credentials and connection properties are handled a little differently.  We need to pass them into the module.
+Since we're using a 3rd party module, credentials and connection properties are handled a little differently.  We need to pass them into the module.
 
 Add a variable to handle the login to the devices. Often referred to as a provider variable, this is a dictionary that can be passed to the `provider` parameter of the `ntc` and `napalm` modules.
 
@@ -230,7 +230,7 @@ All backup files should be saved locally inside the `backups` directory.
 
 Supported platforms for this module actually matches anything Netmiko, a popular Python-based SSH library, supports, e.g. vendor_os like cisco_ios, cisco_nxos, juniper_junos, arista_eos, etc.  Since we have those variables pre-built in our inventory file, we can use them as defined in the output above.
 
-Save and Execute the playbook.
+Save and execute the playbook.
 
 ```
 ntc@ntc-training:ansible$ ansible-playbook -i inventory backup.yml
@@ -353,7 +353,7 @@ changed: [csr3]
 changed: [csr2]
 ```
 
-Open one or more of the new configuration files and a take look at them and notice how those lines are gone from the files.
+Open one or more of the new configuration files and take a look at them and notice how those lines are gone from the files.
 
 ##### Step 9
 
@@ -417,4 +417,4 @@ connection_details:
 ```
 
 
-Note: in other labs, you've also seen how you can also backup configurations using "core" modules.  This is just another way while showing how to use 3rd party modules.
+Note: in other labs, you've also seen how you can back up configurations using "core" modules.  This is just another way while showing how to use 3rd party modules.

@@ -1,4 +1,4 @@
-## Lab 1 - Accessing the Lab Environment
+# Lab 1 - Accessing the Lab Environment
 
 ### Task 1 - Understand the Lab Topology
 
@@ -14,7 +14,7 @@ Obtain your pod number from the Course Instructor:
 *  The pod will map directly to a publicly available FQDN that will be the public IP of your Linux jump host.
 *  You will be able to access all network devices by name through this jump host when the network labs start.
 
-The FQDN will be as fillows:
+The FQDN will be as follows:
 
 ```
 pod<pod-number>.cloud.networktocode.com

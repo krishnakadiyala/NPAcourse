@@ -1,4 +1,4 @@
-## Lab 3 - Deploying Configs Using a Multi-Vendor Module
+# Lab 3 - Deploying Configs Using a Multi-Vendor Module
 
 In the last lab, you deployed from a pre-built configuration file using the vendor specific core modules with two different plays to separate the vendors.  This would make it such that you need a play for every vendor (OS type) being used. 
 
@@ -109,7 +109,7 @@ Save this file.
 ##### Step 5
 
 
-Run the Ansible playbook again. You should see changes on the VMX devices as these configs are new. On the Cisco devices the output should come back with no change since they configs already exist and the module is idempotent.
+Run the Ansible playbook again. You should see changes on the VMX devices as these configs are new. On the Cisco devices the output should come back with no change since the configs already exist and the module is idempotent.
 
 
 ```bash
@@ -218,7 +218,7 @@ Save this file.
 ##### Step 7
 
 
-Run the Ansible playbook again. There should'nt be any changes to the configurations since the same commands are being used. The main difference here is that a variable is being used to pass in the configurations and it will not affect the changes to the devices unless the CLI configurations are changed. 
+Run the Ansible playbook again. There shouldn't be any changes to the configurations since the same commands are being used. The main difference here is that a variable is being used to pass in the configurations and it will not affect the changes to the devices unless the CLI configurations are changed. 
 
 
 ```bash
@@ -264,7 +264,7 @@ vmx3                       : ok=2    changed=0    unreachable=0    failed=0
 
 ##### Step 8
 
-Add one more play into the playbook. This last play will target both Juniper and Cisco devices in a single play. The variables also need to be modified so they can be accessed individually through a dictionary. In the task rather than access an individual variable the syntax will be `vendor_commands` for the parent key and stored inside that key are variables `ios` and `junos`. Since `ansible_network_os` will return the OS of each vendor then the commands can be access through these variables. 
+Add one more play into the playbook. This last play will target both Juniper and Cisco devices in a single play. The variables also need to be modified so they can be accessed individually through a dictionary. In this task, rather than accessing an individual variable, the syntax will be `vendor_commands` for the parent key while the variables stored inside that key are `ios` and `junos`. Since `ansible_network_os` will return the OS of each vendor, the commands can be accessed through these variables. 
 
 > Note: Later on this course will go into more detail on how to access data inside a dictionary. 
 

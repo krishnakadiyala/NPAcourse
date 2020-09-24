@@ -1,4 +1,4 @@
-## Lab 21.2 - Exploring Arista eAPI with Postman
+# Lab 21.2 - Exploring Arista eAPI with Postman
 
 ### Task 1 - Exploring Arista eAPI with Postman
 
@@ -84,13 +84,13 @@ You should see the JSON response in the bottom pane.
 
 Scroll through the response object and take a deeper look.
 
-Note that **Status** code is 200.  This is a standard HTTP Response code and tell us that everything worked.
+Note that **Status** code is 200.  This is a standard HTTP Response code and tells us that everything worked.
 
 ![Response](images/postman-eos/response.png)
 
 ##### Step 11
 
-Change the command to `show interfaces` to get informations about available interfaces.
+Change the command to `show interfaces` to get information about available interfaces.
 
 ![Interfaces](images/postman-eos/interfaces.png)
 

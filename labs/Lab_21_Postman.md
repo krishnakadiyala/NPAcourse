@@ -1,4 +1,4 @@
-## Lab 21 - Using Postman
+# Lab 21 - Using Postman
 
 Do the lab(s) as directed by your instructor.  This is determined based on your lab topology.
 

@@ -1,4 +1,4 @@
-## Lab 4 - Using Check Mode and Verbosity
+# Lab 4 - Using Check Mode and Verbosity
 
 This lab builds on the first lab you did with sending SNMP configurations to network devices.
 
@@ -83,13 +83,13 @@ ntc@ntc-training:ansible$
 
 ```
 
-This is telling us that Ansible is only sending ONE command to the device -- Ansible is NOT sending every command in the playbook because, by default, the _config modules are comparing the commands against a "show run" on the device.
+This is telling us that Ansible is only sending ONE command to the device -- Ansible is NOT sending every command in the playbook because by default, the _config modules are comparing the commands against a "show run" on the device.
 
 
->Note: Notice the __junos_config__  module does not return the one command that is being changed on the device. Not all modules are built the same, that's is not necessarily a bad thing but it's always good to be aware of it and make sure to test all available modules for specific features based on a particular use case.  You will see that the modules that do not use network_cli may not return commands being sent in the JSON return data.
+>Note: Notice the __junos_config__  module does not return the one command that is being changed on the device. Not all modules are built the same, that's not necessarily a bad thing but it's always good to be aware of it and make sure to test all available modules for specific features based on a particular use case.  You will see that the modules that do not use network_cli may not return commands being sent in the JSON return data.
 
 
-##### Step 7
+##### Step 4
 
 Re-run the playbook once more verifying idempotency, e.g. no changes should be made.
 
@@ -212,7 +212,7 @@ vmx3                       : ok=1    changed=1    unreachable=0    failed=0
 ntc@ntc-training:ansible$
 ```
 
-Notice that this says "changed" for each device, but no change actually took place!!
+Notice that this says "changed" for each device, but no change actually took place!
 
 ##### Step 3
 
@@ -243,11 +243,11 @@ vmx1>
 
 **READ-ONLY STEP**
 
-When you see "changed" when you run a playbook in check mode, it's telling you a change _will_ occur when you don't run it in check mode.  Check mode is often used at the beginning of change windows seeing if a change would occur.
+When you see "changed" when you run a playbook in check mode, it's telling you a change _will_ occur when you don't run it in check mode.  Check mode is often used at the beginning of change windows to see if a change would occur.
 
-Note that you saw verbose mode returns what commands are sent to the device and check mode returns if a change will be made. If you combine using check mode **and** verbose mode when you execute a playbook, you will see the commands that will get sent!
+Note that you saw verbose mode returns what commands are sent to the device and check mode returns if a change will be made. If you combine check mode **and** verbose mode while executing a playbook, you will see the commands that will get sent!
 
->Note: Viewing what commads are being sent to the device will only be displayed on the IOS devices in this test. 
+>Note: Viewing what commands are being sent to the device will only be displayed on the IOS devices in this test. 
 
 Let's try it.
 
@@ -288,7 +288,7 @@ You now know which commands are going to get sent to the device.  This is super-
 
 ##### Step 6
 
-Now that you, as a network engineer, "approved" the commands that will get sent to the device, you can remove check mode (feel free to keep verbose mode).
+Now that you, as a network engineer, "approved" the commands that will get sent to the device. You can remove check mode (feel free to keep verbose mode).
 
 ```
 ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-04.yml -v
@@ -321,7 +321,7 @@ ntc@ntc-training:ansible$
 
 ##### Step 7
 
-Finally, run the playbook one more time for verifying idempotency.
+Finally, run the playbook one more time to verify idempotency.
 
 ```
 ntc@ntc-training:ansible$ ansible-playbook -i inventory snmp-config-04.yml -v

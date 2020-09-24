@@ -1,4 +1,4 @@
-## Lab 18 - SNMP Ansible Roles
+# Lab 18 - SNMP Ansible Roles
 
 ### Task 1 - Multi-Platform SNMP Role
 
@@ -66,7 +66,7 @@ Use the Ansible `nxos_config` module to configure SNMP community strings.
 
 ```
 
-> Note: here we are using a variable called `snmp_communities` which will be passed by the main playbook executing the role.
+> Note: Here we are using a variable called `snmp_communities` which will be passed by the main playbook executing the role.
 
 ##### Step 5
 

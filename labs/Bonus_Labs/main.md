@@ -1,4 +1,4 @@
-## Ansible Bonus Labs
+# Ansible Bonus Labs
 
 [Dynamic Device Discovery with Dynamic Groups](Device_Discovery_Dynamic_Groups.md)
 

@@ -1,4 +1,4 @@
-## Lab 7 - Prompting the User for Input
+# Lab 7 - Prompting the User for Input
 
 
 ### Task 1 - Using vars_prompt

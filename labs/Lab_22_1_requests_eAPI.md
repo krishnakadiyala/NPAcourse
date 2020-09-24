@@ -1,4 +1,4 @@
-## Lab 22.1 - Arista eAPI
+# Lab 22.1 - Arista eAPI
 
 ### Task 1 - Using Python requests with eapi
 
@@ -189,7 +189,7 @@ You can verify the type of response and see it's still a Requests object:
 
 Let's now explore key attributes of `response`.
 
-First, validate the API call was successful.  If it was we should see an HTTP status code of "200" as the value for the `status_code`.
+First, validating the API call was successful.  If it was, then we should see an HTTP status code of "200" as the value for the `status_code`.
 
 ```python
 >>> response.status_code
@@ -286,7 +286,7 @@ Extract everything from the actual output in a variable first and then print the
 >>>
 ```
 
-Saving everything under `result` as it's own variable streamlines accessing data if you need to extract multiple key-value pairs.
+Saving everything under `result` as its own variable streamlines accessing data if you need to extract multiple key-value pairs.
 
 
 ##### Step 13
@@ -817,7 +817,7 @@ Stop scrolling if you don't want to see the solution.
 
 Here is an example of a working script:
 
-> There is no need to parameterize the command being sent or use functions, but this should give you a good idea how to start coding, and adding modularity, as you re-factor and optimize.  Even the script below could be modularized more.  Remember, this is just for learning purposes.
+> There is no need to parameterize the command being sent or use functions, but this should give you a good idea on how to start coding, and adding modularity, as you re-factor and optimize.  Even the script below could be modularized more.  Remember, this is just for learning purposes.
 
 ```python
 import requests

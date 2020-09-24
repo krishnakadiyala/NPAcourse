@@ -1,6 +1,6 @@
-## Lab 18 - Re-factoring Code with Functions
+# Lab 18 - Re-factoring Code with Functions
 
-In the last lab, you learned how to use functions and even created a small functions that connects to devices using Netmiko.  You'll use that knowledge now to re-factor and modularize the two scripts.
+In the last lab, you learned how to use functions and even created a small function that connects to devices using Netmiko.  You'll use that knowledge now to re-factor and modularize the two scripts.
 
 ### Task 1 - Modularize the Backup Script
 
@@ -87,7 +87,7 @@ Add a function called `connect_to_device` that looks like this:
 
 ```python
 def connect_to_device(hostname):
-    print("Connecting to device | {}".format(device))
+    print("Connecting to device | {}".format(hostname))
     device = ConnectHandler(host=hostname, username='ntc', password='ntc123', device_type='cisco_ios')
 
     return device

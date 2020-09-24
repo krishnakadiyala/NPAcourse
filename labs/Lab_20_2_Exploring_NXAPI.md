@@ -1,8 +1,8 @@
-## Lab 20.2 - Cisco NX-API
+# Lab 20.2 - Cisco NX-API
 
 ### Task 1 - NX-API Developer Sandbox
 
-This task introduces you to the Developer Sandbox environment that exists on each Nexus switch (assuming it supports NX-API).  The NX-API is a great tool for beginners and experts alike, as it gives you direct insight with how the switch will respond to API calls.  This allows you to verify what key-value pairs and response you should be getting back as you are writing and testing your code.
+This task introduces you to the Developer Sandbox environment that exists on each Nexus switch (assuming it supports NX-API).  The NX-API is a great tool for beginners and experts alike, as it gives you direct insight with how the switch will respond to API calls.  This allows you to verify what key-value pairs and responses you should be getting back as you are writing and testing your code.
 
 ##### Step 1
 

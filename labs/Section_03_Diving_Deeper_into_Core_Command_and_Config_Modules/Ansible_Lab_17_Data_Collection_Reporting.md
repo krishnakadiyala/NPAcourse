@@ -1,4 +1,4 @@
-## Lab 17 - Data Collection Modules & Reporting
+# Lab 17 - Data Collection Modules & Reporting
 
 Network Automation, and automation in general, is often equated with configuring devices faster, but as you've seen by now, it offers greater predictability and more deterministic outcomes.
 
@@ -570,7 +570,7 @@ View all files that have been created.
 
 ##### Step 7
 
-There is still one thing missing from the CSV.  That is to inser the headers for the CSV.
+There is still one thing missing from the CSV.  That is to insert the headers for the CSV.
 
 ```yaml
 

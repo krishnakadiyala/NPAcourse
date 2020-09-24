@@ -1,4 +1,4 @@
-## Lab 10 - Performing Basic File Operations
+# Lab 10 - Performing Basic File Operations
 
 This lab introduces how to perform basic file operations such as opening a file for reading or writing.  We'll examine each of these in this lab.
 
@@ -152,7 +152,7 @@ Close the file for writing:
 
 ##### Step 4
 
-In another terminal windows, use `cat` to view the file just created:
+In another terminal window, use `cat` to view the file just created:
 
 ```bash
 ntc@ntc-training:ntc$ cd files
@@ -164,7 +164,7 @@ interface Eth1
 
 ### Task 3 - Using a Context Manager
 
-This task introduces the `with` statement to manage the file open and closing process should something happen to your running program.  This is the recommended way for working with files.
+This task introduces the `with` statement to manage the file opening and closing process should something happen to your running program.  This is the recommended way for working with files.
 
 > Note: when you use `open('filename', 'w')`, the file gets written to only when the file is closed.  If you happen to forget to close the file, it could be an interesting time troubleshooting that!
 

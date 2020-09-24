@@ -1,4 +1,4 @@
-## Lab 16 - Re-factoring Code Using Loops
+# Lab 16 - Re-factoring Code Using Loops
 
 In the last lab, you learned how to use a for loop and looped over a list of strings, list of dictionaries, and even a dictionary.  You'll use that knowledge now to re-factor your last two challenge labs.
 
@@ -72,7 +72,7 @@ devices = ['csr1']
 
 ##### Step 3
 
-Add a for loop that loops over `devices` and update all lines that have a "csr1" string in replacing it with the variable called `device` that will be in the for loop, e.g. `for device in devices:`
+Add a for loop that loops over `devices` and updates all lines that have a "csr1" string in replacing it with the variable called `device` that will be in the for loop, e.g. `for device in devices:`
 
 The updated script should look like this with all "csr1" strings removed:
 

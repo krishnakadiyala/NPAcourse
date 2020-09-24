@@ -1,4 +1,4 @@
-## Lab 12 - Exploring Netmiko
+# Lab 12 - Exploring Netmiko
 
 In this lab, we will explore using Netmiko for network automation.  Recall that Netmiko is an SSH client for Python and in this lab you'll be SSH'ing and automating Cisco IOS devices. Even in a world where there are only APIs on network devices, you may still need to automate _turning on the API_.  And to do that, Netmiko is stil a great choice.
 
@@ -19,7 +19,7 @@ PING csr1 (172.21.0.6) 56(84) bytes of data.
 64 bytes from csr1.ntc-training (172.21.0.6): icmp_seq=2 ttl=64 time=0.059 ms
 64 bytes from csr1.ntc-training (172.21.0.6): icmp_seq=3 ttl=64 time=0.073 ms
 ```
-> Note: The IP address you have will be different than above and that is ok.
+> Note: The IP address you have will be different from above and that is ok.
 ##### Step 2
 
 Navigate to the `files` directory and enter the Python Dynamic Interactive Interpreter.
@@ -205,7 +205,7 @@ True
 >>>
 ```
 
-Maybe it's more important the device just doesn't boot into ROMMON mode:
+Maybe it's more important that the device just doesn't boot into ROMMON mode:
 
 ```python
 >>> '0x2142' not in output
@@ -226,7 +226,7 @@ Building configuration...
 >>>
 ```
 
-You can always view the output coming back from the device saving it to a variable.
+You can always view the output coming back from the device by saving it to a variable.
 
 ##### Step 9
 

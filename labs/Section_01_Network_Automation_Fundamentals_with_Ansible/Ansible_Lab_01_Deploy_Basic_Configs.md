@@ -1,4 +1,4 @@
-## Lab 1 - Deploying "Basic" Configurations with Ansible
+# Lab 1 - Deploying "Basic" Configurations with Ansible
 
 ### Task 1 - Managing SNMP Global Configuration Commands for IOS
 
@@ -121,8 +121,8 @@ Few notes about this command:
 * We are using the `ansible-playbook` program to execute the playbook
 * The `-i` flag maps to the inventory file to used when running this playbook - in our case, that's `inventory`
 * `snmp-config-01.yml` is the playbook we are executing
-* The `-u` flag maps to the username needed to login to the network devices
-* The `-k` flag states to prompt for the password ("ntc123") needed to login to the network devices
+* The `-u` flag maps to the username needed to log in to the network devices
+* The `-k` flag states to prompt for the password ("ntc123") needed to log in to the network devices
 
 Upon executing the playbook:
 
@@ -365,7 +365,7 @@ ansible_ssh_pass=ntc123
 
 ```
 
-This is assigning the value of "ntc" to the built-in Ansible variable called `ansible_ssh_pass` which is used as the password to login to your devices.
+This is assigning the value of "ntc" to the built-in Ansible variable called `ansible_ssh_pass` which is used as the password to log in to your devices.
 
 
 ##### Step 4

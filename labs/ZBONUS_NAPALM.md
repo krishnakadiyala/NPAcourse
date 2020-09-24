@@ -1,4 +1,4 @@
-## BONUS - Using NAPALM
+# BONUS - Using NAPALM
 
 Do the lab(s) as directed by your instructor.  This is determined based on your lab topology.
 

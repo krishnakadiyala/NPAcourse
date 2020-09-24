@@ -1,10 +1,10 @@
-## Jinja2 Filters
+# Jinja2 Filters
 
 This lab introduces and explores several common Jinja filters.  Jinja filters provide ways to manipulate and work with data in a clean and consumable way.  Remember you already saw one filter in the Compliance lab when we converted a string to an integer.  Now we'll take a look at several more filters.
 
 ### Task 1 - Using Jinja2 Filters
 
-The Jinja2 library ships with many filters already, but in addition to those Ansible also ships with it's own that are only available in Ansible. It is even possible to add custom filters with knowing a little bit of Python.
+The Jinja2 library ships with many filters already, but in addition to those Ansible also ships with it's own that are only available in Ansible. It is even possible to add custom filters with knowing just a little bit of Python.
 
 
 ##### Step 1
@@ -525,5 +525,5 @@ Check the final playbook
           
 ```
 
-Continue to explore Jinaja Filters in [Ansible's Docs](https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html)
+Continue to explore Jinja Filters in [Ansible's Docs](https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html)
 

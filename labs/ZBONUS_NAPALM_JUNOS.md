@@ -1,4 +1,4 @@
-## Lab BONUS 3 - NAPALM
+# Lab BONUS 3 - NAPALM
 
 ### Task 1 - Basic Configuration Merge with NAPALM
 
@@ -175,7 +175,7 @@ This is when the configuration will be activated and _committed_ to the running 
 >>>
 ```
 
-> If you wanted to discard this change rather than commit, alternatively you **could** have ran the following:
+> If you wanted to discard this change rather than commit, alternatively you **could** have run the following:
 
 ```python
 >>> device.discard_config()
@@ -613,4 +613,4 @@ Print all interfaces for all devices.
 >>>
 ```
 
-As you can see, outputs structure is the same regardless of the device platform.
+As you can see, output structure is the same regardless of the device platform.

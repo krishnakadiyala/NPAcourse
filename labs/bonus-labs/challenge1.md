@@ -1,4 +1,4 @@
-## Challenge 1
+# Challenge 1
 
 * Generate a report (markdown table or CSV file) for visualizing network reachability
 * Use the `napalm_ping` module.  

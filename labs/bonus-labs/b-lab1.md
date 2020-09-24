@@ -1,5 +1,5 @@
 
-## Bonus Lab 1 - Troubleshooting Configuration Building
+# Bonus Lab 1 - Troubleshooting Configuration Building
 
 This lab is focused on troubleshooting the configuration build process focused on YAML and Jinja templates within Ansible.
 

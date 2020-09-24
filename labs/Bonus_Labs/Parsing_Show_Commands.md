@@ -1,14 +1,13 @@
-## Parsing Show Commands with Ansible
+# Parsing Show Commands with Ansible
 
 In the next few labs, we'll introduce a few different methodologies for parsing show commands with Ansible looking at several different built-in Jinja2 filters.  They are `regex_search`, `regex_findall` and `parse_cli_textfsm`.
 
 
 ### Task 1 - Using the `parse_cli_textfsm` Filter
 
-In the first task, we'll parse show data on IOS using a pre-built TextFSM template for the "show version" and "show interfaces"command called `parse_cli_textfsm`. A benefit of using the TextFSM filter and associated templates as opposed to other options is that Network to Code has
-developed a robust list of parsing templates which render all major vendors and all major show commands into structured data. 
+In the first task, we'll parse show data on IOS using a pre-built TextFSM template for the "show version" and "show interfaces"command called `parse_cli_textfsm`. A benefit of using the TextFSM filter and associated templates as opposed to other options is that Network to Code has developed a robust list of parsing templates which render all major vendors and all major show commands into structured data. 
 The only remaining effort for you is to map the template to the associated show command. Other 3rd party modules will do this for you, but
-using Ansible Core `ios_command` and the `parse_cli_textfsm` filter require you to tell Ansible which parsing template to use. 
+using Ansible Core `ios_command` and the `parse_cli_textfsm` filter requires you to tell Ansible which parsing template to use. 
 
 This really provides auto-magic parsing against output for legacy devices which do not have an API giving output with data in a data structure. 
 
@@ -52,7 +51,7 @@ Feel free to open the TextFSM templates so you can review it.
 
 Add two new tasks:
 
-  * One that will _parse_ the "show version" and "show interfaces" response using the pre-built TextFSM template and save them as a new variables using the `set_fact` module.
+  * One that will _parse_ the "show version" and "show interfaces" response using the pre-built TextFSM template and save them as new variables using the `set_fact` module.
   * One that will debug the new variables.
 
 ```yaml

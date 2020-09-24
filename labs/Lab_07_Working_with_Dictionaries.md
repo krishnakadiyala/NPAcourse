@@ -1,10 +1,10 @@
-## Lab 7 - Working with Dictionaries
+# Lab 7 - Working with Dictionaries
 
 ### Task 1 - Working with Dictionaries Part 1
 
 ##### Step 1
 
-Create a variable called `facts` and assign the it value of "{}" that will make it an empty dictionary:
+Create a variable called `facts` and assign it the value of "{}" that will make it an empty dictionary:
 
 ```python
 >>> facts = {}
@@ -97,7 +97,7 @@ Another option is to use the built-in `dict()` function when creating dictionari
 {'model': '7050', 'hostname': 'APAC1', 'vendor': 'arista', 'location': 'Sydney'}
 ```
 
-When you print it, it looks the exact same as the previous methods.
+When you print it, it looks the exact same as those created by previous methods.
 
 In this syntax, you can also create an empty dictionary like this too:
 
@@ -223,7 +223,7 @@ None
 >>>
 ```
 
-This is common when you just want to check to see if the key has **any** value assigned to it.  We haven't covered conditionals yet, but we would now be able to do `if os_ver:` and it would return `True` if there is any non null value assigned to it.  This is what we alluded at the end of the Booleans Lab.
+This is common when you just want to check to see if the key has **any** value assigned to it.  We haven't covered conditionals yet, but we would now be able to do `if os_ver:` and it would return `True` if there is any non null value assigned to it.  This is what we alluded to at the end of the Booleans Lab.
 
 Using `get` is safe approach that allows you to check to see if there is a value assigned without knowing if the key exists (and without needing try/except error handling).
 

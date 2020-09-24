@@ -1,4 +1,4 @@
-## Lab 17 - Getting Started with Functions
+# Lab 17 - Getting Started with Functions
 
 This lab walks you through an introduction of using functions so you can start writing more modular code and eliminate any duplicate code in your scripts.
 
@@ -83,13 +83,13 @@ def vlan_exists(vlan_id):
 
 Create a function that connects to a Cisco IOS device and call it `ez_cisco`.
 
-`ez_cisco` should accept five parameters:
+`ez_cisco` should accept four parameters:
   * hostname of the device to connect to
   * username of the device
   * password of the device
   * show command to execute on the device
 
-The function header and layout should look like this while just printing all parameter passed to the function:
+The function header and layout should look like this while just printing all parameters passed to the function:
 
 ```python
 def ez_cisco(hostname, username, password, show_command):

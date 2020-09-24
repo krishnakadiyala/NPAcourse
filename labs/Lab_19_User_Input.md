@@ -1,4 +1,4 @@
-## Lab 19 - Passing in User Input
+# Lab 19 - Passing in User Input
 
 ### Task 1 - Update the Modularized Script
 
@@ -206,7 +206,7 @@ In this lab you have successfully used 2 ways to create a modular python script 
 
 ### Task 3 - Using sys.argv
 
-This task shows the quickest way to get started working with command line arguments.  While `argparse` is recommended for more user-friendly scripts, you may want to use `sys.argv` for a quick and easy to pass in args into a script.
+This task shows the quickest way to get started working with command line arguments.  While `argparse` is recommended for more user-friendly scripts, you may want to use `sys.argv` for a quick and easy way to pass in args into a script.
 
 This task shows how to get started with `sys.argv`
 

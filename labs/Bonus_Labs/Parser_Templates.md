@@ -1,4 +1,4 @@
-## Using Parser Templates
+# Using Parser Templates
 
 
 In this lab we are going to use different modules to collect data, reuse it and also parse unstructured data that comes back from the operational command. The main important modules we are going to be using are `snmp_device_version`, `ntc_show_command`, `command_parser` and `textfsm_parser`. 
@@ -87,7 +87,7 @@ csr1                       : ok=2    changed=0    unreachable=0    failed=0
 Add two more tasks, one with the `ntc_show_command` and the other with a `debug` statement to view the parsed data.
 The `ntc_show_command` module is a multi-vendor Ansible module designed for converting raw text into JSON key/value pairs. 
 
-This module leverages TextFSM as the templating tool to parse the unstructured data. Netmiko is also used for transport to enalbe support for all devices. 
+This module leverages TextFSM as the templating tool to parse the unstructured data. Netmiko is also used for transport to enable support for all devices. 
 
 >Note: We are reusing variables like `ansible_device_vendor` and `ansible_device_os` in the `platform` parameter from what was returned using `snmp_device_vendor`
 
@@ -208,7 +208,7 @@ Create two new directories locally one called `parsers` and another `ios` as a s
   register: system_facts
 ```
 
->Note: This template uses YAML syntax and regex to find the specified data from the rutured data from the show command. 
+>Note: This template uses YAML syntax and regex to find the specified data from the structured data from the show command. 
 
 ##### Step 7
 

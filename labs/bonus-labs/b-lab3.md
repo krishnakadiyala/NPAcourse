@@ -1,8 +1,8 @@
-## Bonus Lab 3 - Generating Reports Using NAPALM to Gather Data
+# Bonus Lab 3 - Generating Reports Using NAPALM to Gather Data
 
-Network Automation, and automation in general, is often equated with configuring devices faster, but as you've seen by now, it offers greater predictability and more deterministic outcomes.
+Network Automation, or automation in general, is often equated with configuring devices faster, but as you've seen by now, it offers greater predictability and more deterministic outcomes.
 
-On top of that, it also offers even great value when it comes to collecting data and reporting.  In these next few tasks, you will use Ansible modules to automate the data collection process and also dynamically generate different types of reports.
+On top of that, it also offers even greater value when it comes to collecting data and reporting.  In these next few tasks, you will use Ansible modules to automate the data collection process and also dynamically generate different types of reports.
 
 ### Task 1 - Create directory structure
 
@@ -92,7 +92,7 @@ ntc@ntc-training:ansible$
 
 
 
-### Task 2 - Generate facts reports
+### Task 2 - Generate fact reports
 
 ##### Step 1
 
@@ -107,7 +107,7 @@ Add a task to get facts from devices using `napalm_get_facts`.
         tags: facts
 ```
 
-Using the `filter` parameter with just "facts" is the default (the same as not using the `filter` parameter at all).
+Using the `filter` parameter with just "facts" as the default (the same as not using the `filter` parameter at all).
 
 ##### Step 2
 
@@ -146,7 +146,7 @@ Re-run the playbook using `facts` tag. This will print out the facts from all 3 
 
 ##### Step 5
 
-Update template called `facts.j2` you created in the lab lab with the following content.
+Update template called `facts.j2` you created in the lab with the following content.
 
 ```
 
@@ -240,14 +240,14 @@ ntc@ntc-training:ansible$
 
 ```
 
-This created a general device facts text-based report for each.  Let's build on this and now build a LLDP report.
+This created a general device fact text-based report for each.  Let's build on this and now build a LLDP report.
 
 
 ### Task 3 - Generate LLDP reports
 
 ##### Step 1
 
-Add a new task at the botom of the playbook to gather LLDP neighbors from devices.
+Add a new task at the bottom of the playbook to gather LLDP neighbors from devices.
 
 ```
       - name: GATHER LLDP FACTS
@@ -497,7 +497,7 @@ Use the `assemble` module to assemble the devices' reports into a single `{{ inv
         tags: summary
 ```
 
-Check out the new summary reports.  This is why we numbered the templates using 01 and 02--so they are assembed in order.
+Check out the new summary reports.  This is why we numbered the templates using 01 and 02--so they are assembled in order.
 
 ```
 ntc@ntc-training:ansible$ cat reports/summary/vmx1.txt                       

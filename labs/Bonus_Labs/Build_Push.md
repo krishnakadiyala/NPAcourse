@@ -1,4 +1,4 @@
-## Build / Push with Ansible
+# Build / Push with Ansible
 
 Do the lab(s) as directed by your instructor.  This is determined based on your lab topology.
 

@@ -1,5 +1,5 @@
 
-## Bonus Lab 2 - Generating a Report for OS Compliance
+# Bonus Lab 2 - Generating a Report for OS Compliance
 
 
 

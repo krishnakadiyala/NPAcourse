@@ -1,8 +1,8 @@
-## Lab 21.1 - Exploring the IOS-XE RESTCONF API
+# Lab 21.1 - Exploring the IOS-XE RESTCONF API
 
 ### Task 1 - Browsing the IOS-XE Native Model with Postman
 
-Cisco IOS-XE supports different YANG models and each these models use a different data structure.  This means you can "get" or "configure" particular features on XE with different JSON or XML objects.  
+Cisco IOS-XE supports different YANG models and each of these models uses a different data structure.  This means you can "get" or "configure" particular features on XE with different JSON or XML objects.  
 
 This task will focus on issuing GET requests with Postman.
 
@@ -73,7 +73,7 @@ You should see a large JSON response in the bottom pane.
 
 Scroll through the response object and take a deeper look.
 
-Note that **Status** code is 200.  This is a standard HTTP Response code and tell us that everything worked.
+Note that **Status** code is 200.  This is a standard HTTP Response code and tells us that everything worked.
 
 This is a sample of what you'll see in Postman:
 
@@ -257,7 +257,7 @@ Response:
 }
 ```
 
-Notice how this is the same exact data received in Step 14, but with just a different data structures? That's because it's validated using a different model!
+Notice how this is the same exact data received in Step 14, but with just a different data structure? That's because it's validated using a different model!
 
 
 ##### Step 19
@@ -597,7 +597,7 @@ end
 csr1#
 ```
 
-Keep in mind a **PUT** ensure whatever you're pushing to the device is the ONLY configuration for that object.  In this case, the object is Loopback200.  It has great power with ensuring the configuration you're pushing to the device is the only configuration on the device (but could also cause damage if not used properly).
+Keep in mind a **PUT** ensures whatever you're pushing to the device is the ONLY configuration for that object.  In this case, the object is Loopback200.  It has great power with ensuring the configuration you're pushing to the device is the only configuration on the device (but could also cause damage if not used properly).
 
 
 

@@ -1,8 +1,8 @@
-## Lab 6 - Improving Troubleshooting with the debug module
+# Lab 6 - Improving Troubleshooting with the debug module
 
 ### Task 1 - Debugging Variables
 
-This lab highlights the use of the `debug` module.  It offers you the ability to "print" variables to the terminal often very helpful for verifying what a variable is set to.  As you can see from the last lab, you can see variables can be defined in many locations in the inventory file, e.g. same variable for different groups.
+This lab highlights the use of the `debug` module.  It offers you the ability to "print" variables to the terminal, which is often very helpful for verifying what a variable is set to.  As you can see from the last lab, you can see that variables can be defined in many locations in the inventory file, e.g. same variable for different groups.
 
 Let's review a few ways the `debug` module helps with troubleshooting.
 
@@ -53,7 +53,7 @@ The task will simply print the variable `ntc_vendor` for each device in the grou
 
 Remember the `ntc_vendor` variable is simply a variable we created in the last lab for each group of devices and now we are going to print it for the **iosxe** group.
 
-##### Step 5
+##### Step 4
 
 Save and execute the playbook.
 
@@ -85,7 +85,7 @@ ntc@ntc-training:ansible$
 
 Note, this just printed the variable to the terminal.
 
-##### Step 4
+##### Step 5
 
 Change the `hosts:` in the play definition to automate "all" devices in the inventory file.
 
@@ -510,7 +510,7 @@ Your playbook should look like this:
 
 This is using one type of syntax supported within the playbook in which it is `parameter=value`, e.g. `var=ntc_vendor` and `var=ntc_device_type`.
 
-However, Ansible also supports a more native YAML syntax using colons in which it becomes `parameter: value` indented as a key under the module name. For example this is what the first task would look like:
+However, Ansible also supports a more native YAML syntax using colons in which it becomes `parameter: value` indented as a key under the module name. For example, this is what the first task would look like:
 
 ```yaml
       - name: DEBUG AND PRINT TO TERMINAL
@@ -630,7 +630,7 @@ ok: [eos-leaf2] => {
 
 **IMPORTANT**
 
-**Remove ansible_host=10.1.1.1 from the inventory or it will cause problems later in later labs.**
+**Remove ansible_host=10.1.1.1 from the inventory or it will cause problems in later labs.**
 
 
 ##### Step 4
@@ -819,7 +819,7 @@ ok: [eos-leaf2] => {
 
 ##### Step 8
 
-In the play definition change the `hosts: all` to `hosts: csr1` so we only target one device. 
+In the play definition change `hosts: all` to `hosts: csr1` so we only target one device. 
 
 ```yaml
 
@@ -917,7 +917,7 @@ ok: [csr1] => {
 
 ##### Step 11
 
-Add a new task to the existing playbook so we can verify and see what version of Ansible is being used to execute the playbook.  The variable `ansible_version` will return a dictionary representing Ansible major, minor, revision of the release.
+Add a new task to the existing playbook so we can verify and see what version of Ansible is being used to execute the playbook.  The variable `ansible_version` will return a dictionary representing the Ansible major, minor, revision of the release.
 
 ```yaml
 

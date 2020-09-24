@@ -1,4 +1,4 @@
-## Lab 9 - Using the Core Command Module
+# Lab 9 - Using the Core Command Module
 
 ### Task 1 - Using the *_command module
 
@@ -56,7 +56,7 @@ Did you see the output anywhere?
 
 ##### Step 5
 
-In order to clean up the output, use `register` task attribute and debug the new variable to the terminal.
+In order to clean up the output, use the `register` task attribute and debug the new variable to the terminal.
 
 ```yaml
       - name: GET SHOW COMMANDS
@@ -75,7 +75,7 @@ Execute the playbook.  Do not use the `-v` flag.
 
 The output seen is much cleaner and easier to read than using the `-v` flag.
 
-> Note that when you use `register`, it's creating a new variable and storing the JSON return data from the module into the variable name defined.  In this case, it's `config_data`.
+> Note: When you use `register`, it's creating a new variable and storing the JSON return data from the module into the variable name defined.  In this case, it's `config_data`.
 
 ##### Step 7
 
@@ -227,7 +227,7 @@ Did you see the output anywhere?
 
 ##### Step 17
 
-In order to clean up the output, use `register` task attribute and debug the new variable to the terminal.
+In order to clean up the output, use the `register` task attribute and debug the new variable to the terminal.
 
 ```yaml
       - name: GET SHOW COMMANDS

@@ -1,6 +1,6 @@
-## Lab 2 - Deploying Configs From a File
+# Lab 2 - Deploying Configs From a File
 
-In the last lab, you deployed configurations while hard-coding commands in a playbook.  In this lab, you will deploy networks configurations from a pre-built configuration file.
+In the last lab, you deployed configurations while hard-coding commands in a playbook.  In this lab, you will deploy network configurations from a pre-built configuration file.
 
 ##### Step 1
 

@@ -1,6 +1,6 @@
-## Lab 8 - Using Python Modules
+# Lab 8 - Using Python Modules
 
-In programming languages, you often need to "import" other libraries to get added functionality.  In this lab, we'll explore using a few Python libraries that come with the standard installation of Python.
+In programming languages, you often need to "import" other libraries to get additional functionalities.  In this lab, we'll explore using a few Python libraries that come with the standard installation of Python.
 
 Take note that a Python library may be a:
 

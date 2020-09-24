@@ -1,4 +1,4 @@
-## Lab 20 - Exploring eAPI and NXAPI 
+# Lab 20 - Exploring eAPI and NXAPI 
 
 Do the lab(s) as directed by your instructor.  This is determined based on your lab topology.
 

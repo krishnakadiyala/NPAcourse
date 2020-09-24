@@ -1,4 +1,4 @@
-## Lab 20 - Backup and Restore Network Configurations Part 2
+# Lab 20 - Backup and Restore Network Configurations Part 2
 
 This lab will "restore" the configuration files you previously backed up using another 3rd party Ansible module called `napalm_install_config` that is based off of the popular NAPALM project.
 
@@ -242,7 +242,7 @@ ntc@ntc-training:ansible$ ansible-playbook -i inventory restore.yml --limit iosx
 
 Notice we added a new flag to the command being used called `--limit`.  Since we added `eos` in the previous step and only made changes to the CSR routers, we can use `limit` to limit the scope of this job to just the Cisco IOS CSR devices.
 
-Note how are they are now __changed__.  It doesn't mean this made the change, just that diffs are found and would be changed when commit is true.
+Note how they are now __changed__.  It doesn't mean this made the change, just that diffs are found and would be changed when commit is true.
 
 ##### Step 11
 
@@ -270,7 +270,7 @@ Simply update `commit_changes` to be **true**.
 
 ##### Step 13
 
-Save and Run the playbook.
+Save and run the playbook.
 
 ```
 ntc@ntc-training:ansible$ ansible-playbook -i inventory restore.yml --limit iosxe

@@ -1,4 +1,4 @@
-## Dynamic Inventory
+# Dynamic Inventory
 
 ### Using a Dynamic Inventory Script
 
@@ -6,7 +6,7 @@ When getting started with Ansible, it's quite common to use an inventory file li
 
 However, in larger or more dynamic environments, there may already be a single _source of truth_.  This is quite common in cloud environments.  For example, the number of VMs may change by the hour (maybe with AWS auto-scaling).  You could then use an AWS dynamic inventory script to always have required inventory information rather than trying to keep the inventory file up to date.
 
-If you already had a network management system or CMDB, then a dynamic inventory script could be used.  This way you aren't managing two inventories, one for the NMS/CMDB and one for Ansible.     If you already had a network management system or CMDB, then a dynamic inventory script could be used.  This way you aren't managing two inventories, one for the NMS/CMDB and one for Ansible.
+If you already had a network management system or CMDB, then a dynamic inventory script could be used.  This way you aren't managing two inventories, one for the NMS/CMDB and one for Ansible. If you already had a network management system or CMDB, then a dynamic inventory script could be used.  This way you aren't managing two inventories, one for the NMS/CMDB and one for Ansible.
 
 In this lab, you will explore and use a dynamic inventory script that simulates making an API to a NMS or CMDB.
 
@@ -55,7 +55,7 @@ Run this Python script using the `-i` flag from the Linux terminal, so you get d
 ntc@ntc-training:dynamic_inv$ python -i dynamo.py
 ```
 
-The scripts executes, but you still have access to the variables in scope within `if __name__ == "__main__"`.  Here that's just `rsp`.
+The script executes, but you still have access to the variables in scope within `if __name__ == "__main__"`.  Here that's just `rsp`.
 
 For example, you can print rsp:
 
@@ -102,7 +102,7 @@ Use `json.loads` to work with it as a Python dictionary.
 
 The goal is to understand what key-values you need to return if you are building your own dynamic inventory script.
 
-You can see here the keys are group names.  It's values has a key called hosts and there is a list of hosts inside there.
+You can see here the keys are group names.  Its values has a key called hosts and there is a list of hosts inside there.
 
 ##### Step 5
 

@@ -1,4 +1,4 @@
-## Lab 25.2 - Building and Pushing Network Configuration Files
+# Lab 25.2 - Building and Pushing Network Configuration Files
 
 This lab will show how to use Ansible to automate the process of building network configuration files and pushing them to network devices.  
 
@@ -58,7 +58,7 @@ end
 
 ```
 
-Your job is to now create a single template and the associated groups vars and host vars files required to generate the require configuration files.
+Your job is to now create a single template and the associated group vars and host vars files required to generate the require configuration files.
 
 
 ##### Step 2
@@ -119,7 +119,7 @@ We now need to do something with the original configuration parameters for featu
 
 Within the `group_vars/all.yml`  file, you need to store the values you just removed from the config file (now the template).  Take the snippet and store it in `all.yml` in `group_vars`
 
-Variables Snippet (`group_vars/all.yml`):
+Variable Snippet (`group_vars/all.yml`):
 
 ```yaml
 
@@ -185,7 +185,7 @@ interface GigabitEthernet4
 
 Anything that repeats itself should be screaming "use a loop" for me!  We can reduce the interfaces down to a single for loop.  We will use a loop that will  iterate through a list of dictionaries.  
 
-This time, we'll create the variables files first.
+This time, we'll create the variable files first.
 
 Create the variables (list of dictionaries) for the interfaces.  Remember, it needs to be done on a per-device basis because the IP addresses used per device are different for every device (think group_vars vs. host_vars).
 
@@ -255,7 +255,7 @@ interfaces:
 
 File: `host_vars/csr3.yml`
 
-Notice the different syntax that can be used for a list of dictionaries.
+Notice the different syntaxes that can be used for a list of dictionaries.
 
 ```yaml
 

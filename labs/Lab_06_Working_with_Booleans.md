@@ -1,4 +1,4 @@
-## Lab 6 - Working with Booleans
+# Lab 6 - Working with Booleans
 
 ### Task 1 - Working with Booleans Part 1
 

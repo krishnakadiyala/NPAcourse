@@ -1,6 +1,6 @@
-## Lab BONUS - Parsing Show Commands with TextFSM
+# Lab BONUS - Parsing Show Commands with TextFSM
 
-In this lab, we'll use TextFSM templates to simplify parsing unstructured text .  You can build TextFSM templates (parsers) without doing any Python which simplifies the parsing, and enables more people (that don't know Python) to help build parsers.
+In this lab, we'll use TextFSM templates to simplify parsing unstructured text.  You can build TextFSM templates (parsers) without doing any Python which simplifies the parsing, and enables more people (that don't know Python) to help build parsers.
 
 ### Task 1 - Using TextFSM to Parse Raw Text
 
@@ -43,7 +43,7 @@ For this lab, we will define the *needs*, i.e. which values are important to ext
 
 ##### Step 3
 
-Determine the regular expression specifically for each piece of data we want to extract. The information structure we want to extract is always the same regardless of the interface type. For example, considering the first interface we will want to parse the following values:
+Determine the regular expression specifically for each piece of data we want to extract. The information structure we want to extract is always the same regardless of the interface type. For example, considering the first interface we will want to parse has the following values:
 
 INTERFACE = Vlan10
 IP = 10.20.10.1
@@ -175,7 +175,7 @@ FSM Table:
 
 ```
 
-Now we know the state machine and parsing is working as we want it to.
+Now we know the state machine and parsing are working as we want them to.
 
 ##### Step 7
 
@@ -239,7 +239,7 @@ Please do one a time.  This helps the testing process tremendously.
 
 
 
-Additionally, we will collect as user input the location of the TextFSM template to be used, the show command to parse etc.
+Additionally, we will collect as user inputs the location of the TextFSM template to be used, the show command to parse etc.
 
 ### Task 2 - Using Netmiko and TextFSM Together
 

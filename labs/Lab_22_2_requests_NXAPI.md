@@ -1,4 +1,4 @@
-## Lab 22.2 - Cisco NX-API
+# Lab 22.2 - Cisco NX-API
 
 ### Task 1 - Getting Started with the Python Requests Module
 
@@ -396,7 +396,7 @@ Extract everything from `body` in a variable first and then print the kickstart 
 >>>
 ```
 
-Saving everything under `body` as it's own variable streamlines accessing data if you need to extract multiple key-value pairs.
+Saving everything under `body` as its own variable streamlines accessing data if you need to extract multiple key-value pairs.
 
 
 ##### Step 14
@@ -519,7 +519,7 @@ Now print the name for VLAN 1.
 
 Did it work?  
 
-Print out `vlans` on it's own:
+Print out `vlans` on its own:
 
 ```python
 >>> print(json.dumps(vlans, indent=4))
@@ -548,7 +548,7 @@ Print out `vlans` on it's own:
 >>>
 ```
 
-Notice anything different about this object compared to the previous one?  You should see that this is a list of dictionaries and the previous was just a dictionary.  This often happens when using native JSON encoding with NX-API when there is ONE object being returned or MULTIPLE.  One VLAN == dictionary.  More than one VLAN is a list.  Same is true any other object such as interfaces, neighbors, and so on.  We'll see how to mitigate this later on.
+Notice anything different about this object compared to the previous one?  You should see that this is a list of dictionaries and the previous was just a dictionary.  This often happens when using native JSON encoding with NX-API when there is ONE object being returned or MULTIPLE.  One VLAN == dictionary.  More than one VLAN is a list.  Same is true any other objects such as interfaces, neighbors, and so on.  We'll see how to mitigate this later on.
 
 ##### Step 20
 
@@ -568,7 +568,7 @@ Because of this, it's common to use the following block of code when using NX-AP
 >>>
 ```
 
-This does a type check on `your-variable` and if it's a dictionary, creates a list of one so you can always through it and not need two ways of access the same sets of data, e.g. when there is one VLAN, and when there is multiple VLANs, when there is one neighbor, and when there is multiple neighbors, etc.
+This does a type check on `your-variable` and if it's a dictionary, creates a list of one so you can always through it and not need two ways of access the same sets of data, e.g. when there is one VLAN, and when there is multiple VLANs, when there is one neighbor, and when there are multiple neighbors, etc.
 
 ##### Step 21
 
@@ -712,7 +712,7 @@ There are two ways we can go about mapping the current dictionary keys to the de
 
 ##### Step 3
 
-As previously stated, Cisco returns a dictionary when there is a single element like when returning a single neighbor. We will introduce and use isinstance to check the data type of cdp_neighbors. If it is a dictionary, we'll make it a list of 1. If it's a list, it'll stay as-is.
+As previously stated, Cisco returns a dictionary when there is a single element like when returning a single neighbor. We will introduce and use isinstance to check the data type of cdp_neighbors. If it is a dictionary, we'll make it a list of 1. If it's a list, it'll stay as is.
 
 ```
 >>> if isinstance(cdp_neighbors, dict):

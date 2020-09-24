@@ -1,4 +1,4 @@
-## Lab BONUS 2 - NAPALM
+# Lab BONUS 2 - NAPALM
 
 ### Task 1 - Basic Configuration Merge with NAPALM
 
@@ -172,7 +172,7 @@ Use `compare_config()` to show candidate configuration diffs.
 +snmp-server contact JOHN_SMITH
 ```
 
-As stated before, these changes are not applied to the running configuration yet. Instead, a `merge_config.txt` is created on the device. Feel free to connect to `csr1` and verify that none of those configuration lines have been applied yet.
+As stated before, these changes are not applied to the running configuration yet. Instead, a `merge_config.txt` is created on the device. Feel free to connect to `csr1` and verify that none of those configuration lines has been applied yet.
 
 ##### Step 11
 
@@ -185,7 +185,7 @@ This is when the configuration will be activated and _committed_ to the running 
 >>>
 ```
 
-> If you wanted to discard this change rather than commit, alternatively you **could** have ran the following:
+> If you wanted to discard this change rather than commit, alternatively you **could** have run the following:
 
 ```python
 >>> device.discard_config()
@@ -674,7 +674,7 @@ Print all interfaces for all devices.
 >>>
 ```
 
-As you can see, outputs structure is the same regardless of the device platform.
+As you can see, output structure is the same regardless of the device platform.
 
 ##### Step 7
 

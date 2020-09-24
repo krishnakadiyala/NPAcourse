@@ -1,4 +1,4 @@
-## Lab 5 - Working with Lists
+# Lab 5 - Working with Lists
 
 ### Task 1 - Working with Lists Part 1
 
@@ -78,7 +78,7 @@ You needed to use the index value of `1` because "00.00.00.00.22.22" was the sec
 
 ##### Step 7
 
-Insert "00.00.00.00.22.22" back into the list in the same position it was.  Use the `insert` method:
+Insert "00.00.00.00.22.22" back into the list at the same position where it was.  Use the `insert` method:
 
 ```python
 >>> mac_list.insert(1, '00.00.00.00.22.22')
@@ -121,7 +121,7 @@ The MAC addresses to add are: `55.55.55.55.55.55` and `66.66.66.66.66.66`.
 
 ### Task 2 - Working with Lists Part 2
 
-When working with APIs such as Cisco NX-API, commands are sent as a string to the device (for certain encoding types).  However, while you are writing code, it's common to want to build the command set as a list.  Lists are simply easier to work with and manipulate in terms of adding/removing certain elements/commands, etc.
+When working with APIs such as Cisco NX-API, commands are sent as strings to the device (for certain encoding types).  However, while you are writing code, it's common to want to build the command set as a list.  Lists are simply easier to work with and manipulate in terms of adding/removing certain elements/commands, etc.
 
 ##### Step 1
 

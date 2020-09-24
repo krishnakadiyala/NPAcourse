@@ -1,4 +1,4 @@
-## Lab 14 - Getting Started with Conditionals
+# Lab 14 - Getting Started with Conditionals
 
 This lab walks you through an introduction of using conditionals allowing you to add more intelligence and business logic into your code.
 
@@ -129,7 +129,7 @@ Create the following list of dictionaries:
 >>>
 ```
 
-Pretty print it to make sure you understand it's data type.
+Pretty print it to make sure you understand its data type.
 
 
 
@@ -289,7 +289,7 @@ There are a few ways to handle this and we're showing two in this example.  You 
 
 ##### Step 13
 
-There is another way too if we pre-build a known platforms list per vendor.
+There is another way too if we pre-build a known platform list per vendor.
 
 ```python
 >>> cisco_platforms = ['catalyst', 'nexus', 'aci']

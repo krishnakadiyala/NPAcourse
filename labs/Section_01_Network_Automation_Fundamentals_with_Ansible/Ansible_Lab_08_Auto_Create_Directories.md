@@ -1,4 +1,4 @@
-## Lab 8 - Auto-Create Directories using the file module
+# Lab 8 - Auto-Create Directories using the file module
 
 This lab introduces the `file` module to help us auto-create files and directories. This is helpful because as you'll eventually see, you may need to dynamically create directories based on group name or even hostname of the device.  One use-case is you want to issue 10 show commands per device and have a directory that is the hostname and files per command in that directory.  This is something that would be impossible to do manually (or at least, it would be very silly to do manually).
 
@@ -6,7 +6,7 @@ This lab introduces the `file` module to help us auto-create files and directori
 
 Let's use `ansible-doc` to learn more about `file` module.
 
-Type in the command `ansible-doc file`, this will open up a description of the module and available parameters
+Type in the command `ansible-doc file`, this will open up a description of the module and available parameters.
 
 The two main parameters we are going to focus on are `path` and `state`. 
 

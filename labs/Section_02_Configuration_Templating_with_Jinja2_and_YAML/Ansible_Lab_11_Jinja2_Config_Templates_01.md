@@ -1,4 +1,4 @@
-## Lab 11 - Getting Started with Jinja2 Templating in Ansible
+# Lab 11 - Getting Started with Jinja2 Templating in Ansible
 
 ### Task 1 - Using Jinja2 to Build Configuration Templates
 
@@ -106,7 +106,7 @@ ntc@ntc-training:ansible$
 ##### Step 6
 
 
-Using the Ansible `template` module, lets add a new task that will take this variable and render it with a Jinja template (that is yet to be created):
+Using the Ansible `template` module, let's add a new task that will take this variable and render it with a Jinja template (that is yet to be created):
 
 ``` yaml
 

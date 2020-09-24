@@ -1,4 +1,4 @@
-## Lab 11 - Writing Scripts
+# Lab 11 - Writing Scripts
 
 This lab helps make the transition from writing on the Python Interpreter to actually writing Python standalone scripts.
 
@@ -52,7 +52,7 @@ print('Hello Network Automation!')
 
 ```
 
-> Note: we've also included the optional shebang that instructions the system which version of Python to use when running this script.  That is the first line of the script. You could also do `#! /usr/bin/python3.4`, but then you'd need to change the line in all of your scripts vs. using your environment should you want to test different versions of Python.  Using the recommended shebang, you just need to change the Python version in your environment.
+> Note: we've also included the optional shebang that instructs the system which version of Python to use when running this script.  That is the first line of the script. You could also do `#! /usr/bin/python3.4`, but then you'd need to change the line in all of your scripts vs. using your environment should you want to test different versions of Python.  Using the recommended shebang, you just need to change the Python version in your environment.
 
 
 _Finally, there is another optional line that's left out of this script, which is an entry point conditional, e.g. `if __name__ == "__main__":`.  We state it here for completeness, but we'll re-visit it again once we get to cover `if` statements in the course._
@@ -67,7 +67,7 @@ ntc@ntc-training:scripts$ python networkauto.py
 Hello Network Automation!
 ```
 
-As you can see, it was quite simple to write a Python script.  It's technically no different than typing on the Python shell.
+As you can see, it was quite simple to write a Python script.  It's technically no different from typing on the Python shell.
 
 ### Task 2 - Printing Data
 
@@ -122,6 +122,6 @@ ntc@ntc-training:scripts$ python print_facts.py
 ]
 ```
 
-The point in this lab is to showcase the transition going from learning to write code on the Python shell.
+The point in this lab is to showcase the transition from learning to write code on the Python shell.
 
 We'll now move onto more useful scripts.
