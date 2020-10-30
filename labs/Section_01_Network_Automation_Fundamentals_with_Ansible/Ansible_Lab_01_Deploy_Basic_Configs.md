@@ -6,12 +6,13 @@ This lab provides an introduction to using Ansible creating your first playbook 
 
 ##### Step 1
 
-While in your home directory, create a new directory called `ansible` and then navigate into this new directory.
+While in your home directory `/home/ntc`, create a new directory called `ansible` and then navigate into this new directory.
 
 ```
-ntc@ntc-training:ntc$ mkdir ansible
-ntc@ntc-training:ntc$ 
-ntc@ntc-training:ntc$ cd ansible
+ntc@ntc-training:~$ cd /home/ntc
+ntc@ntc-training:~$ mkdir ansible
+ntc@ntc-training:~$ 
+ntc@ntc-training:~$ cd ansible
 ntc@ntc-training:ansible$
 ```
 
