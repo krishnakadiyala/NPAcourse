@@ -1,7 +1,7 @@
 layout: true
 
 .footer-picture[![Network to Code Logo](data/media/Footer2.PNG)]
-.footnote-left[(C) 2018 Network to Code, LLC. All Rights Reserved. ]
+.footnote-left[(C) 2020 Network to Code, LLC. All Rights Reserved. ]
 .footnote-con[CONFIDENTIAL]
 
 ---
@@ -44,7 +44,7 @@ YAML
   vlan_id: 100
 
   # string
-  vlan_id: "101"
+  vlan_id_str: "101"
 
 ```
 ]
@@ -54,12 +54,12 @@ JSON
 
 ``` json
 {
-  hostname: switch1,
-  snmp_ro: public,
-  snmp_rw: private,
-  snmp_location: "nyc",
-  vlan_id: 100,
-  vlan_id: "101"
+  "hostname": "switch1",
+  "snmp_ro": "public",
+  "snmp_rw": "private",
+  "snmp_location": "nyc",
+  "vlan_id": 100,
+  "vlan_id_str": "101"
 }
 
 

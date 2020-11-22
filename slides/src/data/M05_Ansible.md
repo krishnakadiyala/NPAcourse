@@ -1,7 +1,7 @@
 layout: true
 
 .footer-picture[![Network to Code Logo](data/media/Footer2.PNG)]
-.footnote-left[(C) 2018 Network to Code, LLC. All Rights Reserved. ]
+.footnote-left[(C) 2020 Network to Code, LLC. All Rights Reserved. ]
 .footnote-con[CONFIDENTIAL]
 
 ---

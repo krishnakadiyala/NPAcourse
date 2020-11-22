@@ -1,0 +1,20 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "cmsirbu/ants"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+    vb.cpus = 2
+  end
+
+  config.vm.provision "docker",
+    images: ["astefanutti/decktape"]
+
+  # User is "vagrant".
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    export SLIDES_LIST="M01_Python M02_Python_MV_Network_Libraries M03_Network_APIs M04_YAML_JSON M05_Ansible"
+    for i in $SLIDES_LIST; do
+      docker run --rm -t -v /vagrant:/slides astefanutti/decktape --chrome-arg=--disable-web-security /slides/$i.html $i.pdf
+    done
+  SHELL
+
+end
