@@ -28,7 +28,7 @@ In the `main.yml`, add the following statement:
 - include_tasks: "{{ ansible_network_os }}_deploy.yml"
 ```
 
-Notice how it's a single include statement.  This will execute a file called `nxos.yml` or `ios.yml`.
+Notice how it's a single include statement.  This will execute a file called `nxos_deploy.yml` or `ios_deploy.yml`.
 
 Those files need to be created now, but will configure SNMP per OS type.
 
