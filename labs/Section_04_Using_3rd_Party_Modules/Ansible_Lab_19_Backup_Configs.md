@@ -2,9 +2,9 @@
 
 Before starting the lab we are going to go over how to add 3rd party modules to your Ansible environment.  This could include open source modules or custom modules you decide to write over time. 
 
-Below are some tips on how to do it, but for this lab environment it has already been added so we **don't** have to apply any changes.   This first Task is **read-only**.
+Below are some tips on how to do it, but for this lab environment it has already been added so we **don't** have to apply any changes. This first Task is **read-only**.
 
-### Task 1 - Adding 3rd Party Modules
+### Task 1 - Adding 3rd Party Modules (READ-ONLY)
 
 ##### Step 1
 
@@ -59,7 +59,7 @@ Save and exit the file.
 ntc@ntc-training:~$ ansible --version
 ansible 2.9.9
   config file = /etc/ansible/ansible.cfg
-  configured module search path = ['/etc/ntc/ansible/library']
+  configured module search path = ['/home/ntc/projects', '/etc/ntc/ansible/library']
   ansible python module location = /usr/local/lib/python3.6/site-packages/ansible
   executable location = /usr/local/bin/ansible
   python version = 3.6.8 (default, Jun 11 2019, 01:16:11) [GCC 6.3.0 20170516]
