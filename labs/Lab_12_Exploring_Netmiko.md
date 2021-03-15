@@ -230,7 +230,7 @@ You can always view the output coming back from the device by saving it to a var
 
 ##### Step 9
 
-Let's try checking connectivity to Google's DNS server.
+Let's try checking connectivity to the IP address 10.0.0.15.
 
 ```python
 >>> output = device.send_command('ping 10.0.0.15')
