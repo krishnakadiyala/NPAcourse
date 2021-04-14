@@ -336,7 +336,7 @@ snmp-server community ntcrw RW
 
 Let's try to send commands from a file now.
 
-The file called `config.txt` should exist on your pod. You can use the `os` module to send Linux commands to the shell. Verify that the file exist:
+The file called `config.txt` should exist on your pod in the `/home/ntc/files/` directory. You can use the `os` module to send Linux commands to the shell. Verify that the file exists:
 
 ```python
 >>> import os
