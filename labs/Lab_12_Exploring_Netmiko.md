@@ -336,23 +336,21 @@ snmp-server community ntcrw RW
 
 Let's try to send commands from a file now.
 
-In a separate terminal window, navigate to the `files` directory and create a new file called `config.txt`
-
-If you're unsure of where you entered the shell, remember you can do the following to check your current working directory:
+The file called `config.txt` should exist on your pod in the `/home/ntc/files/` directory. You can use the `os` module to send Linux commands to the shell. Verify that the file exists:
 
 ```python
 >>> import os
 >>>
->>> os.getcwd()
-'/home/ntc/files'
->>>
+>>> os.system('ls /home/ntc/files/config.txt')
+/home/ntc/files/config.txt
+0
 ```
-
 ##### Step 6
 
-Put the following commands into `config.txt`:
+Make sure that you can see the following commands in `config.txt`:
 
-```bash
+```python
+>>> os.system('cat /home/ntc/files/config.txt')
 !
 snmp-server community supersecret RW
 snmp-server community notprivate RO
@@ -360,6 +358,7 @@ snmp-server community notprivate RO
 interface Loopback101
  ip address 10.9.88.1 255.255.255.0
 !
+0
 ```
 
 ##### Step 7
@@ -367,7 +366,7 @@ interface Loopback101
 Deploy the commands from the config file using the Netmiko method called `send_config_from_file`:
 
 ```python
->>> output = device.send_config_from_file('config.txt')
+>>> output = device.send_config_from_file('/home/ntc/files/config.txt')
 >>>
 ```
 
