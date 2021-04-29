@@ -256,7 +256,7 @@ import json
 import textfsm
 from netmiko import ConnectHandler
 
-TEMPLATES_PATH = "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/templates/"
+TEMPLATES_PATH = "/etc/ntc/ansible/library/ntc-ansible/ntc-templates/ntc_templates/templates/"
 
 if __name__ == "__main__":
 
@@ -328,7 +328,7 @@ Feel free to make changes as you desire and try other commands.
 
 This is a list of commands / templates of common commands.
 
-For an exact list of commands supported, navigate [here](https://github.com/networktocode/ntc-templates/tree/master/templates)
+For an exact list of commands supported, navigate [here](https://github.com/networktocode/ntc-templates/tree/master/ntc_templates/templates)
 
 * arista_eos_show_clock.textfsm
 * cisco_ios_show_ip_arp.textfsm
